@@ -8,8 +8,8 @@ public class PuzzleManager : MonoBehaviour
     Camera cam;
     Piece selectedPiece;
 
-    Vector2 startPoint;
-    Vector2 endPoint;
+    Vector3 startPoint;
+    Vector3 endPoint;
 
 
     // Start is called before the first frame update
@@ -45,8 +45,15 @@ public class PuzzleManager : MonoBehaviour
                 if (piece == null) return;
                 if (piece.type.Equals(PieceType.WALL) || piece.type.Equals(PieceType.EMPTY)) return;
                 selectedPiece = piece;
-                Debug.Log(piece);
+                startPoint = Input.mousePosition + new Vector3(0,0,cam.transform.position.y);
+                startPoint = cam.ScreenToWorldPoint(startPoint);
             }
+        }
+        if(Input.GetMouseButtonUp(0))
+        {
+            endPoint = Input.mousePosition + new Vector3(0, 0, cam.transform.position.y);
+            endPoint = cam.ScreenToWorldPoint(endPoint);
+            selectedPiece.Move(new Vector2(endPoint.x - startPoint.x, endPoint.z - startPoint.z));
         }
     }
 }
