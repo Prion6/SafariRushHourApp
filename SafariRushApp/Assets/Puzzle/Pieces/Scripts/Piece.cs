@@ -23,28 +23,42 @@ public class Piece : MonoBehaviour
         
     }
 
-    public void Move(Vector2 v)
+    public void TryMove(Vector2 v)
     {
-        if(direction.Equals(Direction.HORIZONTAL))
+        int x = (int)v.x;
+        if (Mathf.Abs(v.x - x) > 0.6)
         {
-            int x = (int)v.x;
-            if (Mathf.Abs(v.x - x) > 0.6)
-            {
-                if (v.x > 0) x++;
-                else x--;
-            }
-            Debug.Log(x);
+            if (v.x > 0) x++;
+            else x--;
+        }
+        int z = (int)v.y;
+
+        if (Mathf.Abs(v.y - z) > 0.6)
+        {
+            if (v.y > 0) z++;
+            else z--;
+        }
+
+        if (direction.Equals(Direction.HORIZONTAL))
+        {
             v = new Vector2(x,0);
         }
         else if (direction.Equals(Direction.VERTICAL))
         {
-            Debug.Log(direction + " - X: " + v.x + " - Z: " + v.y);
+            v = new Vector2(0, z);
             return;
         }
         else if (direction.Equals(Direction.BOTH))
         {
-            Debug.Log(direction + " - X: " + v.x + " - Z: " + v.y);
+
+            v = new Vector2(x,z);
         }
+        Move(Puzzle.RequestMovement(identifier,v));
+    }
+
+    public void Move(Vector3 v)
+    {
+        transform.Translate(v);
     }
 }
 
@@ -62,5 +76,6 @@ public enum PieceType
     TWO_BY_ONE,
     THREE_BY_ONE,
     WALL,
+    EXIT,
     EMPTY
 }

@@ -1,16 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PuzzleManager : MonoBehaviour
 {
-    Puzzle p;
+    Puzzle Puzzle { get; set; }
     Camera cam;
     Piece selectedPiece;
 
     Vector3 startPoint;
     Vector3 endPoint;
 
+    public Text matrixtext;
 
     // Start is called before the first frame update
     void Awake()
@@ -23,8 +25,9 @@ public class PuzzleManager : MonoBehaviour
             Debug.LogError("Format error, initial value: " + s[0] + " Puzzle: " + s);
             
         }
-        p = FindObjectOfType<Puzzle>();
-        p.Init(s);
+        Puzzle = FindObjectOfType<Puzzle>();
+        Puzzle.Init(s);
+        matrixtext.text = Puzzle.PrintMatrix();
     }
 
     void Start()
@@ -54,6 +57,7 @@ public class PuzzleManager : MonoBehaviour
             endPoint = Input.mousePosition + new Vector3(0, 0, cam.transform.position.y);
             endPoint = cam.ScreenToWorldPoint(endPoint);
             selectedPiece.Move(new Vector2(endPoint.x - startPoint.x, endPoint.z - startPoint.z));
+            matrixtext.text = Puzzle.PrintMatrix();
         }
     }
 }
