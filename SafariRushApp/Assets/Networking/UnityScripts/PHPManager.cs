@@ -25,7 +25,7 @@ public class PHPManager : MonoBehaviour
     public IEnumerator GetPuzzle(DIFFICULTY difficulty)
     {
         yield return StartCoroutine(querier.GetPuzzle("GetPuzzle", difficulty, (s) => GameManager.Puzzle = s));
-        Debug.Log(GameManager.Puzzle);
+        //Debug.Log(GameManager.Puzzle);
         GameManager.LoadScene("Puzzle");
     }
 }

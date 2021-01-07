@@ -813,7 +813,7 @@ GameObject:
   - component: {fileID: 628266002}
   - component: {fileID: 628266001}
   m_Layer: 5
-  m_Name: HardBTN
+  m_Name: AdvancedBTN
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1273,7 +1273,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Hard
+  m_Text: Advanced
 --- !u!222 &1084407773
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1509,7 +1509,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Medium
+  m_Text: Intermediate
 --- !u!222 &1376134435
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1609,7 +1609,7 @@ GameObject:
   - component: {fileID: 1443662093}
   - component: {fileID: 1443662092}
   m_Layer: 5
-  m_Name: EasyBTN
+  m_Name: JuniorBTN
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1862,7 +1862,7 @@ GameObject:
   - component: {fileID: 1651302454}
   - component: {fileID: 1651302453}
   m_Layer: 5
-  m_Name: MediumBTN
+  m_Name: IntermediateBTN
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2444,7 +2444,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Easy
+  m_Text: Junior
 --- !u!222 &2120445727
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -40,7 +40,7 @@ public class GameManager
         Debug.Log("Load " + (DIFFICULTY)difficulty + " map");
         _PHPManager.SetPuzzleScene((DIFFICULTY)difficulty);
     }
-    
+        
 }
 
 public enum DIFFICULTY
