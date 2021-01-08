@@ -37,7 +37,6 @@ public class GameManager
             Debug.LogError("Difficulty level not supported");
             return;
         }
-        Debug.Log("Load " + (DIFFICULTY)difficulty + " map");
         _PHPManager.SetPuzzleScene((DIFFICULTY)difficulty);
     }
         

@@ -46,9 +46,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dimension: {x: 2, y: 1}
-  identifier: 0
-  coordenates: []
-  type: 0
+  Coordenates: []
+  stepables: 2e00
+  type: 2
 --- !u!65 &647953217981294516
 BoxCollider:
   m_ObjectHideFlags: 0

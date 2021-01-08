@@ -370,20 +370,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   piecePrefs:
-  - type: 0
-    go: {fileID: 4671094147421969425, guid: 50d8accc67278b749a15495a899e6072, type: 3}
-  - type: 3
-    go: {fileID: 3540187810149101850, guid: 6e660edf0c272b54da3e08e9a70664c1, type: 3}
-  - type: 2
-    go: {fileID: 2268415358638359389, guid: 4cef49e13afc1a64089f8a06eba24499, type: 3}
-  - type: 1
-    go: {fileID: 6056116419764455010, guid: 215676e4428008a47a2e2d4b210aa28a, type: 3}
-  - type: 4
-    go: {fileID: 3100286826056193331, guid: 30442be97629dec46b8f8ecd571fefde, type: 3}
-  - type: 5
-    go: {fileID: 0}
-  - type: 6
-    go: {fileID: 0}
+  - {fileID: 5011444991550657177, guid: 7d9159414ff16574297cfabe8fbc774f, type: 3}
+  - {fileID: 5754591443142008229, guid: 6e660edf0c272b54da3e08e9a70664c1, type: 3}
+  - {fileID: 1258947696238044169, guid: 4cef49e13afc1a64089f8a06eba24499, type: 3}
+  - {fileID: -834281443711152394, guid: 215676e4428008a47a2e2d4b210aa28a, type: 3}
+  - {fileID: 2255717947171468576, guid: 30442be97629dec46b8f8ecd571fefde, type: 3}
   slabPref: {fileID: 5069191600918297099, guid: 37fbe35a8fc5d524cac7aed2095a4aed,
     type: 3}
   step: 1
@@ -477,13 +468,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 431187305}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: -90, z: 0}
 --- !u!1 &587927938
 GameObject:
   m_ObjectHideFlags: 0

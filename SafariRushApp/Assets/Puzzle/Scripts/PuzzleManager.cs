@@ -56,7 +56,7 @@ public class PuzzleManager : MonoBehaviour
         {
             endPoint = Input.mousePosition + new Vector3(0, 0, cam.transform.position.y);
             endPoint = cam.ScreenToWorldPoint(endPoint);
-            selectedPiece.Move(new Vector2(endPoint.x - startPoint.x, endPoint.z - startPoint.z));
+            selectedPiece.TryMove(new Vector2(endPoint.x - startPoint.x, endPoint.z - startPoint.z));
             matrixtext.text = Puzzle.PrintMatrix();
         }
     }

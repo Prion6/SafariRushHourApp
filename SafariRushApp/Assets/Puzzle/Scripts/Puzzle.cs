@@ -8,7 +8,7 @@ public class Puzzle : MonoBehaviour
     private char[,] matrix;
     private string label;
     
-    public List<PiecePref> piecePrefs;
+    public List<Piece> piecePrefs;
     private Dictionary<PieceType,GameObject> pieces;
 
     public GameObject slabPref;
@@ -19,9 +19,9 @@ public class Puzzle : MonoBehaviour
     void Awake()
     {
         pieces = new Dictionary<PieceType, GameObject>();
-        foreach(PiecePref pp in piecePrefs)
+        foreach(Piece p in piecePrefs)
         {
-            pieces.Add(pp.type, pp.go);
+            pieces.Add(p.type, p.gameObject);
         }
     }
 
@@ -96,7 +96,9 @@ public class Puzzle : MonoBehaviour
                 }
 
                 visited.Add(matrix[i, j]);
-                GameObject g = pieces[GetPieceType(matrix[i, j])];
+                PieceType t = GetPieceType(matrix[i, j]);
+                if (t.Equals(PieceType.EMPTY)) continue;
+                GameObject g = pieces[t];
                 
                 if (g == null) continue;
 
@@ -105,107 +107,63 @@ public class Puzzle : MonoBehaviour
 
                 g = Instantiate(g);
                 p = g.GetComponent<Piece>();
-                p.direction = Direction.HORIZONTAL;
+
+                Direction d = Direction.HORIZONTAL;
                 if (matrix[i, j + 1].Equals(matrix[i, j]))
                 {
-                    g.transform.Rotate(new Vector3(0, -90, 0));
                     if(matrix[i + 1, j].Equals(matrix[i, j]))
-                        p.direction = Direction.BOTH;
-                    p.direction = Direction.VERTICAL;
+                        d = Direction.BOTH;
+                    else
+                        d = Direction.VERTICAL;
                 }
-                g.transform.position = start + new Vector3(step * i, 0, step * j);
-                p.identifier = matrix[i, j];
+                p.Init(d,i,j,matrix[i,j],this, start + new Vector3(step * i, 0, step * j));
             }
         }
     }
-
-    public Vector3 RequestMovement(char identifier, Vector2 v)
+    
+    public Vector2 RequestMovement(char identifier, List<Vector2> start, List<List<Vector2>> coords, Vector2 step, List<char> stepables, out List<Vector2> end)
     {
-        if (GetPieceType(identifier).Equals(PieceType.WALL) || GetPieceType(identifier).Equals(PieceType.WALL)) return Vector3.zero;
+        Vector2 move = Vector2.zero;
+        end = start;
+        for(int i = 0; i < coords.Count; i++)
+        {
+            bool check = true;
+            foreach(Vector2 c in coords[i])
+            {
+                bool canStep = false;
+                if(c.x >= matrix.GetLength(0) || c.x < 0 || c.y >= matrix.GetLength(0) || c.y < 0)
+                {
+                    check = false;
+                    break;
+                }
+                foreach(char s in stepables)
+                {
+                    if((matrix[(int)c.x, (int)c.y].Equals(s)))
+                    {
+                        canStep = true;
+                        break;
+                    }    
+                }
+                if (!canStep) check = false;
 
-        Vector2 pos = GetPieceCorrdinates(identifier);
-
-        Vector2 move = GetValidMove(identifier, v, pos);
-
-        MovePiece(identifier, move);
-
-        return new Vector3(move.x, 0, move.y);
-        
+            }
+            if (!check) break;
+            end = coords[i];
+            move += step;
+        }
+        MovePiece(identifier, start, end);
+        return move;
     }
-
-    public Vector2 GetValidMove(char identifier, Vector2 v, Vector2 pos)
+    
+    public void MovePiece(char identifier, List<Vector2> start, List<Vector2> end)
     {
-        int move = 0;
-        float x = Mathf.Abs(v.x);
-        float y = Mathf.Abs(v.y);
-        int direction = 1;
-        int offset = 0;
-
-        if (x > y)
-        {
-            if (v.x < 0)
-            {
-                direction = -1;
-            }
-            for (int i = 0; i < x; i++)
-            {
-                if (pos.x + i * direction > matrix.GetLength(0) || pos.x + i * direction < 0) break;
-                if (matrix[(int)pos.x + i * direction, (int)pos.y].Equals(identifier))
-                {
-                    x++;
-                    offset++;
-                    move++;
-                    continue;
-                }
-                if (!matrix[(int)pos.x + i, (int)pos.y].Equals('.')) break;
-                move++;
-            }
-            move -= offset;
-            move *= direction;
-            return new Vector2(move, 0);
-        }
-        else
-        {
-            if (v.y < 0)
-            {
-                direction = -1;
-            }
-            for (int i = 0; i < y; i++)
-            {
-                if (pos.y + i * direction > matrix.GetLength(0) || pos.y + i * direction < 0) break;
-                if (matrix[(int)pos.x, (int)pos.y + i * direction].Equals(identifier))
-                {
-                    y++;
-                    offset++;
-                    move++;
-                    continue;
-                }
-                if (!matrix[(int)pos.x + i, (int)pos.y].Equals('.')) break;
-                move++;
-            }
-            move -= offset;
-            move *= direction;
-            return new Vector2(0, move);
-        }
-    }
-
-    public void MovePiece(char identifier, Vector2 move)
-    {
-        List<Vector2> positions = new List<Vector2>();
-        for (int i = 0; i < matrix.GetLength(0); i++)
-        {
-            for (int j = 0; j < matrix.GetLength(0); j++)
-            {
-                if (matrix[i, j].Equals(identifier))
-                {
-                    positions.Add(new Vector2(i, j));
-                }
-            }
-        }
-        foreach(Vector2 v in positions)
+        foreach(Vector2 v in start)
         {
             matrix[(int)v.x, (int)v.y] = '.';
-            matrix[(int)(v.x + move.x), (int)(v.y + move.y)] = identifier;
+        }
+        foreach (Vector2 v in end)
+        {
+            matrix[(int)v.x, (int)v.y] = identifier;
         }
     }
 
@@ -252,7 +210,7 @@ public class Puzzle : MonoBehaviour
                 break;
             case '0': piece = PieceType.WALL;
                 break;
-            case '!': piece = PieceType.EXIT;
+            case '!': piece = PieceType.EMPTY;
                 break;
             default: piece = PieceType.EMPTY;
                 break;
@@ -268,24 +226,11 @@ public class Puzzle : MonoBehaviour
             string s = "";
             for (int j = 0; j < matrix.GetLength(0); j++)
             {
-                s += matrix[i, j];
+                s += matrix[i, j] + "\t";
             }
             m += s + "\n";
-            Debug.Log(s);
+            //Debug.Log(s);
         }
         return m;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-}
-
-[System.Serializable]
-public struct PiecePref
-{
-    public PieceType type;
-    public GameObject go;
 }
