@@ -13,6 +13,8 @@ public class Piece : MonoBehaviour
     public Orientation Orientation { get; set; }
     public Puzzle Puzzle { get; set; }
 
+    public float moveTime;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -105,14 +107,8 @@ public class Piece : MonoBehaviour
         
         int m = (int)(v.x + v.y);
         if (m == 0) return new MoveData(0, Direction.NONE, Identifier);
-        if (!Orientation.Equals(Orientation.BOTH))
-        {
-            transform.Translate(m, 0, 0);
-        }
-        else
-        {
-            transform.Translate(v.x,0,v.y);
-        }
+        StopAllCoroutines();
+        StartCoroutine(Translate(transform.position + new Vector3(v.x, 0, v.y)));
 
         Direction d;
         if (Mathf.Abs(v.x) > Mathf.Abs(v.y))
@@ -129,6 +125,20 @@ public class Piece : MonoBehaviour
         MoveData md = new MoveData(n,d,Identifier);
         //Debug.Log("Movement: " + md.identifier + md.direction + md.magnitude);
         return md;
+    }
+
+    IEnumerator Translate(Vector3 v)
+    {
+        Debug.Log("here");
+        float elapsedTime = 0;
+        while (elapsedTime < moveTime)
+        {
+            transform.position = Vector3.Lerp(transform.position, v, (elapsedTime / moveTime));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = v;
     }
 }
 
