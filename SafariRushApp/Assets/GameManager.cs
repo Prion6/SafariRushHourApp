@@ -32,21 +32,21 @@ public class GameManager
 
     public static void LoadPuzzleScene(int difficulty)
     {
-        if(difficulty < 0 || difficulty >= System.Enum.GetValues(typeof(DIFFICULTY)).Length)
+        if(difficulty < 0 || difficulty >= System.Enum.GetValues(typeof(Difficulty)).Length)
         {
             Debug.LogError("Difficulty level not supported");
             return;
         }
-        _PHPManager.SetPuzzleScene((DIFFICULTY)difficulty);
+        _PHPManager.SetPuzzleScene((Difficulty)difficulty);
     }
-        
 }
 
-public enum DIFFICULTY
+public enum Difficulty
 {
-    BEGGINER,
     JUNIOR,
+    BEGGINER,
     INTERMEDIATE,
     ADVANCED,
-    EXPERT
+    EXPERT,
+    UNDEFINED
 }

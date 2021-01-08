@@ -17,12 +17,12 @@ public class PHPManager : MonoBehaviour
         StartCoroutine(querier.Testing("Test"));
     }
 
-    public void SetPuzzleScene(DIFFICULTY difficulty)
+    public void SetPuzzleScene(Difficulty difficulty)
     {
         StartCoroutine(GetPuzzle(difficulty));
     }
     
-    public IEnumerator GetPuzzle(DIFFICULTY difficulty)
+    public IEnumerator GetPuzzle(Difficulty difficulty)
     {
         yield return StartCoroutine(querier.GetPuzzle("GetPuzzle", difficulty, (s) => GameManager.Puzzle = s));
         //Debug.Log(GameManager.Puzzle);

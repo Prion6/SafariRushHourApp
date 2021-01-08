@@ -27,7 +27,7 @@ public class PHPQuerySet : ScriptableObject
         }
     }
 
-    public IEnumerator GetPuzzle(string URN, DIFFICULTY difficulty, System.Action<string> callback)
+    public IEnumerator GetPuzzle(string URN, Difficulty difficulty, System.Action<string> callback)
     {
         WWWForm form = new WWWForm();
         form.AddField("difficulty", (int)difficulty);
