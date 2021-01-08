@@ -15,6 +15,8 @@ public class Puzzle : MonoBehaviour
 
     public int step;
 
+    public Difficulty Difficulty { get; set; }
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -35,7 +37,9 @@ public class Puzzle : MonoBehaviour
     public void InitMatrix(string s)
     {
         string[] lines = s.Split('\n');
-        label = lines[0].Trim('P');
+        label = lines[0].Trim('P',' ');
+        Difficulty = GetDifficulty(label[0]);
+        Debug.Log("Difficulty: " + label[0]);
         matrix = new char[(lines.Length) + 1, (lines.Length) + 1]; // -1 debido al header, +2 para agregar murallas y puertas
         for (int i = 0; i < matrix.GetLength(0); i++)
         {
@@ -50,6 +54,19 @@ public class Puzzle : MonoBehaviour
             }
         }
         //PrintMatrix();
+    }
+
+    public Difficulty GetDifficulty(char c)
+    {
+        switch(c)
+        {
+            case 'J': return Difficulty.JUNIOR;
+            case 'B': return Difficulty.BEGGINER;
+            case 'I': return Difficulty.INTERMEDIATE;
+            case 'A': return Difficulty.ADVANCED;
+            case 'E': return Difficulty.EXPERT;
+            default: return Difficulty.UNDEFINED;
+        }
     }
 
     public void InitBoard()
@@ -108,15 +125,15 @@ public class Puzzle : MonoBehaviour
                 g = Instantiate(g);
                 p = g.GetComponent<Piece>();
 
-                Direction d = Direction.HORIZONTAL;
-                if (matrix[i, j + 1].Equals(matrix[i, j]))
+                Orientation o = Orientation.HORIZONTAL;
+                if (j + 1 < matrix.GetLength(0) && matrix[i, j + 1].Equals(matrix[i, j]))
                 {
-                    if(matrix[i + 1, j].Equals(matrix[i, j]))
-                        d = Direction.BOTH;
+                    if(i + 1 < matrix.GetLength(0) && matrix[i + 1, j].Equals(matrix[i, j]))
+                        o = Orientation.BOTH;
                     else
-                        d = Direction.VERTICAL;
+                        o = Orientation.VERTICAL;
                 }
-                p.Init(d,i,j,matrix[i,j],this, start + new Vector3(step * i, 0, step * j));
+                p.Init(o,i,j,matrix[i,j],this, start + new Vector3(step * i, 0, step * j));
             }
         }
     }
@@ -210,7 +227,7 @@ public class Puzzle : MonoBehaviour
                 break;
             case '0': piece = PieceType.WALL;
                 break;
-            case '!': piece = PieceType.EMPTY;
+            case '!': piece = PieceType.EXIT;
                 break;
             default: piece = PieceType.EMPTY;
                 break;
