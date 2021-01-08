@@ -39,7 +39,6 @@ public class Puzzle : MonoBehaviour
         string[] lines = s.Split('\n');
         label = lines[0].Trim('P',' ');
         Difficulty = GetDifficulty(label[0]);
-        Debug.Log("Difficulty: " + label[0]);
         matrix = new char[(lines.Length) + 1, (lines.Length) + 1]; // -1 debido al header, +2 para agregar murallas y puertas
         for (int i = 0; i < matrix.GetLength(0); i++)
         {
