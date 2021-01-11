@@ -44,7 +44,7 @@ public class Puzzle : MonoBehaviour
         {
             for (int j = 0; j < matrix.GetLength(0); j++)
             {
-                if(i == 0 || i >= matrix.GetLength(0) - 1 || j == 0 || (j >= matrix.GetLength(0) - 1 && j >= lines[i].Length))
+                if(i == 0 || i >= matrix.GetLength(0) - 1 || j == 0 || (j >= matrix.GetLength(0) - 1 && j > lines[i].Length))
                 {
                     matrix[i, j] = '0';
                     continue;
@@ -103,7 +103,6 @@ public class Puzzle : MonoBehaviour
                 if (visited.Contains(matrix[i, j])) continue;
                 if (matrix[i, j].Equals('0'))
                 {
-                    
                     GameObject w = Instantiate(pieces[PieceType.WALL]);
                     w.transform.position = start + new Vector3(step * i, 0, step * j);
                     w.name = "Wall-Piece: " + (i * matrix.GetLength(0) + j);
