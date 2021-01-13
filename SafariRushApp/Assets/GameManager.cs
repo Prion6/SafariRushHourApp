@@ -5,37 +5,37 @@ using UnityEngine.SceneManagement;
 
 public class GameManager
 {
-    private static PHPManager PHPManager;
-    private static PHPManager _PHPManager {
+    private static PHPManager _PHPManager;
+    private static PHPManager PHPManager {
         get
         {
-            if(PHPManager == null)
+            if(_PHPManager == null)
             {
                 GameObject go = Resources.Load("PHPManager") as GameObject;
-                PHPManager = GameObject.Instantiate(go).GetComponent<PHPManager>();
+                _PHPManager = GameObject.Instantiate(go).GetComponent<PHPManager>();
             }
-            return PHPManager;
+            return _PHPManager;
         }
     }
-    
-    public static string Puzzle { get; set; }
 
-    private static List<PuzzlePool> Puzzles;
-    private static List<PuzzlePool> _Puzzles
+    private static GameData _GameData;
+    private static GameData GameData
     {
         get
         {
-            if(Puzzles == null)
+            if(_GameData == null)
             {
-                Puzzles = new List<PuzzlePool>();
-                Puzzles.Add(Resources.Load("JuniorPuzzles") as PuzzlePool);
-                Puzzles.Add(Resources.Load("BeginnerPuzzles") as PuzzlePool);
-                Puzzles.Add(Resources.Load("IntermediatePuzzles") as PuzzlePool);
-                Puzzles.Add(Resources.Load("AdvancedPuzzles") as PuzzlePool);
-                Puzzles.Add(Resources.Load("ExpertPuzzles") as PuzzlePool);
+                _GameData = new GameData();
             }
-            return Puzzles;
+            return _GameData;
         }
+    }
+    
+    public static PuzzleData Puzzle { get; set; }
+
+    public static void SetPuzzle(string s)
+    {
+
     }
 
     public static void LoadScene(int sceneID)
@@ -57,15 +57,25 @@ public class GameManager
         }
         _PHPManager.SetPuzzleScene((Difficulty)difficulty);
     }
-
-    public static string GetBackUpPuzzle(int difficulty)
+    
+    public static void SetBackUpPuzzle(int delta)
     {
-        return _Puzzles[difficulty].GetRandom();
+        Puzzle = GameData.GetPuzzle(delta);
     }
 
-    public static void SetBackUpPuzzle(int difficulty)
+    public static string GetText(string key)
     {
-        Puzzle = GetBackUpPuzzle(difficulty);
+        return GameData.GetText(key);
+    }
+
+    public static void RegisterNewPlayer(PlayerData player)
+    {
+        GameData.PlayerData = player;
+    }
+
+    public static void Quit()
+    {
+        Application.Quit();
     }
 }
 
