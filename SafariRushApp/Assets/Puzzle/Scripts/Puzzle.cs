@@ -6,7 +6,8 @@ using UnityEngine;
 public class Puzzle : MonoBehaviour
 {
     private char[,] matrix;
-    private string label;
+
+    public PuzzleData data;
     
     public List<Piece> piecePrefs;
     private Dictionary<PieceType,GameObject> pieces;
@@ -14,8 +15,6 @@ public class Puzzle : MonoBehaviour
     public GameObject slabPref;
 
     public int step;
-
-    public Difficulty Difficulty { get; set; }
 
     // Start is called before the first frame update
     void Awake()
@@ -37,8 +36,8 @@ public class Puzzle : MonoBehaviour
     public void InitMatrix(string s)
     {
         string[] lines = s.Split('\n');
-        label = lines[0].Trim('P',' ');
-        Difficulty = GetDifficulty(label[0]);
+        data.Label = lines[0].Trim('P',' ');
+        //Difficulty = GetDifficulty(label[0]);
         matrix = new char[(lines.Length) + 1, (lines.Length) + 1]; // -1 debido al header, +2 para agregar murallas y puertas
         for (int i = 0; i < matrix.GetLength(0); i++)
         {
@@ -248,4 +247,14 @@ public class Puzzle : MonoBehaviour
         }
         return m;
     }
+}
+
+
+[System.Serializable]
+public struct PuzzleData
+{
+    public int ID { get; set; }
+    public string Label { get; set; }
+    public int Ranking { get; set; }
+    public string Puzzle { get; set; }
 }

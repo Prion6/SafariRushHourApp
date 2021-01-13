@@ -27,7 +27,7 @@ public class PuzzleManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        string s = GameManager.Puzzle;
+        string s = GameManager.Puzzle.Puzzle;
         s = s.Trim(' ');
         if (!s[0].Equals('P'))
         {

@@ -6,10 +6,6 @@ using UnityEngine;
 public class PuzzlePool : ScriptableObject
 {
     [TextArea]
-    public List<string> puzzles;
-
-    public string GetRandom()
-    {
-        return puzzles[Random.Range(0,puzzles.Count)];
-    }
+    public List<PuzzleData> puzzles;
+    
 }

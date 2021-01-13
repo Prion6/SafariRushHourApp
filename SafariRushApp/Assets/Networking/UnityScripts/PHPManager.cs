@@ -35,15 +35,23 @@ public class PHPManager : MonoBehaviour
         Debug.Log("Aborted");
         StopCoroutine(GetPuzzle(difficulty));
         GameManager.SetBackUpPuzzle((int)difficulty);
+        gettingPuzzle = false;
         GameManager.LoadScene("Puzzle");
     }
     
     public IEnumerator GetPuzzle(Difficulty difficulty)
     {
-        yield return StartCoroutine(querier.GetPuzzle("GetPuzzle", difficulty, (s) => GameManager.Puzzle = s));
-        if(GameManager.Puzzle != null)
+        string puzzle = null;
+        yield return StartCoroutine(querier.GetPuzzle("GetPuzzle", difficulty, (s) => puzzle = s));
+        if (puzzle != null)
+        {
             gettingPuzzle = false;
-        GameManager.SetBackUpPuzzle((int)difficulty);
+            GameManager.SetPuzzle(puzzle);
+        }
+        else
+        {
+            GameManager.SetBackUpPuzzle((int)difficulty);
+        }
         //Debug.Log(GameManager.Puzzle);
         GameManager.LoadScene("Puzzle");
     }
