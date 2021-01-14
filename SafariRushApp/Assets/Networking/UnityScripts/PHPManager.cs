@@ -56,7 +56,17 @@ public class PHPManager : MonoBehaviour
         yield return StartCoroutine(querier.GetPuzzle("GetPuzzle", ranking, (s) => puzzle = s));
         if (puzzle != null)
         {
-            GameManager.SetPuzzle(puzzle);
+            string[] data = puzzle.Split(';');
+            if (data.Length != 4 || !int.TryParse(data[0].Trim('s'), out int id) || !int.TryParse(data[3].Trim('s'), out int rank))
+            {
+                Debug.Log("Format Error");
+                GameManager.SetBackUpPuzzle(ranking);
+            }
+            else
+            {
+                PuzzleData p = new PuzzleData(id, data[1].Trim(';'), rank, data[4].Trim(';'));
+                GameManager.Puzzle = p;
+            }
         }
         else
         {

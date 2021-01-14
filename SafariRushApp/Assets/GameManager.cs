@@ -32,7 +32,7 @@ public class GameManager
     }
     
     public static PuzzleData Puzzle { get; set; }
-    
+        
     public static void LoadScene(int sceneID)
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneID);
@@ -66,6 +66,11 @@ public class GameManager
     public static bool IsFirstEntry()
     {
         return GameData.FirstEntry;
+    }
+
+    public static bool SetFirstEntry(bool b)
+    {
+        return GameData.FirstEntry = b;
     }
 
     public static void RegisterNewPlayer(PlayerData player)

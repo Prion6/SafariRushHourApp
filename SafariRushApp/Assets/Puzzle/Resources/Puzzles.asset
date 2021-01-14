@@ -1,0 +1,753 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6451c6beba59db46a9951f874cfe7f5, type: 3}
+  m_Name: Puzzles
+  m_EditorClassIdentifier: 
+  puzzles:
+  - ID: 1
+    Label: J1
+    Ranking: 0
+    Puzzle: 'P J1
+
+      .......
+
+      .rrrf..
+
+      hh..fq.!
+
+      o.xx.q.!
+
+      o.xx.q.
+
+      ob..ee.
+
+      .bppp..'
+  - ID: 2
+    Label: J2
+    Ranking: 0
+    Puzzle: 'P J2
+
+      .......
+
+      ....qqq
+
+      pppor..!
+
+      ...orcc!
+
+      .eeor..
+
+      ...xx..
+
+      ...xx..'
+  - ID: 3
+    Label: J3
+    Ranking: 0
+    Puzzle: 'P J3
+
+      ..ii...
+
+      .ffaa..
+
+      ..kk...!
+
+      .eedd..!
+
+      cc..bb.
+
+      .hxxj..
+
+      .hxxj..'
+  - ID: 4
+    Label: J4
+    Ranking: 0
+    Puzzle: 'P J4
+
+      o....d.
+
+      o..aad.
+
+      o...hbb!
+
+      ii..h..!
+
+      .xx....
+
+      .xxc...
+
+      ...cqqq'
+  - ID: 5
+    Label: J5
+    Ranking: 0
+    Puzzle: 'P J5
+
+      ......o
+
+      xx....o
+
+      xx....o!
+
+      .dee...!
+
+      .dhpc..
+
+      ..hpc..
+
+      .jjpqqq'
+  - ID: 6
+    Label: J6
+    Ranking: 0
+    Puzzle: 'P J6
+
+      xx.h...
+
+      xx.h...
+
+      ..qqqaa!
+
+      jjrrr..!
+
+      ..ppp..
+
+      ..f....
+
+      ..f....'
+  - ID: 7
+    Label: 7
+    Ranking: 0
+    Puzzle: 'P J7
+
+      ....h..
+
+      ..iiha.
+
+      .bbxxa.!
+
+      ..dxxff!
+
+      ..decc.
+
+      ...e...
+
+      .......'
+  - ID: 8
+    Label: J8
+    Ranking: 0
+    Puzzle: 'P J8
+
+      .rrrpff
+
+      ....p..
+
+      d...p..!
+
+      dxxqqq.!
+
+      .xxe..c
+
+      ...ebbc
+
+      aa.ooo.'
+  - ID: 9
+    Label: J9
+    Ranking: 0
+    Puzzle: 'P J9
+
+      .......
+
+      ...pr..
+
+      ...pr..!
+
+      ..oprq.!
+
+      ..oxxq.
+
+      .boxxqc
+
+      .b.ee.c'
+  - ID: 10
+    Label: J10
+    Ranking: 0
+    Puzzle: 'P J10
+
+      .......
+
+      ..ooor.
+
+      ..xx.r.!
+
+      ..xx.r.!
+
+      ...peed
+
+      ...p..d
+
+      ...pqqq'
+  - ID: 11
+    Label: B1
+    Ranking: 0
+    Puzzle: 'P B1
+
+      ...r.ii
+
+      .aar...
+
+      .h.r..c!
+
+      .hjjffc!
+
+      ...kkee
+
+      ..xx.vv
+
+      ..xx.vv'
+  - ID: 12
+    Label: B2
+    Ranking: 0
+    Puzzle: 'P B2
+
+      .......
+
+      uu.pppo
+
+      uu.qxxo!
+
+      siiqxxo!
+
+      shbqrrr
+
+      shb.kk.
+
+      .......'
+  - ID: 13
+    Label: B3
+    Ranking: 0
+    Puzzle: 'P B3
+
+      ...r...
+
+      ...ruu.
+
+      c..ruu.!
+
+      c..a...!
+
+      xx.a.gg
+
+      xxeeff.
+
+      .hhjj..'
+  - ID: 14
+    Label: B4
+    Ranking: 0
+    Puzzle: 'P B4
+
+      .cqqqp.
+
+      .c.j.p.
+
+      vv.j.p.!
+
+      vveexx.!
+
+      r.h.xx.
+
+      r.h.b..
+
+      rooob..'
+  - ID: 15
+    Label: B5
+    Ranking: 0
+    Puzzle: 'P B5
+
+      .......
+
+      ...f...
+
+      bb.f.jj!
+
+      .xxuuh.!
+
+      .xxuuh.
+
+      ii.a.gg
+
+      ...a...'
+  - ID: 16
+    Label: B6
+    Ranking: 0
+    Puzzle: 'P B6
+
+      .......
+
+      .......
+
+      .peaao.!
+
+      .peffo.!
+
+      .prrro.
+
+      .xxqqq.
+
+      .xx....'
+  - ID: 17
+    Label: B7
+    Ranking: 0
+    Puzzle: 'P B7
+
+      .uu.jj.
+
+      iuuh..a
+
+      i..h..a!
+
+      .bb.ff.!
+
+      xx.e..c
+
+      xx.evvc
+
+      .dd.vv.'
+  - ID: 18
+    Label: B8
+    Ranking: 0
+    Puzzle: 'P B8
+
+      xx.ppp.
+
+      xx.uu..
+
+      .aauucc!
+
+      ...qr..!
+
+      ...qr..
+
+      ...qr..
+
+      ..hhjj.'
+  - ID: 19
+    Label: B9
+    Ranking: 0
+    Puzzle: 'P B9
+
+      ...f...
+
+      ..afp..
+
+      .ha.pe.!
+
+      .hxxpe.!
+
+      jjxxdcc
+
+      ..i.d..
+
+      ..ibb..'
+  - ID: 20
+    Label: B10
+    Ranking: 0
+    Puzzle: 'P B10
+
+      .......
+
+      ...aff.
+
+      ..ra.eq!
+
+      ..rcceq!
+
+      ..rgvvq
+
+      xx.gvv.
+
+      xx.....'
+  - ID: 21
+    Label: I1
+    Ranking: 0
+    Puzzle: 'P I1
+
+      vvc....
+
+      vvc....
+
+      qqquui.!
+
+      ...uui.!
+
+      xxdooo.
+
+      xxd....
+
+      ppp....'
+  - ID: 22
+    Label: I2
+    Ranking: 0
+    Puzzle: 'P I2
+
+      ...uu..
+
+      ...uui.
+
+      ..xx.i.!
+
+      vvxxooo!
+
+      vv.q.bb
+
+      .ccqe..
+
+      ...qe..'
+  - ID: 23
+    Label: I3
+    Ranking: 0
+    Puzzle: 'P I3
+
+      ppp.ee.
+
+      .xx.r.c
+
+      .xx.r.c!
+
+      .qqqr.a!
+
+      ...jvva
+
+      h..jvv.
+
+      h.ffooo'
+  - ID: 24
+    Label: I4
+    Ranking: 0
+    Puzzle: 'P I4
+
+      hh.dd..
+
+      .....i.
+
+      qooo.i.!
+
+      qxxp...!
+
+      qxxp.b.
+
+      rrrp.b.
+
+      .......'
+  - ID: 25
+    Label: I5
+    Ranking: 0
+    Puzzle: 'P I5
+
+      jjhh...
+
+      .uu...g
+
+      auu.r.g!
+
+      aiiprcq!
+
+      f..prcq
+
+      fxxpvvq
+
+      .xx.vv.'
+  - ID: 26
+    Label: I6
+    Ranking: 0
+    Puzzle: 'P I6
+
+      .hhjj..
+
+      ..ff...
+
+      .aavv..!
+
+      iiovvq.!
+
+      xxoeeq.
+
+      xxodcq.
+
+      .bbdc..'
+  - ID: 27
+    Label: I7
+    Ranking: 0
+    Puzzle: 'P I7
+
+      .......
+
+      oooa...
+
+      pvva...!
+
+      pvvcc..!
+
+      peeqqq.
+
+      xxrrrkj
+
+      xx.ffkj'
+  - ID: 28
+    Label: I8
+    Ranking: 0
+    Puzzle: 'P I8
+
+      j..d.uu
+
+      jhhd.uu
+
+      .xx....!
+
+      .xxpppc!
+
+      ...rrrc
+
+      vv.f..a
+
+      vv.f..a'
+  - ID: 29
+    Label: I9
+    Ranking: 0
+    Puzzle: 'P I9
+
+      i......
+
+      iooo...
+
+      pppee..!
+
+      .......!
+
+      .aarrr.
+
+      hxxcvvf
+
+      hxxcvvf'
+  - ID: 30
+    Label: I10
+    Ranking: 0
+    Puzzle: 'P I10
+
+      .....uu
+
+      .bdd.uu
+
+      .b.p...!
+
+      ooop..r!
+
+      ...pxxr
+
+      ...exxr
+
+      cc.eqqq'
+  - ID: 31
+    Label: A1
+    Ranking: 0
+    Puzzle: 'P A1
+
+      ..uu...
+
+      ..uu.cc
+
+      bihhvvq!
+
+      biajvvq!
+
+      ddajffq
+
+      ..xx.ee
+
+      ..xx...'
+  - ID: 32
+    Label: A2
+    Ranking: 0
+    Puzzle: 'P A2
+
+      .......
+
+      .pppc..
+
+      .euuc..!
+
+      qeuuff.!
+
+      qaahjjg
+
+      qxxhvvg
+
+      .xx.vv.'
+  - ID: 33
+    Label: A3
+    Ranking: 0
+    Puzzle: 'P A3
+
+      .cvveep
+
+      .cvv.qp
+
+      ....rqp!
+
+      ...srq.!
+
+      ..osr..
+
+      .ios.xx
+
+      .iobbxx'
+  - ID: 34
+    Label: A4
+    Ranking: 0
+    Puzzle: 'P A4
+
+      ....aii
+
+      roooa.c
+
+      rxxqddc!
+
+      rxxquu.!
+
+      pppquu.
+
+      vv..hb.
+
+      vv..hb.'
+  - ID: 35
+    Label: A5
+    Ranking: 0
+    Puzzle: 'P A5
+
+      .kf..a.
+
+      .kfcca.
+
+      uuxx.vv!
+
+      uuxx.vv!
+
+      .jgeeh.
+
+      .jg..h.
+
+      .......'
+  - ID: 36
+    Label: A6
+    Ranking: 0
+    Puzzle: 'P A6
+
+      xx...uu
+
+      xxooouu
+
+      .q..bii!
+
+      .q..b..!
+
+      .qee.ff
+
+      vvc.a..
+
+      vvc.a..'
+  - ID: 37
+    Label: A7
+    Ranking: 0
+    Puzzle: 'P A7
+
+      ..orrr.
+
+      .ioaavv
+
+      .iouuvv!
+
+      .xxuuqc!
+
+      .xxddqc
+
+      ..pppq.
+
+      .......'
+  - ID: 38
+    Label: A8
+    Ranking: 0
+    Puzzle: 'P A8
+
+      xxrrr..
+
+      xxuusss
+
+      p.uuvv.!
+
+      pdo.vv.!
+
+      pdoiq..
+
+      eeoiqc.
+
+      ..bbqc.'
+  - ID: 39
+    Label: A9
+    Ranking: 0
+    Puzzle: 'P A9
+
+      uuddp..
+
+      uuiip..
+
+      bbxxp..!
+
+      aaxxee.!
+
+      rrrcvv.
+
+      ...cvvj
+
+      kk....j'
+  - ID: 40
+    Label: A10
+    Ranking: 0
+    Puzzle: 'P A10
+
+      .......
+
+      ..ddh..
+
+      xxi.hvv!
+
+      xxiaavv!
+
+      .oppps.
+
+      .oqqqs.
+
+      .orrrs.'
+  - ID: 41
+    Label: E31
+    Ranking: 0
+    Puzzle: 'P E31
+
+      ppp.c..
+
+      e.q.c..
+
+      e.q..ii!
+
+      vvq....!
+
+      vv.rrro
+
+      xxuu..o
+
+      xxuubbo'

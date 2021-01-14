@@ -54,19 +54,6 @@ public class Puzzle : MonoBehaviour
         //PrintMatrix();
     }
 
-    public Difficulty GetDifficulty(char c)
-    {
-        switch(c)
-        {
-            case 'J': return Difficulty.JUNIOR;
-            case 'B': return Difficulty.BEGGINER;
-            case 'I': return Difficulty.INTERMEDIATE;
-            case 'A': return Difficulty.ADVANCED;
-            case 'E': return Difficulty.EXPERT;
-            default: return Difficulty.UNDEFINED;
-        }
-    }
-
     public void InitBoard()
     {
         Vector3 start = new Vector3(-matrix.GetLength(0) * step / 2, 0, -matrix.GetLength(0) * step / 2);
@@ -253,8 +240,17 @@ public class Puzzle : MonoBehaviour
 [System.Serializable]
 public struct PuzzleData
 {
-    public int ID { get; set; }
-    public string Label { get; set; }
-    public int Ranking { get; set; }
-    public string Puzzle { get; set; }
+    public PuzzleData(int id, string label, int ranking, string puzzle) : this()
+    {
+        ID = id;
+        Label = label;
+        Ranking = ranking;
+        Puzzle = puzzle;
+    }
+
+    public int ID;
+    public string Label;
+    public int Ranking;
+    [TextArea]
+    public string Puzzle;
 }

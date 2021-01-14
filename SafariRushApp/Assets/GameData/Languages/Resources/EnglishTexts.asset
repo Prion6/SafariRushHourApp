@@ -46,3 +46,5 @@ MonoBehaviour:
       8
 
       9'
+  - uiElement: PlayBtnTxt
+    text: Play

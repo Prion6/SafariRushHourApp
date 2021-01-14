@@ -2136,7 +2136,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 524963432}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1531477132}
+        m_MethodName: Quit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &524963432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3195,7 +3206,29 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 833130492}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1531477132}
+        m_MethodName: RegisterNewPlayer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1529404025}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &833130492
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4188,7 +4221,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1111108440}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1531477132}
+        m_MethodName: Quit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1111108440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5497,13 +5541,13 @@ MonoBehaviour:
   - {fileID: 1930588301}
   - {fileID: 758736323}
   - {fileID: 660988761}
-  nickname: {fileID: 0}
-  ageTens: {fileID: 0}
-  ageUnits: {fileID: 0}
-  educationalLevel: {fileID: 0}
-  expertiseRushHour: {fileID: 0}
-  expertisePuzzle: {fileID: 0}
-  expertiseMobile: {fileID: 0}
+  nickname: {fileID: 1906700933}
+  ageTens: {fileID: 687963316}
+  ageUnits: {fileID: 697021971}
+  educationalLevel: {fileID: 881461552}
+  expertiseRushHour: {fileID: 63068016}
+  expertisePuzzle: {fileID: 1562069060}
+  expertiseMobile: {fileID: 259715465}
 --- !u!1 &1531477131
 GameObject:
   m_ObjectHideFlags: 0
@@ -5533,8 +5577,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eb3010037b41a548a158ac4605a932e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  surveyPanel: {fileID: 0}
-  playBtnTxt: {fileID: 0}
+  disclaimer: {fileID: 2036309613}
+  surveyPanel: {fileID: 1529404029}
+  playBtnTxt: {fileID: 1675644805}
 --- !u!4 &1531477133
 Transform:
   m_ObjectHideFlags: 0
@@ -6165,7 +6210,7 @@ GameObject:
   - component: {fileID: 1675644806}
   - component: {fileID: 1675644805}
   m_Layer: 5
-  m_Name: Text
+  m_Name: PlayBtnTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7182,7 +7227,29 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1913493946}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2036309613}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1529404025}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1913493946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7618,7 +7685,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -7895,7 +7962,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 0.254717, g: 0.254717, b: 0.254717, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -8183,6 +8250,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9142881619559286812, guid: 779f7e5611add3c4996427fb48055133,
+        type: 3}
+      propertyPath: m_Name
+      value: PlayBtnTxt
       objectReference: {fileID: 0}
     - target: {fileID: 9142881619888438726, guid: 779f7e5611add3c4996427fb48055133,
         type: 3}

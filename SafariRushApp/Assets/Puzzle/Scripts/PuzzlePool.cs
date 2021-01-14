@@ -5,7 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "DataBase/PuzzlePool")]
 public class PuzzlePool : ScriptableObject
 {
-    [TextArea]
-    public List<PuzzleData> puzzles;
-    
+    public List<PuzzleData> puzzles; 
 }

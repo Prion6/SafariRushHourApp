@@ -11,6 +11,7 @@ public class MainMenuManager : SceneManager
 
     private void Start()
     {
+        Debug.Log(GameManager.IsFirstEntry());
         disclaimer.SetActive(GameManager.IsFirstEntry());
     }
 
@@ -31,6 +32,7 @@ public class MainMenuManager : SceneManager
 
     public void RegisterNewPlayer()
     {
+        GameManager.SetFirstEntry(false);
         GameManager.RegisterNewPlayer(surveyPanel.GetPlayerData());
     }
 }

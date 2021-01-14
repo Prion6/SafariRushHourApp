@@ -7,6 +7,7 @@ using UnityEngine;
 
 public static class DataManager
 {
+    static string DirectoryPath = "DataFolder";
 
     /// <summary>
     /// Crea un uevo archivo en la ruta entrega y lo retorna, si el archivo ya exite intentara cargarlo.
@@ -16,7 +17,12 @@ public static class DataManager
     /// <returns></returns>
     public static T NewData<T>(string name = "")
     {
-        string path = Application.persistentDataPath + "/" + name + "Data.dat";
+        if(!Directory.Exists(DirectoryPath))
+        {
+            Directory.CreateDirectory(DirectoryPath);
+        }
+
+        string path = DirectoryPath + "/" + name + "Data.dat";
         T newData;
 
         if (File.Exists(path))
@@ -26,6 +32,7 @@ public static class DataManager
         }
         else
         {
+            //File.Create(path);
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Create);
             newData = Activator.CreateInstance<T>();
@@ -43,16 +50,26 @@ public static class DataManager
     /// <param name="name"></param>
     public static void SaveData<T>(T data, string name = "")
     {
-        string path = Application.persistentDataPath + "/" + name + "Data.dat";
-
-        if (File.Exists(path))
+        if (!Directory.Exists(DirectoryPath))
         {
-            NewData<T>(name);
+            Directory.CreateDirectory(DirectoryPath);
         }
-        BinaryFormatter formatter = new BinaryFormatter();
-        FileStream stream = new FileStream(path, FileMode.Create);
-        formatter.Serialize(stream, data);
-        stream.Close();
+        string path = DirectoryPath + "/" + name + "Data.dat";
+
+        Debug.Log(data);
+
+        if (!File.Exists(path))
+        {
+            Debug.LogWarning("[there is no saved information]: " + path);
+            File.Create(path);            
+        }
+        else
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.CreateNew);
+            formatter.Serialize(stream, data);
+            stream.Close();
+        }
     }
 
     /// <summary>
@@ -63,21 +80,30 @@ public static class DataManager
     /// <returns></returns>
     public static T LoadData<T>(string name = "")
     {
-        T instance;
+        T instance = default;
 
-        string path = Application.persistentDataPath + "/" + name + "Data.dat";
+        string path = DirectoryPath + "/" + name + "Data.dat";
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Open);
-            instance = (T)formatter.Deserialize(stream);
-            if (instance == null)
+            try
             {
-                instance = Activator.CreateInstance<T>();
-                Debug.LogWarning("[Corrupted file]: " + path);
-                return default;
+                instance = (T)formatter.Deserialize(stream);
+                if (instance == null)
+                {
+                    instance = Activator.CreateInstance<T>();
+                    Debug.LogWarning("[Corrupted file]: " + path);
+                    stream.Close();
+                    return default;
+                }
+                stream.Close();
             }
-            stream.Close();
+            catch
+            {
+                //Debug.Log("Empty");
+            }
+            
             return instance;
         }
         else
@@ -86,4 +112,6 @@ public static class DataManager
             return default;
         }
     }
+
+
 }
