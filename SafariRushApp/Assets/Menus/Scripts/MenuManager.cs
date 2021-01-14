@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuManager : MonoBehaviour
+public class SceneManager : MonoBehaviour
 {
     public virtual void LoadScene(int sceneID)
     {
@@ -15,6 +15,11 @@ public class MenuManager : MonoBehaviour
     }
 
     public void Quit()
+    {
+        GameManager.Quit();
+    }
+
+    private void OnApplicationQuit()
     {
         GameManager.Quit();
     }

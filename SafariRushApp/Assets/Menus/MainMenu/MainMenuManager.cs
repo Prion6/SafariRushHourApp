@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainMenuManager : MenuManager
+public class MainMenuManager : SceneManager
 {
+    public GameObject disclaimer;
     public SurveyPanel surveyPanel;
     public Text playBtnTxt;
+
+    private void Start()
+    {
+        disclaimer.SetActive(GameManager.IsFirstEntry());
+    }
 
     public void PlayLevel(int difficulty)
     {

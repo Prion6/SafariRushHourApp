@@ -7,30 +7,11 @@ using UnityEngine.Networking;
 public class PHPQuerySet : ScriptableObject
 {
     public string URL;
-
-    public IEnumerator Testing(string URN)
-    {
-        UnityWebRequest www = UnityWebRequest.Get(URL + URN + ".php");
-        yield return www.SendWebRequest();
-
-        if (www.isNetworkError)
-        {
-            Debug.Log(www.error);
-        }
-        else
-        {
-            // Show results as text
-            Debug.Log(www.downloadHandler.text);
-
-            // Or retrieve results as binary data
-            byte[] results = www.downloadHandler.data;
-        }
-    }
-
-    public IEnumerator GetPuzzle(string URN, Difficulty difficulty, System.Action<string> callback)
+    
+    public IEnumerator GetPuzzle(string URN, int ranking, System.Action<string> callback)
     {
         WWWForm form = new WWWForm();
-        form.AddField("difficulty", (int)difficulty);
+        form.AddField("ranking", ranking);
         
         using (UnityWebRequest www = UnityWebRequest.Post(URL + URN + ".php", form))
         {
@@ -38,6 +19,42 @@ public class PHPQuerySet : ScriptableObject
 
             yield return www.SendWebRequest();
             
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.LogError(www.error);
+            }
+            else
+            {
+                callback(www.downloadHandler.text);
+                //Debug.Log(www.downloadHandler.text);
+            }
+        }
+    }
+
+    public IEnumerator RegisterPlayer(string URN, PlayerData playerData, System.Action<string> callback)
+    {
+        WWWForm form = new WWWForm();
+        /*$nickname = $_POST["nickname"];
+            $ranking = $_POST["ranking"];
+            $age = $_POST["age"];
+            $rushHourExperise = $_POST["rushHourExperise"];
+            $puzzleGameExpertise = $_POST["puzzleGameExpertise"];
+            $mobileGameExpertise = $_POST["mobileGameExpertise"];
+            $educationalLevel = $_POST["educationalLevel"];*/
+        form.AddField("nickname", playerData.Nickname);
+        form.AddField("ranking", playerData.Ranking);
+        form.AddField("age", playerData.Age);
+        form.AddField("rushHourExperise", playerData.RushHourExpertise);
+        form.AddField("puzzleGameExpertise", playerData.PuzzleGameExpertise);
+        form.AddField("mobileGameExpertise", playerData.MobileGameExpertise);
+        form.AddField("educationalLevel", playerData.EducationalLevel);
+
+        using (UnityWebRequest www = UnityWebRequest.Post(URL + URN + ".php", form))
+        {
+            www.timeout = 1;
+
+            yield return www.SendWebRequest();
+
             if (www.isNetworkError || www.isHttpError)
             {
                 Debug.LogError(www.error);

@@ -32,30 +32,25 @@ public class GameManager
     }
     
     public static PuzzleData Puzzle { get; set; }
-
-    public static void SetPuzzle(string s)
-    {
-
-    }
-
+    
     public static void LoadScene(int sceneID)
     {
-        SceneManager.LoadScene(sceneID);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneID);
     }
 
     public static void LoadScene(string sceneName)
     {
-        SceneManager.LoadScene(sceneName);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
     }
 
     public static void LoadPuzzleScene(int difficulty)
     {
-        if(difficulty < 0 || difficulty >= System.Enum.GetValues(typeof(Difficulty)).Length)
+        if(difficulty < 0)
         {
             Debug.LogError("Difficulty level not supported");
             return;
         }
-        _PHPManager.SetPuzzleScene((Difficulty)difficulty);
+        _PHPManager.SetPuzzleScene(difficulty);
     }
     
     public static void SetBackUpPuzzle(int delta)
@@ -68,23 +63,20 @@ public class GameManager
         return GameData.GetText(key);
     }
 
+    public static bool IsFirstEntry()
+    {
+        return GameData.FirstEntry;
+    }
+
     public static void RegisterNewPlayer(PlayerData player)
     {
         GameData.PlayerData = player;
+
     }
 
     public static void Quit()
     {
+        GameData.SaveData();
         Application.Quit();
     }
-}
-
-public enum Difficulty
-{
-    JUNIOR,
-    BEGGINER,
-    INTERMEDIATE,
-    ADVANCED,
-    EXPERT,
-    UNDEFINED
 }

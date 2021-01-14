@@ -2657,7 +2657,7 @@ GameObject:
   - component: {fileID: 687963317}
   - component: {fileID: 687963316}
   m_Layer: 5
-  m_Name: DocensDD
+  m_Name: TensDD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5497,7 +5497,13 @@ MonoBehaviour:
   - {fileID: 1930588301}
   - {fileID: 758736323}
   - {fileID: 660988761}
-  dropdown: {fileID: 0}
+  nickname: {fileID: 0}
+  ageTens: {fileID: 0}
+  ageUnits: {fileID: 0}
+  educationalLevel: {fileID: 0}
+  expertiseRushHour: {fileID: 0}
+  expertisePuzzle: {fileID: 0}
+  expertiseMobile: {fileID: 0}
 --- !u!1 &1531477131
 GameObject:
   m_ObjectHideFlags: 0
