@@ -11,13 +11,12 @@ public class MainMenuManager : SceneManager
 
     private void Start()
     {
-        Debug.Log(GameManager.IsFirstEntry());
-        disclaimer.SetActive(GameManager.IsFirstEntry());
+        disclaimer.SetActive(!GameManager.IsRegistered());
     }
 
-    public void PlayLevel(int difficulty)
+    public void PlayLevel()
     {
-        GameManager.LoadPuzzleScene(difficulty);
+        GameManager.LoadPuzzleScene(0);
     }
 
     public void LoadLanguage()
@@ -29,10 +28,5 @@ public class MainMenuManager : SceneManager
         surveyPanel.SetDropDown(GameManager.GetText(surveyPanel.educationalLevel.name));
         playBtnTxt.text = GameManager.GetText(playBtnTxt.name);
     }
-
-    public void RegisterNewPlayer()
-    {
-        GameManager.SetFirstEntry(false);
-        GameManager.RegisterNewPlayer(surveyPanel.GetPlayerData());
-    }
+           
 }

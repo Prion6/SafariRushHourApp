@@ -43,4 +43,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: effa0b51ea531e043a191db4f029c540, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  getPuzzleTimeOut: 1
+  fetchTimeOut: 5
+  sendTimeOut: 5

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Piece : MonoBehaviour
 {
     public Vector2 dimension;
-    private char Identifier { get; set; }
+    public char Identifier { get; set; }
     [SerializeField]
     private List<Vector2> Coordenates;// { get; set; }
     public List<char> stepables;
@@ -129,7 +129,6 @@ public class Piece : MonoBehaviour
 
     IEnumerator Translate(Vector3 v)
     {
-        Debug.Log("here");
         float elapsedTime = 0;
         while (elapsedTime < moveTime)
         {
