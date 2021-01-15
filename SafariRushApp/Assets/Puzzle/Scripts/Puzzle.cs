@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 [System.Serializable]
@@ -11,6 +12,7 @@ public class Puzzle : MonoBehaviour
     
     public List<Piece> piecePrefs;
     private Dictionary<PieceType,GameObject> pieces;
+    public List<Piece> gamePieces;
 
     public GameObject slabPref;
 
@@ -19,6 +21,7 @@ public class Puzzle : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        gamePieces = new List<Piece>();
         pieces = new Dictionary<PieceType, GameObject>();
         foreach(Piece p in piecePrefs)
         {
@@ -26,9 +29,10 @@ public class Puzzle : MonoBehaviour
         }
     }
 
-    public void Init(string s)
+    public void Init(PuzzleData p)
     {
-        InitMatrix(s);
+        data = p;
+        InitMatrix(p.Puzzle);
         InitBoard();
         InitPieces();
     }
@@ -36,11 +40,15 @@ public class Puzzle : MonoBehaviour
     public void InitMatrix(string s)
     {
         string[] lines = s.Split('\n');
-        data.Label = lines[0].Trim('P',' ');
+        data.Label = lines[0].Trim('P',' ','\n','\t');
         //Difficulty = GetDifficulty(label[0]);
         matrix = new char[(lines.Length) + 1, (lines.Length) + 1]; // -1 debido al header, +2 para agregar murallas y puertas
+        
+
         for (int i = 0; i < matrix.GetLength(0); i++)
         {
+            if(i < lines.Length)
+                lines[i] = Regex.Replace(lines[i], @"[^\w\!.@-]", "");
             for (int j = 0; j < matrix.GetLength(0); j++)
             {
                 if(i == 0 || i >= matrix.GetLength(0) - 1 || j == 0 || (j >= matrix.GetLength(0) - 1 && j > lines[i].Length))
@@ -118,6 +126,7 @@ public class Puzzle : MonoBehaviour
                         o = Orientation.VERTICAL;
                 }
                 p.Init(o,i,j,matrix[i,j],this, start + new Vector3(step * i, 0, step * j));
+                gamePieces.Add(p);
             }
         }
     }
@@ -213,7 +222,9 @@ public class Puzzle : MonoBehaviour
                 break;
             case '!': piece = PieceType.EXIT;
                 break;
-            default: piece = PieceType.EMPTY;
+            case '.': piece = PieceType.EMPTY;
+                break;
+            default: piece = PieceType.WALL;
                 break;
         }
         return piece;

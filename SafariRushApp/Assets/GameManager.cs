@@ -32,6 +32,11 @@ public class GameManager
     }
     
     public static PuzzleData Puzzle { get; set; }
+
+    public static int LowerAge()
+    {
+        return GameData.LowerAge;
+    }
         
     public static void LoadScene(int sceneID)
     {
@@ -43,19 +48,19 @@ public class GameManager
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
     }
 
-    public static void LoadPuzzleScene(int difficulty)
+    public static void LoadPuzzleScene(int delta)
     {
-        if(difficulty < 0)
+        if(delta < 0)
         {
             Debug.LogError("Difficulty level not supported");
             return;
         }
-        _PHPManager.SetPuzzleScene(difficulty);
+        PHPManager.SetPuzzleScene(GameData.PlayerData.ID, delta);
     }
     
     public static void SetBackUpPuzzle(int delta)
     {
-        Puzzle = GameData.GetPuzzle(delta);
+        Puzzle = GameData.GetPuzzle(GameData.PlayerData.Ranking + delta);
     }
 
     public static string GetText(string key)
@@ -63,20 +68,20 @@ public class GameManager
         return GameData.GetText(key);
     }
 
-    public static bool IsFirstEntry()
+    public static bool IsRegistered()
     {
-        return GameData.FirstEntry;
+        return GameData.Registered;
     }
 
-    public static bool SetFirstEntry(bool b)
+    public static bool SetRegistered(bool b)
     {
-        return GameData.FirstEntry = b;
+        return GameData.Registered = b;
     }
 
     public static void RegisterNewPlayer(PlayerData player)
     {
         GameData.PlayerData = player;
-
+        PHPManager.RegisterUser(player);
     }
 
     public static void Quit()
@@ -84,4 +89,5 @@ public class GameManager
         GameData.SaveData();
         Application.Quit();
     }
+
 }

@@ -8,14 +8,15 @@ public class PHPQuerySet : ScriptableObject
 {
     public string URL;
     
-    public IEnumerator GetPuzzle(string URN, int ranking, System.Action<string> callback)
+    public IEnumerator GetPuzzle(string URN, int delta, int id, System.Action<string> callback)
     {
         WWWForm form = new WWWForm();
-        form.AddField("ranking", ranking);
-        
+        form.AddField("id", id);
+        form.AddField("delta", delta);
+
         using (UnityWebRequest www = UnityWebRequest.Post(URL + URN + ".php", form))
         {
-            www.timeout = 1;
+            www.timeout = 5;
 
             yield return www.SendWebRequest();
             
@@ -62,7 +63,6 @@ public class PHPQuerySet : ScriptableObject
             else
             {
                 callback(www.downloadHandler.text);
-                //Debug.Log(www.downloadHandler.text);
             }
         }
     }
