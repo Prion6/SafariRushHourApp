@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PuzzleManager : MonoBehaviour
 {
     Puzzle Puzzle { get; set; }
+    UIController uiController;
     Camera cam;
     Piece selectedPiece;
 
@@ -21,14 +22,16 @@ public class PuzzleManager : MonoBehaviour
 
     private bool running;
 
-    public double StartTime { get; set; }
-    public double EndTime { get; set; }
+    private double StartTime { get; set; }
+    private double EndTime { get; set; }
+    private double Timer { get; set; }
+
+    private int moves;
 
     // Start is called before the first frame update
     void Awake()
     {
-        string s = GameManager.Puzzle.Puzzle;
-        s = s.Trim(' ');
+        string s = GameManager.Puzzle.Puzzle.Trim(' ');
         if (!s[0].Equals('P'))
         {
             //Obtener del pool interno
@@ -36,7 +39,8 @@ public class PuzzleManager : MonoBehaviour
             
         }
         Puzzle = FindObjectOfType<Puzzle>();
-        Puzzle.Init(s);
+        uiController = FindObjectOfType<UIController>();
+        Puzzle.Init(GameManager.Puzzle);
         matrixtext.text = Puzzle.PrintMatrix();
     }
 
@@ -46,6 +50,8 @@ public class PuzzleManager : MonoBehaviour
         running = true;
         register = new List<MoveData>();
         StartTime = Time.time;
+        Timer = 0;
+        moves = 0;
     }
 
     // Update is called once per frame
@@ -71,17 +77,55 @@ public class PuzzleManager : MonoBehaviour
             {
                 endPoint = Input.mousePosition + new Vector3(0, 0, cam.transform.position.y);
                 endPoint = cam.ScreenToWorldPoint(endPoint);
-                AddRegister(selectedPiece.TryMove(new Vector2(endPoint.x - startPoint.x, endPoint.z - startPoint.z)));
+                if (selectedPiece != null)
+                {
+                    AddRegister(selectedPiece.TryMove(new Vector2(endPoint.x - startPoint.x, endPoint.z - startPoint.z)));
+                    moves++;
+                    uiController.SetMoves(moves);
+                    selectedPiece = null;
+                }
                 //Debug.Log("Movement: " + register[register.Count-1].identifier + register[register.Count - 1].direction + register[register.Count - 1].magnitude);
                 matrixtext.text = Puzzle.PrintMatrix();
             }
         }
+        Timer += Time.deltaTime;
+        uiController.SetTime(Timer);
     }
 
     private void AddRegister(MoveData md)
     {
         if (md.magnitude == 0) return;
         register.Add(md);
+    }
+
+    public void UndoMovement()
+    {
+        if (register.Count == 0) return;
+        MoveData md = register[register.Count - 1];
+        register.Remove(md);
+        foreach(Piece p in Puzzle.gamePieces)
+        {
+            if(p.Identifier.Equals(md.identifier))
+            {
+                switch(md.direction)
+                {
+                    case Direction.r:
+                        p.TryMove(new Vector2(0, -md.magnitude));
+                        break;
+                    case Direction.l:
+                        p.TryMove(new Vector2(0, md.magnitude));
+                        break;
+                    case Direction.u:
+                        p.TryMove(new Vector2(md.magnitude,0));
+                        break;
+                    case Direction.d:
+                        p.TryMove(new Vector2(-md.magnitude,0));
+                        break;
+                }
+            }
+        }
+        moves--;
+        uiController.SetMoves(moves);
     }
 
     private void StoreMovementRegister(out string rawMovements, out string effectiveMovements)
