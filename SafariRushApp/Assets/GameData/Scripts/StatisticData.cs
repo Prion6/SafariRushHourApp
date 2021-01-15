@@ -1,5 +1,6 @@
 ﻿using System;
 
+[System.Serializable]
 public struct StatisticData
 {
     public int PuzzleID { get; set; }

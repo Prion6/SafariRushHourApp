@@ -11,16 +11,19 @@ public class GameData
     public List<PuzzleData> Puzzles;
     public List<TextDataBase> languages;
 
-    public bool FirstEntry { get; set; }
+    public bool Registered { get; set; }
     private string playerDataPath = "Player";
     private string statisticsPath = "Statistics";
     private string optionsPath = "Options";
     private string entryPath = "Entry";
     private string puzzlesPath = "Puzzles";
 
+    public int LowerAge = 5;
+
     public GameData()
     {
-        FirstEntry = true;
+        Registered = true;
+        statistics = new List<StatisticData>();
         Load();
     }
 
@@ -70,10 +73,10 @@ public class GameData
 
     public void LoadData()
     {
-        FirstEntry = DataManager.LoadData<bool>(entryPath);
-        if(!FirstEntry)
+        Registered = DataManager.LoadData<bool>(entryPath);
+        if(Registered)
         {
-            PlayerData = DataManager.LoadData<PlayerData>(playerDataPath);
+            PlayerData = DataManager.LoadData<PlayerData>(playerDataPath);  
             statistics = DataManager.LoadData<List<StatisticData>>(statisticsPath);
             Options = DataManager.LoadData<OptionsData>(optionsPath);
         }
@@ -81,49 +84,10 @@ public class GameData
 
     public void SaveData()
     {
-        try
-        {
-            DataManager.SaveData(FirstEntry, entryPath);
-        }
-        catch
-        {
-            Debug.Log("Entry not saved");
-        }
-
-        try
-        {
-            DataManager.SaveData(PlayerData, playerDataPath);
-        }
-        catch
-        {
-            Debug.Log("Player not saved");
-        }
-
-        try
-        {
-            DataManager.SaveData(statistics, statisticsPath);
-        }
-        catch
-        {
-            Debug.Log("Statistics not saved");
-        }
-
-        try
-        {
-            DataManager.SaveData(Options, optionsPath);
-        }
-        catch
-        {
-            Debug.Log("Options not saved");
-        }
-
-        try
-        {
-            DataManager.SaveData(Puzzles, puzzlesPath);
-        }
-        catch
-        {
-            Debug.Log("Puzzles not saved");
-        }
+        DataManager.SaveData(Registered, entryPath);
+        DataManager.SaveData(PlayerData, playerDataPath);
+        DataManager.SaveData(statistics, statisticsPath);
+        DataManager.SaveData(Options, optionsPath);
+        DataManager.SaveData(Puzzles, puzzlesPath);
     }
 }

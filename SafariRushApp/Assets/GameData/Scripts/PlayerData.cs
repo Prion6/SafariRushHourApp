@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public struct PlayerData
 {
     public PlayerData(string nick, int age, int rushHour, int puzzle, int mobile, int educatinal)
