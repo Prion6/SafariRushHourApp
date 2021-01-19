@@ -16,8 +16,8 @@ public class PHPManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        conected = false;
-        conectedLastFrame = false;
+        conected = true;
+        conectedLastFrame = true;
         queries = new List<QuerieCoroutine>();
         querier = Resources.Load("PHP Query Set") as PHPQuerySet;
     }
@@ -39,6 +39,7 @@ public class PHPManager : MonoBehaviour
                 queries.RemoveAt(i);
             }
         }
+
     }
 
     private void LateUpdate()
@@ -52,6 +53,11 @@ public class PHPManager : MonoBehaviour
                 StopCoroutine(q.Coroutine);
                 q.Abort();
             }
+        }
+
+        if(!conectedLastFrame && conected)
+        {
+            GameManager.UpdateData();
         }
     }
 
@@ -80,7 +86,6 @@ public class PHPManager : MonoBehaviour
             if (data.Length != 4 || !int.TryParse(data[0], out int pID) || !int.TryParse(data[2], out int rank))
             {
                 //Debug.Log("Format Error");
-                Debug.Log(puzzle);
                 GameManager.SetBackUpPuzzle(delta);
             }
             else
@@ -119,10 +124,43 @@ public class PHPManager : MonoBehaviour
         bool succes = false;
         yield return StartCoroutine(querier.RegisterPlayer("RegisterPlayer",playerData,(s) => succes = int.TryParse(s, out id)));
         if (succes)
+        {
             callback(id);
+        }
         setRunning(false);
     }
 
+
+
+    public void RegisterGame(StatisticData data)
+    {
+        QuerieCoroutine c = new QuerieCoroutine(sendTimeOut, new System.Action(() => AbortRegisterGame()));
+
+        c.Coroutine = StartCoroutine(AddGame(data, (b) => c.Running = b));
+        queries.Add(c);
+    }
+
+    private void AbortRegisterGame()
+    {
+        Debug.Log("Couldn't Add Game Data");
+    }
+
+    private IEnumerator AddGame(StatisticData data, System.Action<bool> setRunning)
+    {
+        setRunning(true);
+        bool succes = false;
+        yield return StartCoroutine(querier.RegisterGame("RegisterGame", data, (b) => succes = b));
+        if(succes)
+        {
+            GameManager.FreeGameData(data);
+        }
+        else
+        {
+            GameManager.StoreGameData(data);
+        }
+        Debug.Log("Registered");
+        setRunning(false);
+    }
 }
 
 public class QuerieCoroutine

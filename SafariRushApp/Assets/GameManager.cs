@@ -33,11 +33,21 @@ public class GameManager
     
     public static PuzzleData Puzzle { get; set; }
 
-    public static int LowerAge()
+    public static int LowerAge
     {
-        return GameData.LowerAge;
+        get { return GameData.LowerAge; }
     }
-        
+
+    public static int PlayerID
+    {
+        get { return GameData.PlayerData.ID; }
+    }
+
+    public static int PlayerRanking
+    {
+        get { return GameData.PlayerData.Ranking; }
+    }
+    
     public static void LoadScene(int sceneID)
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneID);
@@ -50,7 +60,7 @@ public class GameManager
 
     public static void LoadPuzzleScene(int delta)
     {
-        if(delta < 0)
+        if(GameData.PlayerData.Ranking + delta < 0)
         {
             Debug.LogError("Difficulty level not supported");
             return;
@@ -68,14 +78,10 @@ public class GameManager
         return GameData.GetText(key);
     }
 
-    public static bool IsRegistered()
+    public static bool IsRegistered
     {
-        return GameData.Registered;
-    }
-
-    public static bool SetRegistered(bool b)
-    {
-        return GameData.Registered = b;
+        get { return GameData.Registered; }
+        set { GameData.Registered = value; }
     }
 
     public static void RegisterNewPlayer(PlayerData player)
@@ -84,10 +90,42 @@ public class GameManager
         PHPManager.RegisterUser(player);
     }
 
+    public static void RegisterGame(StatisticData data)
+    {
+        PHPManager.RegisterGame(data);
+    }
+
+    public static void StoreGameData(StatisticData data)
+    {
+        GameData.AddGameData(data);
+    }
+
+    public static void FreeGameData(StatisticData data)
+    {
+        GameData.FreeGameData(data);
+    }
+
+    public static void UpdateData()
+    {
+        if(PlayerID == -1)
+        {
+            PHPManager.RegisterUser(GameData.PlayerData);
+        }
+        for(int i = 0; i < GameData.statistics.Count; i++)
+        {
+            RegisterGame(GameData.statistics[i]);
+        }
+    }
+
     public static void Quit()
     {
-        GameData.SaveData();
+        OnQuit();
         Application.Quit();
+    }
+
+    public static void OnQuit()
+    {
+        GameData.SaveData();
     }
 
 }

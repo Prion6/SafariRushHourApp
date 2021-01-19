@@ -25,11 +25,12 @@ public class SurveyPanel : MonoBehaviour
     public GameObject ageError;
 
 
-    public void SetDropDown(string s)
+    public void SetEducationalOptions(string s)
     {
         string[] ops = s.Split('\n');
         educationalLevel.maxValue = ops.Length - 1;
         educationalOptions = new List<string>(ops);
+        SetEducationalOptionText();
     }
 
     public void SetEducationalOptionText()
@@ -48,7 +49,7 @@ public class SurveyPanel : MonoBehaviour
         string s = nickname.text.Trim(' ', '\n', '\t');
         if (s.Equals("") || nickname.text == null)
             return SurveyError.INVALID_NAME;
-        if ((ageTens.value * 10 + ageUnits.value) <= GameManager.LowerAge())
+        if ((ageTens.value * 10 + ageUnits.value) <= GameManager.LowerAge)
             return SurveyError.INVALID_AGE;
         return SurveyError.NONE;
     }
@@ -73,7 +74,7 @@ public class SurveyPanel : MonoBehaviour
 
     public void RegisterNewPlayer()
     {
-        GameManager.SetRegistered(true);
+        GameManager.IsRegistered = true;
         GameManager.RegisterNewPlayer(GetPlayerData());
     }
 }

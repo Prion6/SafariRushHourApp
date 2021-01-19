@@ -28,7 +28,7 @@ MonoBehaviour:
     text: Level of experience with Puzzle games?
   - uiElement: MGExperienceQTxt
     text: Level of experience with mobile games?
-  - uiElement: EducationalLevelDD
+  - uiElement: EducationalOptionDisplayTxt
     text: '1
 
       2
@@ -48,3 +48,29 @@ MonoBehaviour:
       9'
   - uiElement: PlayBtnTxt
     text: Play
+  - uiElement: EducationalToggleTxt
+    text: Complete
+  - uiElement: EvaluationTxt
+    text: Rate the puzzle by your abilty level
+  - uiElement: EvaluationOptionDisplayTxt
+    text: 'Too Easy
+
+      Easy
+
+      Adequate
+
+      Hard
+
+      Too Hard'
+  - uiElement: NextPuzzleTxt
+    text: The next puzzle should be
+  - uiElement: PuzzleOptionDisplayTxt
+    text: 'Much Easier
+
+      Easier
+
+      Equal
+
+      Harder
+
+      Much Harder'

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class PuzzleManager : MonoBehaviour
 {
     Puzzle Puzzle { get; set; }
-    UIController uiController;
+    public HUDController hudController;
+    public WinPanelController winPanel;
     Camera cam;
     Piece selectedPiece;
 
@@ -25,8 +26,11 @@ public class PuzzleManager : MonoBehaviour
     private double StartTime { get; set; }
     private double EndTime { get; set; }
     private double Timer { get; set; }
+    private int HintUsed { get; set; }
+    private int UndoUsed { get; set; }
+    private int RestartUsed { get; set; }
 
-    private int moves;
+    private int Moves { get; set; }
 
     // Start is called before the first frame update
     void Awake()
@@ -39,7 +43,8 @@ public class PuzzleManager : MonoBehaviour
             
         }
         Puzzle = FindObjectOfType<Puzzle>();
-        uiController = FindObjectOfType<UIController>();
+        //hudController = FindObjectOfType<HUDController>();
+        //winPanel = FindObjectOfType<WinPanelController>();
         Puzzle.Init(GameManager.Puzzle);
         matrixtext.text = Puzzle.PrintMatrix();
     }
@@ -51,9 +56,11 @@ public class PuzzleManager : MonoBehaviour
         register = new List<MoveData>();
         StartTime = Time.time;
         Timer = 0;
-        moves = 0;
+        Moves = 0;
+        hudController.LoadLanguage();
+        winPanel.LoadLanguage();
     }
-
+  
     // Update is called once per frame
     void Update()
     {
@@ -80,16 +87,16 @@ public class PuzzleManager : MonoBehaviour
                 if (selectedPiece != null)
                 {
                     AddRegister(selectedPiece.TryMove(new Vector2(endPoint.x - startPoint.x, endPoint.z - startPoint.z)));
-                    moves++;
-                    uiController.SetMoves(moves);
+                    Moves++;
+                    hudController.SetMoves(Moves);
                     selectedPiece = null;
                 }
                 //Debug.Log("Movement: " + register[register.Count-1].identifier + register[register.Count - 1].direction + register[register.Count - 1].magnitude);
                 matrixtext.text = Puzzle.PrintMatrix();
             }
+            Timer += Time.deltaTime;
+            hudController.SetTime(Timer);
         }
-        Timer += Time.deltaTime;
-        uiController.SetTime(Timer);
     }
 
     private void AddRegister(MoveData md)
@@ -102,6 +109,7 @@ public class PuzzleManager : MonoBehaviour
     {
         if (register.Count == 0) return;
         MoveData md = register[register.Count - 1];
+        UndoUsed++;
         register.Remove(md);
         foreach(Piece p in Puzzle.gamePieces)
         {
@@ -124,14 +132,15 @@ public class PuzzleManager : MonoBehaviour
                 }
             }
         }
-        moves--;
-        uiController.SetMoves(moves);
+        Moves--;
+        hudController.SetMoves(Moves);
     }
 
-    private void StoreMovementRegister(out string rawMovements, out string effectiveMovements)
+    private void GetMovementRegister(out string rawMovements, out string effectiveMovements)
     {
         rawMovements = "";
         effectiveMovements = "";
+        if (register.Count <= 0) return;
         MoveData s = register[0];
         rawMovements += s.identifier + "" + s.direction + "" + s.magnitude.ToString() + " ";
         for(int i = 1; i < register.Count; i++)
@@ -200,8 +209,6 @@ public class PuzzleManager : MonoBehaviour
             s = register[i];
         }
         effectiveMovements += s.identifier + "" + s.direction + "" + s.magnitude + " ";
-        Debug.Log("Raw Movements: " + rawMovements);
-        Debug.Log("Effective Movements: " + effectiveMovements);
     }
 
     public void GameOver()
@@ -210,13 +217,37 @@ public class PuzzleManager : MonoBehaviour
         UI.SetActive(false);
         gameOverPanel.SetActive(true);
         EndTime = Time.time;
-        StoreMovementRegister(out string raw, out string effective);
+        GetMovementRegister(out string raw, out string effective);
         double totalTime = EndTime - StartTime;
-        Debug.Log("Total Time: " + totalTime);
     }
 
     public void GoToMainMenu()
     {
         GameManager.LoadScene("MainMenu");
+    }
+
+    public void RegisterGameData()
+    {
+        int evaluation = (int)winPanel.GetData().x;
+        GetMovementRegister(out string raw, out string effective);
+        StatisticData data = new StatisticData(Puzzle.data.ID, GameManager.PlayerID, DateTime.Now, (int)Timer, raw,
+                                            evaluation, HintUsed, RestartUsed, UndoUsed);
+        GameManager.RegisterGame(data);
+    }
+
+    public void Continue()
+    {
+        int delta = (int)winPanel.GetData().y;
+        GameManager.LoadPuzzleScene(Puzzle.data.Ranking + delta);
+    }
+
+    private void OnApplicationQuit()
+    {
+        int evaluation = (int)winPanel.GetData().x;
+        GetMovementRegister(out string raw, out string effective);
+        StatisticData data = new StatisticData(Puzzle.data.ID, GameManager.PlayerID, DateTime.Now, (int)Timer, raw,
+                                            evaluation, HintUsed, RestartUsed, UndoUsed);
+        GameManager.StoreGameData(data);
+        GameManager.OnQuit();
     }
 }

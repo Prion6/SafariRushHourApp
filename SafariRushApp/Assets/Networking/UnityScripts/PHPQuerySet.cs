@@ -66,4 +66,50 @@ public class PHPQuerySet : ScriptableObject
             }
         }
     }
+
+    public IEnumerator RegisterGame(string URN, StatisticData gameData, System.Action<bool> callback)
+    {
+        WWWForm form = new WWWForm();
+        /*
+        $playerID = $_POST["playerID"];
+        $puzzleID = $_POST["puzzleID"];
+        $date = $_POST["date"];
+        $duration = $_POST["duration"];
+        $rawMoves = $_POST["rawMoves"];
+        $playerDifficultyEvaluation = $_POST["playerDifficultyEvaluation"];
+        $hints = $_POST["hints"];
+        $restarts = $_POST["restarts"];
+        $undos = $_POST["undos"];
+        */
+
+        form.AddField("playerID", gameData.PlayerID);
+        form.AddField("puzzleID", gameData.PuzzleID);
+        form.AddField("date", gameData.Date.ToString());
+        form.AddField("duration", gameData.Duration);
+        form.AddField("rawMoves", gameData.RawMoves);
+        form.AddField("playerDifficultyEvaluation", gameData.PlayerDifficultyEvaluation);
+        form.AddField("hints", gameData.HintUsed);
+        form.AddField("restarts", gameData.RestartUsed);
+        form.AddField("undos", gameData.UndoUsed);
+
+        using (UnityWebRequest www = UnityWebRequest.Post(URL + URN + ".php", form))
+        {
+            www.timeout = 5;
+
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.LogError(www.error);
+                Debug.Log("Error");
+                callback(false);
+            }
+            else
+            {
+                Debug.LogError(www.downloadHandler.text);
+                Debug.Log("Succes");
+                callback(true);
+            }
+        }
+    }
 }

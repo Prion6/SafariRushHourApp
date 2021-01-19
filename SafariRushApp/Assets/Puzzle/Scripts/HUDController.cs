@@ -4,17 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class UIController : MonoBehaviour
+public class HUDController : MonoBehaviour
 {
-    public Text timeTxt;
+    public List<Text> texts;
     public Text timeCounterTxt;
-    public Text movesTxt;
     public Text movesCounterTxt;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        SetMoves(0);
     }
 
     // Update is called once per frame
@@ -31,5 +30,13 @@ public class UIController : MonoBehaviour
     public void SetMoves(int moves)
     {
         movesCounterTxt.text = moves.ToString();
+    }
+
+    public void LoadLanguage()
+    {
+        foreach(Text t in texts)
+        {
+            t.text = GameManager.GetText(t.name);
+        }
     }
 }

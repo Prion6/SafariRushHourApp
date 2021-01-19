@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+
 
 public class GameData
 {
@@ -19,6 +21,7 @@ public class GameData
     private string puzzlesPath = "Puzzles";
 
     public int LowerAge = 5;
+    public int selectionOffset = 0;
 
     public GameData()
     {
@@ -65,10 +68,27 @@ public class GameData
         return "Text not found";
     }
     
-    public PuzzleData GetPuzzle(int delta)
+    public PuzzleData GetPuzzle(int ranking)
     {
-        //Gotta change
-        return Puzzles[0];
+        var ops = Puzzles.Where( p => p.Ranking >= ranking - selectionOffset || p.Ranking <= ranking - selectionOffset);
+        var arr = ops.ToArray();
+        return arr[Random.Range(0,arr.Length)];
+    }
+
+    public void FreeGameData(StatisticData data)
+    {
+        if(statistics.Contains(data))
+        {
+            statistics.Remove(data);
+        }
+    }
+
+    public void AddGameData(StatisticData data)
+    {
+        if (!statistics.Contains(data))
+        {
+            statistics.Add(data);
+        }
     }
 
     public void LoadData()

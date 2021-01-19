@@ -6,12 +6,14 @@ using UnityEngine.UI;
 public class MainMenuManager : SceneManager
 {
     public GameObject disclaimer;
+    public Text disclaimerTxt;
     public SurveyPanel surveyPanel;
     public Text playBtnTxt;
 
     private void Start()
     {
-        disclaimer.SetActive(!GameManager.IsRegistered());
+        disclaimer.SetActive(!GameManager.IsRegistered);
+        LoadLanguage();
     }
 
     public void PlayLevel()
@@ -21,11 +23,12 @@ public class MainMenuManager : SceneManager
 
     public void LoadLanguage()
     {
+        disclaimerTxt.text = GameManager.GetText(disclaimerTxt.name);
         foreach(Text t in surveyPanel.texts)
         {
             t.text = GameManager.GetText(t.name);
         }
-        surveyPanel.SetDropDown(GameManager.GetText(surveyPanel.educationalLevel.name));
+        surveyPanel.SetEducationalOptions(GameManager.GetText(surveyPanel.educationalOptionDisplay.name));
         playBtnTxt.text = GameManager.GetText(playBtnTxt.name);
     }
            

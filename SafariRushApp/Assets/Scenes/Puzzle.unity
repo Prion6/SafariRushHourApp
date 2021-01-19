@@ -485,13 +485,14 @@ GameObject:
   - component: {fileID: 181905736}
   - component: {fileID: 181905735}
   - component: {fileID: 181905734}
+  - component: {fileID: 181905737}
   m_Layer: 5
   m_Name: WinPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &181905734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -554,6 +555,29 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &181905737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 181905733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fec18707c32ae04fb7ed63a8ef7ad16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  texts:
+  - {fileID: 1590542690}
+  - {fileID: 2110149920}
+  - {fileID: 1515311359}
+  - {fileID: 851639750}
+  evaluationOptions: []
+  evaluationTxt: {fileID: 2110149920}
+  nextPuzzleOptions: []
+  nextPuzzleTxt: {fileID: 851639750}
+  evaluationSldr: {fileID: 2062708410}
+  nextPuzzleSldr: {fileID: 633506006}
 --- !u!1 &197197639
 GameObject:
   m_ObjectHideFlags: 0
@@ -1034,6 +1058,17 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1854783052}
+        m_MethodName: RegisterGameData
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1854783052}
         m_MethodName: GoToMainMenu
         m_Mode: 1
         m_Arguments:
@@ -1243,10 +1278,21 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 4
   m_WholeNumbers: 1
-  m_Value: 0
+  m_Value: 2
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 181905737}
+        m_MethodName: SetDifficultyOptionText
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &699419799
 GameObject:
   m_ObjectHideFlags: 0
@@ -1436,7 +1482,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1682,7 +1728,7 @@ GameObject:
   - component: {fileID: 851639751}
   - component: {fileID: 851639750}
   m_Layer: 5
-  m_Name: Text
+  m_Name: PuzzleOptionDisplayTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1933,7 +1979,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2521,16 +2567,16 @@ MonoBehaviour:
   m_Padding:
     m_Left: 32
     m_Right: 32
-    m_Top: 32
-    m_Bottom: 32
+    m_Top: 16
+    m_Bottom: 16
   m_ChildAlignment: 0
   m_Spacing: 32
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
+  m_ChildScaleWidth: 1
+  m_ChildScaleHeight: 1
 --- !u!1 &1323769978
 GameObject:
   m_ObjectHideFlags: 0
@@ -2751,8 +2797,8 @@ RectTransform:
   m_Father: {fileID: 1124009196}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3134,7 +3180,18 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1854783052}
-        m_MethodName: GoToMainMenu
+        m_MethodName: RegisterGameData
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1854783052}
+        m_MethodName: Continue
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3293,10 +3350,10 @@ RectTransform:
   m_Father: {fileID: 1876465035}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 449, y: -196.875}
+  m_SizeDelta: {x: 898, y: 56.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1598471330
 MonoBehaviour:
@@ -3367,8 +3424,8 @@ RectTransform:
   m_Father: {fileID: 482405869}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3442,10 +3499,10 @@ RectTransform:
   m_Father: {fileID: 1876465035}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 449, y: -140.625}
+  m_SizeDelta: {x: 898, y: 56.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1633928365
 MonoBehaviour:
@@ -3738,7 +3795,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1854783051}
   - component: {fileID: 1854783052}
-  - component: {fileID: 1854783053}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -3772,25 +3828,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd711d95f4cdff34f9e84cbb0eb9476c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hudController: {fileID: 2031773573}
+  winPanel: {fileID: 181905737}
   matrixtext: {fileID: 83382894}
   UI: {fileID: 2031773569}
   gameOverPanel: {fileID: 181905733}
---- !u!114 &1854783053
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1854783050}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67bb1daa6df6bb24b81db19ea0775fef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeTxt: {fileID: 1025637359}
-  timeCounterTxt: {fileID: 968856862}
-  movesTxt: {fileID: 1739683978}
-  movesCounterTxt: {fileID: 747511620}
 --- !u!1 &1876465034
 GameObject:
   m_ObjectHideFlags: 0
@@ -3928,10 +3970,10 @@ RectTransform:
   m_Father: {fileID: 1876465035}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 449, y: -28.125}
+  m_SizeDelta: {x: 898, y: 56.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2010201690
 MonoBehaviour:
@@ -3981,6 +4023,7 @@ GameObject:
   - component: {fileID: 2031773570}
   - component: {fileID: 2031773572}
   - component: {fileID: 2031773571}
+  - component: {fileID: 2031773573}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -4046,6 +4089,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2031773569}
   m_CullTransparentMesh: 0
+--- !u!114 &2031773573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2031773569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67bb1daa6df6bb24b81db19ea0775fef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  texts: []
+  timeCounterTxt: {fileID: 968856862}
+  movesCounterTxt: {fileID: 747511620}
 --- !u!1 &2053504865
 GameObject:
   m_ObjectHideFlags: 0
@@ -4223,10 +4281,21 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 4
   m_WholeNumbers: 1
-  m_Value: 0
+  m_Value: 2
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 181905737}
+        m_MethodName: SetEvaluationOptionText
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2070339484
 GameObject:
   m_ObjectHideFlags: 0
@@ -4317,7 +4386,7 @@ GameObject:
   - component: {fileID: 2110149921}
   - component: {fileID: 2110149920}
   m_Layer: 5
-  m_Name: Text
+  m_Name: EvaluationOptionDisplayTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4417,10 +4486,10 @@ RectTransform:
   m_Father: {fileID: 1876465035}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 449, y: -84.375}
+  m_SizeDelta: {x: 898, y: 56.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2127171231
 MonoBehaviour:
