@@ -21,6 +21,7 @@ public class PuzzleManager : SceneManager
 
     private List<MoveData> register;
     private List<RestartInfo> restarts;
+    private Slab selectedSlab;
 
     private bool running;
 
@@ -111,7 +112,22 @@ public class PuzzleManager : SceneManager
                     startPoint = cam.ScreenToWorldPoint(startPoint);
                 }
             }
-            if (Input.GetMouseButtonUp(0))
+            else if(Input.GetMouseButton(0))
+            {
+                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    Slab slab = hit.collider.gameObject.GetComponent<Slab>();
+                    if (slab == null) return;
+                    if (slab.Equals(selectedPiece)) return;
+                    if (selectedSlab != null)
+                        selectedSlab.SetSelected(false);
+                    selectedSlab = slab;
+                    selectedSlab.SetSelected(true);
+                }
+            }
+            else if (Input.GetMouseButtonUp(0))
             {
                 endPoint = Input.mousePosition + new Vector3(0, 0, cam.transform.position.y);
                 endPoint = cam.ScreenToWorldPoint(endPoint);
@@ -123,9 +139,15 @@ public class PuzzleManager : SceneManager
                 }
                 //Debug.Log("Movement: " + register[register.Count-1].identifier + register[register.Count - 1].direction + register[register.Count - 1].magnitude);
                 matrixtext.text = Puzzle.PrintMatrix();
+                if (selectedSlab != null)
+                {
+                    selectedSlab.SetSelected(false);
+                    selectedSlab = null;
+                }
             }
             Timer += Time.deltaTime;
             hudController.SetTime(Timer);
+            
         }
     }
 
