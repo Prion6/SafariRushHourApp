@@ -4,11 +4,12 @@ using UnityEngine;
 using System.Linq;
 
 
+
 public class GameData
 {
-    public PlayerData PlayerData { get; set; }
+    public PlayerData PlayerData;
     public List<StatisticData> statistics;
-    public OptionsData Options { get; set; }
+    public OptionsData Options;
 
     public List<PuzzleData> Puzzles;
     public List<TextDataBase> languages;
@@ -21,11 +22,13 @@ public class GameData
     private string puzzlesPath = "Puzzles";
 
     public int LowerAge = 5;
-    public int selectionOffset = 0;
+    public int selectionOffset = 200;
+
+    
 
     public GameData()
     {
-        Registered = true;
+        Registered = false;
         statistics = new List<StatisticData>();
         Load();
     }
@@ -41,6 +44,7 @@ public class GameData
     {
         languages = new List<TextDataBase>();
         Object[] objects = Resources.FindObjectsOfTypeAll(typeof(TextDataBase));
+        Debug.LogError(objects.Length);
         foreach(Object o in objects)
         {
             languages.Add(o as TextDataBase);
@@ -70,9 +74,18 @@ public class GameData
     
     public PuzzleData GetPuzzle(int ranking)
     {
-        var ops = Puzzles.Where( p => p.Ranking >= ranking - selectionOffset || p.Ranking <= ranking - selectionOffset);
+        Debug.Log(ranking);
+        //var ops = Puzzles.Where( p => p.Ranking >= ranking - selectionOffset || p.Ranking <= ranking - selectionOffset);
+        var ops = Puzzles.OrderBy(p => Mathf.Abs(p.Ranking - ranking));
         var arr = ops.ToArray();
-        return arr[Random.Range(0,arr.Length)];
+        //System.Array.Reverse(arr);
+        int limit = 7;
+        if (arr.Length < limit)
+        {
+            limit = arr.Length;
+        }
+        int i = Random.Range(0, limit);
+        return arr[i];
     }
 
     public void FreeGameData(StatisticData data)
@@ -91,6 +104,26 @@ public class GameData
         }
     }
 
+    public void SetVolume(float i)
+    {
+        Options.Volume = i;
+    }
+
+    public void SetPuzzleRanking(int ranking, int id)
+    {
+        Puzzles.Where((p) => p.ID == id).ToList().ForEach((x) => x.Ranking = ranking);
+    }
+
+    public void SetSpeed(int i)
+    {
+        Options.Speed = i;
+    }
+
+    public void SetLanguage(Language l)
+    {
+        Options.Langauge = l;
+    }
+
     public void LoadData()
     {
         Registered = DataManager.LoadData<bool>(entryPath);
@@ -99,6 +132,10 @@ public class GameData
             PlayerData = DataManager.LoadData<PlayerData>(playerDataPath);  
             statistics = DataManager.LoadData<List<StatisticData>>(statisticsPath);
             Options = DataManager.LoadData<OptionsData>(optionsPath);
+        }
+        else
+        {
+            Options = new OptionsData(0.3f,5,Language.ENGLISH);
         }
     }
 

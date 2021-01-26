@@ -62,12 +62,13 @@ public class PHPQuerySet : ScriptableObject
             }
             else
             {
+                Debug.Log("Player registered");
                 callback(www.downloadHandler.text);
             }
         }
     }
 
-    public IEnumerator RegisterGame(string URN, StatisticData gameData, System.Action<bool> callback)
+    public IEnumerator RegisterGame(string URN, StatisticData gameData, System.Action<bool> callback, System.Action<string> action)
     {
         WWWForm form = new WWWForm();
         /*
@@ -80,17 +81,19 @@ public class PHPQuerySet : ScriptableObject
         $hints = $_POST["hints"];
         $restarts = $_POST["restarts"];
         $undos = $_POST["undos"];
+        $proficiency = $_POST["proficiency"];
         */
 
         form.AddField("playerID", gameData.PlayerID);
         form.AddField("puzzleID", gameData.PuzzleID);
-        form.AddField("date", gameData.Date.ToString());
+        form.AddField("date", gameData.Date.ToLongDateString());
         form.AddField("duration", gameData.Duration);
         form.AddField("rawMoves", gameData.RawMoves);
         form.AddField("playerDifficultyEvaluation", gameData.PlayerDifficultyEvaluation);
         form.AddField("hints", gameData.HintUsed);
         form.AddField("restarts", gameData.RestartUsed);
         form.AddField("undos", gameData.UndoUsed);
+        form.AddField("proficiency", gameData.Proficiency.ToString());
 
         using (UnityWebRequest www = UnityWebRequest.Post(URL + URN + ".php", form))
         {
@@ -100,15 +103,38 @@ public class PHPQuerySet : ScriptableObject
 
             if (www.isNetworkError || www.isHttpError)
             {
-                Debug.LogError(www.error);
-                Debug.Log("Error");
                 callback(false);
             }
             else
             {
-                Debug.LogError(www.downloadHandler.text);
-                Debug.Log("Succes");
                 callback(true);
+                action(www.downloadHandler.text);
+            }
+        }
+    }
+
+    public IEnumerator GetHint(string URN, string puzzle)
+    {
+        WWWForm form = new WWWForm();
+        /*
+        $puzzle = $_POST["puzzle"];
+        */
+
+        form.AddField("puzzle", puzzle);
+
+        using (UnityWebRequest www = UnityWebRequest.Post(URL + URN + ".php", form))
+        {
+            www.timeout = 60;
+
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Debug.Log(www.downloadHandler.text);
             }
         }
     }

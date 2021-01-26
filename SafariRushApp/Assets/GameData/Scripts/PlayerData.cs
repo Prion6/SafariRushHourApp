@@ -9,12 +9,13 @@ public struct PlayerData
     {
         ID = 0;
         Nickname = nick;
-        Ranking = 0;
+        Ranking = 1000;
         Age = age;
         RushHourExpertise = rushHour;
         PuzzleGameExpertise = puzzle;
         MobileGameExpertise = mobile;
         EducationalLevel = educatinal;
+        Matches = 0;
     }
 
     public int ID { get; set; }
@@ -25,4 +26,5 @@ public struct PlayerData
     public int PuzzleGameExpertise { get; set; }
     public int MobileGameExpertise { get; set; }
     public int EducationalLevel { get; set; }
+    public int Matches { get; set; }
 }

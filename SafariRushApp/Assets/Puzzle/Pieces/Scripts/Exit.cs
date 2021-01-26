@@ -22,7 +22,7 @@ public class Exit : Piece
         if (p == null) return;
         if (p.type.Equals(PieceType.ROVER))
         {
-            FindObjectOfType<PuzzleManager>().GameOver();
+            FindObjectOfType<PuzzleManager>().GameOver(true);
         }
     }
 }

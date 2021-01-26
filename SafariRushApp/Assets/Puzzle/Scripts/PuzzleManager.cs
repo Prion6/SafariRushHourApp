@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PuzzleManager : MonoBehaviour
+public class PuzzleManager : SceneManager
 {
     Puzzle Puzzle { get; set; }
     public HUDController hudController;
@@ -20,6 +20,7 @@ public class PuzzleManager : MonoBehaviour
     public GameObject gameOverPanel;
 
     private List<MoveData> register;
+    private List<RestartInfo> restarts;
 
     private bool running;
 
@@ -28,19 +29,50 @@ public class PuzzleManager : MonoBehaviour
     private double Timer { get; set; }
     private int HintUsed { get; set; }
     private int UndoUsed { get; set; }
-    private int RestartUsed { get; set; }
 
     private int Moves { get; set; }
+    private bool Win { get; set; }
 
     // Start is called before the first frame update
     void Awake()
     {
+        Timer = 0;
+        Moves = 0;
+        hudController.SetMoves(0);
+        hudController.SetTime(0);
+        register = new List<MoveData>();
+        restarts = new List<RestartInfo>();
         string s = GameManager.Puzzle.Puzzle.Trim(' ');
         if (!s[0].Equals('P'))
         {
             //Obtener del pool interno
             Debug.LogError("Format error, initial value: " + s[0] + " Puzzle: " + s);
-            
+
+        }
+        Puzzle = FindObjectOfType<Puzzle>();
+        //hudController = FindObjectOfType<HUDController>();
+        //winPanel = FindObjectOfType<WinPanelController>();
+        Puzzle.Init(GameManager.Puzzle);
+        matrixtext.text = Puzzle.PrintMatrix();
+        GameManager.OnLanguageChange.AddListener(LoadLanguage);
+        LoadLanguage();
+    }
+
+    public void Init()
+    {
+        Timer = 0;
+        Moves = 0;
+        UndoUsed = 0;
+        HintUsed = 0;
+        hudController.SetMoves(0);
+        hudController.SetTime(0);
+        register = new List<MoveData>();
+        string s = GameManager.Puzzle.Puzzle.Trim(' ');
+        if (!s[0].Equals('P'))
+        {
+            //Obtener del pool interno
+            Debug.LogError("Format error, initial value: " + s[0] + " Puzzle: " + s);
+
         }
         Puzzle = FindObjectOfType<Puzzle>();
         //hudController = FindObjectOfType<HUDController>();
@@ -51,14 +83,13 @@ public class PuzzleManager : MonoBehaviour
 
     void Start()
     {
+        LoadLanguage();
         cam = Camera.main;
-        running = true;
         register = new List<MoveData>();
-        StartTime = Time.time;
         Timer = 0;
         Moves = 0;
-        hudController.LoadLanguage();
-        winPanel.LoadLanguage();
+        StartTime = Time.time;
+        running = true;
     }
   
     // Update is called once per frame
@@ -87,7 +118,6 @@ public class PuzzleManager : MonoBehaviour
                 if (selectedPiece != null)
                 {
                     AddRegister(selectedPiece.TryMove(new Vector2(endPoint.x - startPoint.x, endPoint.z - startPoint.z)));
-                    Moves++;
                     hudController.SetMoves(Moves);
                     selectedPiece = null;
                 }
@@ -99,10 +129,22 @@ public class PuzzleManager : MonoBehaviour
         }
     }
 
+    public void SetRunning(bool b)
+    {
+        running = b;
+    }
+
+    public void LoadLanguage()
+    {
+        hudController.LoadLanguage();
+        winPanel.LoadLanguage();
+    }
+
     private void AddRegister(MoveData md)
     {
         if (md.magnitude == 0) return;
         register.Add(md);
+        Moves++;
     }
 
     public void UndoMovement()
@@ -211,43 +253,107 @@ public class PuzzleManager : MonoBehaviour
         effectiveMovements += s.identifier + "" + s.direction + "" + s.magnitude + " ";
     }
 
-    public void GameOver()
+    public void GameOver(bool won)
     {
+        Win = won;
         running = false;
         UI.SetActive(false);
-        gameOverPanel.SetActive(true);
-        EndTime = Time.time;
         GetMovementRegister(out string raw, out string effective);
+        double proficiency = CalculatePerformance(raw);
+        gameOverPanel.SetActive(true);
+        winPanel.DisplayPerformance(proficiency);
+        EndTime = Time.time;
         double totalTime = EndTime - StartTime;
     }
 
     public void GoToMainMenu()
     {
-        GameManager.LoadScene("MainMenu");
+        GetMovementRegister(out string raw, out string effective);
+        double proficiency = CalculatePerformance(raw);
+        RegisterGameData(raw, proficiency);
+        LoadScene("MainMenu");
     }
 
-    public void RegisterGameData()
+    public double CalculatePerformance(string movements)
     {
-        int evaluation = (int)winPanel.GetData().x;
-        GetMovementRegister(out string raw, out string effective);
-        StatisticData data = new StatisticData(Puzzle.data.ID, GameManager.PlayerID, DateTime.Now, (int)Timer, raw,
-                                            evaluation, HintUsed, RestartUsed, UndoUsed);
+        double proficiency = 0;
+        if (Win)
+        {
+            proficiency = 0.5f;
+            proficiency += 0.5 * ((float)Puzzle.data.OptimalMoves / (float)movements.Split(' ').Length);
+            proficiency *= Mathf.Pow(0.8f, restarts.Count);
+            foreach (RestartInfo r in restarts)
+            {
+                HintUsed += r.hintUsed;
+            }
+            proficiency *= Mathf.Pow(0.9f, HintUsed);
+            // + 
+            //hint*0.9
+            //restart*0.8
+        }
+        return proficiency;
+    }
+
+    public void RegisterGameData(string movements, double proficiency)
+    {
+        int evaluation = (int)winPanel.GetPlayerEvaluation();
+
+        StatisticData data = new StatisticData(Puzzle.data.ID, GameManager.PlayerID, DateTime.Now, (int)Timer, movements,
+                                            evaluation, HintUsed, restarts.Count, UndoUsed, (float)proficiency);
         GameManager.RegisterGame(data);
     }
 
     public void Continue()
     {
-        int delta = (int)winPanel.GetData().y;
-        GameManager.LoadPuzzleScene(Puzzle.data.Ranking + delta);
+        GetMovementRegister(out string raw, out string effective);
+        double proficiency = CalculatePerformance(raw);
+        RegisterGameData(raw, proficiency);
+        int delta = (int)winPanel.GetPlayerPreference();
+        GameManager.LoadPuzzleScene(Puzzle.data.Ranking + delta*GameManager.SelectionOffset);
+    }
+
+    public void Restart()
+    {
+        Puzzle.Clear();
+        GetMovementRegister(out string raw, out string effective);
+        string[] raws = raw.Split(' ');
+        string[] effectives = effective.Split(' ');
+        RestartInfo ri = new RestartInfo(raws.Length, effectives.Length, (int)Timer, UndoUsed, HintUsed);
+        restarts.Add(ri);
+        Init();
+    }
+
+    public void GetHint()
+    {
+        string p = Puzzle.PrintMatrix().Replace("0", "");
+        string s = string.Join(" ", "P", Puzzle.data.Label, "\n", p, "\n");
+        //Debug.Log(s);
+        GameManager.GetHint(s);
     }
 
     private void OnApplicationQuit()
     {
-        int evaluation = (int)winPanel.GetData().x;
         GetMovementRegister(out string raw, out string effective);
-        StatisticData data = new StatisticData(Puzzle.data.ID, GameManager.PlayerID, DateTime.Now, (int)Timer, raw,
-                                            evaluation, HintUsed, RestartUsed, UndoUsed);
-        GameManager.StoreGameData(data);
+        double proficiency = CalculatePerformance(raw);
+        RegisterGameData(raw, proficiency);
         GameManager.OnQuit();
+    }
+}
+
+public struct RestartInfo
+{
+    public int rawMoves;
+    public int effectiveMoves;
+    public int time;
+    public int undos;
+    public int hintUsed;
+
+    public RestartInfo(int rawMoves, int effectiveMoves, int time, int undos, int hintUsed)
+    {
+        this.rawMoves = rawMoves;
+        this.effectiveMoves = effectiveMoves;
+        this.time = time;
+        this.undos = undos;
+        this.hintUsed = hintUsed;
     }
 }

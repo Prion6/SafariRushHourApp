@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: ca7293478f2f3724591edbe7fe136966
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Jodaguz
+  fontNames:
+  - Jodaguz
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: b52b6831238bf654bad03563a5343b11, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

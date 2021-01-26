@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc2623e0fbdb29e44865410c4a09027f, type: 3}
+  m_Name: Spanish Texts
+  m_EditorClassIdentifier: 
+  langauge: 1
+  texts:
+  - uiElement: DisclaimerTxt
+    text: Esto es un disclaimer
+  - uiElement: NameQTxt
+    text: 'Nombre:'
+  - uiElement: AgeQTxt
+    text: 'Edad:'
+  - uiElement: EducationalLvlQTxt
+    text: Nivel Escolar
+  - uiElement: RHExperienceQTxt
+    text: Nivel de experiencia con juegos estilo Rush Hour?
+  - uiElement: PuzzleExperienceQTxt
+    text: Nivel de experiencia con juegos de puzle?
+  - uiElement: MGExperienceQTxt
+    text: "Nivel de experiencia con juegos m\xF3viles?"
+  - uiElement: EducationalOptionDisplayTxt
+    text: 'Primer Ciclo
+
+      Segundo Ciclo
+
+      Universidad
+
+      Postgrado'
+  - uiElement: PlayBtnTxt
+    text: Jugar
+  - uiElement: EducationalToggleTxt
+    text: Completa
+  - uiElement: EvaluationTxt
+    text: Evalue el puzle de acuerdo a su nivel de habilidad
+  - uiElement: EvaluationOptionDisplayTxt
+    text: "Muy F\xE1cil\nF\xE1cil\nAdecuado\nDif\xEDcil\nMuy Dif\xEDcil"
+  - uiElement: NextPuzzleTxt
+    text: "El siguiente puzzle deber\xEDa ser"
+  - uiElement: PuzzleOptionDisplayTxt
+    text: "Mucho m\xE1s f\xE1cil\nM\xE1s f\xE1cil\nIgual\nM\xE1s dif\xEDcil\nMucho
+      m\xE1s dif\xEDcil"
+  - uiElement: OptionsTitleTxt
+    text: Opciones
+  - uiElement: LanguageOptionTxt
+    text: Idioma
+  - uiElement: SpeedOptionTxt
+    text: Velocidad
+  - uiElement: VolumeOptionTxt
+    text: Volumen
+  - uiElement: TimeTxt
+    text: Tiempo
+  - uiElement: MovesTxt
+    text: Movidas
+  - uiElement: RHExperienDisplay
+    text: 'Nula
+
+      Baja
+
+      Promedio
+
+      Alta
+
+      Experto'
+  - uiElement: PExperienceDisplay
+    text: 'Nula
+
+      Baja
+
+      Promedio
+
+      Alta
+
+      Experto'
+  - uiElement: MExperienceDisplay
+    text: 'Nula
+
+      Baja
+
+      Promedio
+
+      Alta
+
+      Experto'

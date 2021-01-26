@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class GameManager
@@ -30,8 +31,35 @@ public class GameManager
             return _GameData;
         }
     }
+
+    public static UnityEvent OnLanguageChange = new UnityEvent();
+
+    public static void SetLanguages(List<TextDataBase> l)
+    {
+        GameData.languages = l;
+    }
     
     public static PuzzleData Puzzle { get; set; }
+
+    public static OptionsData Options { get { return GameData.Options; } set {GameData.Options = value;} }
+
+    public static int SelectionOffset { get { return GameData.selectionOffset; } set { GameData.selectionOffset = value; } }
+
+    public static void SetVolume(float i)
+    {
+        GameData.SetVolume(i);
+    }
+
+    public static void SetSpeed(int i)
+    {
+        GameData.SetSpeed(i);
+    }
+
+    public static void SetLanguage(Language l)
+    {
+        GameData.SetLanguage(l);
+        OnLanguageChange?.Invoke();
+    }
 
     public static int LowerAge
     {
@@ -46,6 +74,12 @@ public class GameManager
     public static int PlayerRanking
     {
         get { return GameData.PlayerData.Ranking; }
+        set { GameData.PlayerData.Ranking = value; }
+    }
+
+    public static void SetPuzzleRanking(int ranking, int id)
+    {
+        GameData.SetPuzzleRanking(ranking, id);
     }
     
     public static void LoadScene(int sceneID)
@@ -58,19 +92,14 @@ public class GameManager
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
     }
 
-    public static void LoadPuzzleScene(int delta)
+    public static void LoadPuzzleScene(int ranking)
     {
-        if(GameData.PlayerData.Ranking + delta < 0)
-        {
-            Debug.LogError("Difficulty level not supported");
-            return;
-        }
-        PHPManager.SetPuzzleScene(GameData.PlayerData.ID, delta);
+        PHPManager.GetPuzzle(GameData.PlayerData.ID, ranking);
     }
     
-    public static void SetBackUpPuzzle(int delta)
+    public static void SetBackUpPuzzle(int ranking)
     {
-        Puzzle = GameData.GetPuzzle(GameData.PlayerData.Ranking + delta);
+        Puzzle = GameData.GetPuzzle(ranking);
     }
 
     public static string GetText(string key)
@@ -103,6 +132,11 @@ public class GameManager
     public static void FreeGameData(StatisticData data)
     {
         GameData.FreeGameData(data);
+    }
+
+    public static void GetHint(string puzzle)
+    {
+        PHPManager.GetHint(puzzle);
     }
 
     public static void UpdateData()

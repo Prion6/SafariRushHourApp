@@ -12,11 +12,11 @@ public class WinPanelController : MonoBehaviour
     public Text nextPuzzleTxt;
     public Slider evaluationSldr;
     public Slider nextPuzzleSldr;
+    public List<GameObject> stars;
 
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -33,6 +33,8 @@ public class WinPanelController : MonoBehaviour
         }
         SetEvaluationOptions(GameManager.GetText(evaluationTxt.name));
         SetDifficultyOptions(GameManager.GetText(nextPuzzleTxt.name));
+        SetEvaluationOptionText();
+        SetDifficultyOptionText();
     }
 
     public void SetEvaluationOptions(string s)
@@ -59,8 +61,23 @@ public class WinPanelController : MonoBehaviour
         nextPuzzleTxt.text = nextPuzzleOptions[(int)nextPuzzleSldr.value];
     }
 
-    public Vector2 GetData()
+    public double GetPlayerEvaluation()
     {
-        return new Vector2(evaluationSldr.value, nextPuzzleSldr.value - nextPuzzleOptions.Count/2);
+        return evaluationSldr.value;
+    }
+
+    public double GetPlayerPreference()
+    {
+        Debug.Log(nextPuzzleSldr.value - nextPuzzleOptions.Count / 2f);
+        return nextPuzzleSldr.value + 1 - nextPuzzleOptions.Count/2f;
+    }
+
+    public void DisplayPerformance(double proficiency)
+    {
+        int rating = (int)(proficiency * stars.Count);
+        for(int i = 0; i < rating; i++)
+        {
+            stars[i].SetActive(true);
+        }
     }
 }

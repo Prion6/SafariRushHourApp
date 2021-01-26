@@ -13,6 +13,8 @@ public class Puzzle : MonoBehaviour
     public List<Piece> piecePrefs;
     private Dictionary<PieceType,GameObject> pieces;
     public List<Piece> gamePieces;
+    public List<GameObject> Board;
+    public List<GameObject> Walls;
 
     public GameObject slabPref;
 
@@ -21,6 +23,8 @@ public class Puzzle : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        Board = new List<GameObject>();
+        Walls = new List<GameObject>();
         gamePieces = new List<Piece>();
         pieces = new Dictionary<PieceType, GameObject>();
         foreach(Piece p in piecePrefs)
@@ -65,8 +69,7 @@ public class Puzzle : MonoBehaviour
     public void InitBoard()
     {
         Vector3 start = new Vector3(-matrix.GetLength(0) * step / 2, 0, -matrix.GetLength(0) * step / 2);
-        GameObject board = Instantiate(new GameObject());
-        board.name = "Board";
+        GameObject board = Instantiate(new GameObject("Board"));
 
         for (int i = 0; i < matrix.GetLength(0); i++)
         {
@@ -77,6 +80,7 @@ public class Puzzle : MonoBehaviour
                 slab.transform.position = start + new Vector3(step * i, 0, step * j);
                 slab.name = "Slab" + (i * matrix.GetLength(0) + j);
                 slab.transform.SetParent(board.transform);
+                Board.Add(slab);
             }
         }
     }
@@ -84,8 +88,7 @@ public class Puzzle : MonoBehaviour
     public void InitPieces()
     {
         Vector3 start = new Vector3(-matrix.GetLength(0) * step / 2, 0, -matrix.GetLength(0) * step / 2);
-        GameObject walls = Instantiate(new GameObject());
-        walls.name = "Walls";
+        GameObject walls = Instantiate(new GameObject("Walls"));
 
         List<char> visited = new List<char>();
 
@@ -101,6 +104,7 @@ public class Puzzle : MonoBehaviour
                     w.transform.position = start + new Vector3(step * i, 0, step * j);
                     w.name = "Wall-Piece: " + (i * matrix.GetLength(0) + j);
                     w.transform.SetParent(walls.transform);
+                    Walls.Add(w);
                     continue;
                 }
 
@@ -126,6 +130,7 @@ public class Puzzle : MonoBehaviour
                         o = Orientation.VERTICAL;
                 }
                 p.Init(o,i,j,matrix[i,j],this, start + new Vector3(step * i, 0, step * j));
+                g.transform.SetParent(transform);
                 gamePieces.Add(p);
             }
         }
@@ -233,17 +238,39 @@ public class Puzzle : MonoBehaviour
     public string PrintMatrix()
     {
         string m = "";
-        for (int i = 0; i < matrix.GetLength(0); i++)
+        for (int i = 1; i < matrix.GetLength(0)-1; i++)
         {
             string s = "";
             for (int j = 0; j < matrix.GetLength(0); j++)
             {
-                s += matrix[i, j] + "\t";
+                s += matrix[i, j];
             }
             m += s + "\n";
             //Debug.Log(s);
         }
         return m;
+    }
+
+    public void Clear()
+    {
+        for(int i = 0; i < Board.Count; i++)
+        {
+            GameObject go = Board[i];
+            Destroy(go);
+        }
+        Board.Clear();
+        for (int i = 0; i < gamePieces.Count; i++)
+        {
+            Piece p = gamePieces[i];
+            Destroy(p.gameObject);
+        }
+        gamePieces.Clear();
+        for (int i = 0; i < Walls.Count; i++)
+        {
+            GameObject go = Walls[i];
+            Destroy(go);
+        }
+        Walls.Clear();
     }
 }
 
@@ -251,12 +278,14 @@ public class Puzzle : MonoBehaviour
 [System.Serializable]
 public struct PuzzleData
 {
-    public PuzzleData(int id, string label, int ranking, string puzzle) : this()
+    public PuzzleData(int id, string label, int ranking, string puzzle, int optimalMoves)
     {
         ID = id;
         Label = label;
         Ranking = ranking;
         Puzzle = puzzle;
+        OptimalMoves = optimalMoves;
+        Matches = 0;
     }
 
     public int ID;
@@ -264,4 +293,6 @@ public struct PuzzleData
     public int Ranking;
     [TextArea]
     public string Puzzle;
+    public int Matches;
+    public int OptimalMoves;
 }

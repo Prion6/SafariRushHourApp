@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SurveyPanel : MonoBehaviour
+public class SurveyPanel : MultiLanguageUI
 {
-    public List<Text> texts;
-
     public InputField nickname;
 
     public Dropdown ageTens;
@@ -18,12 +16,24 @@ public class SurveyPanel : MonoBehaviour
     public Text educationalOptionDisplay;
 
     public Slider expertiseRushHour;
+    public List<string> expertiseRushHourOptions;
+    public Text rhExpertiseDisplay;
     public Slider expertisePuzzle;
+    public List<string> expertisePuzzleOptions;
+    public Text pExpertiseDisplay;
     public Slider expertiseMobile;
+    public List<string> expertiseMobileOptions;
+    public Text mExpertiseDisplay;
 
     public GameObject nameError;
     public GameObject ageError;
 
+    private void Start()
+    {
+        SetRHExpertiseDisplay();
+        SetPExpertiseDisplay();
+        SetMExpertiseDisplay();
+    }
 
     public void SetEducationalOptions(string s)
     {
@@ -40,8 +50,8 @@ public class SurveyPanel : MonoBehaviour
 
     public PlayerData GetPlayerData()
     {
-        return new PlayerData(nickname.text, ageTens.value * 10 + ageUnits.value, (int)expertiseRushHour.value * 100,
-            (int)expertisePuzzle.value * 100, (int)expertiseMobile.value * 100, (int)educationalLevel.value);
+        return new PlayerData(nickname.text, ageTens.value * 10 + ageUnits.value, (int)(expertiseRushHour.value * 100),
+            (int)(expertisePuzzle.value * 100), (int)(expertiseMobile.value * 100), (int)educationalLevel.value);
     }
 
     public SurveyError CheckPlayerData()
@@ -76,6 +86,54 @@ public class SurveyPanel : MonoBehaviour
     {
         GameManager.IsRegistered = true;
         GameManager.RegisterNewPlayer(GetPlayerData());
+    }
+
+    public override void LoadLanguage()
+    {
+        base.LoadLanguage();
+        SetEducationalOptions(GameManager.GetText(educationalOptionDisplay.name));
+        SetRHExpertiseOptions(GameManager.GetText(rhExpertiseDisplay.name));
+        SetPExpertiseOptions(GameManager.GetText(pExpertiseDisplay.name));
+        SetMExpertiseOptions(GameManager.GetText(mExpertiseDisplay.name));
+    }
+
+    public void SetRHExpertiseDisplay()
+    {
+        rhExpertiseDisplay.text = expertiseRushHourOptions[(int)expertiseRushHour.value];
+    }
+
+    public void SetPExpertiseDisplay()
+    {
+        pExpertiseDisplay.text = expertisePuzzleOptions[(int)expertisePuzzle.value];
+    }
+
+    public void SetMExpertiseDisplay()
+    {
+        mExpertiseDisplay.text = expertiseMobileOptions[(int)expertiseMobile.value];
+    }
+
+    public void SetRHExpertiseOptions(string s)
+    {
+        string[] ops = s.Split('\n');
+        expertiseRushHour.maxValue = ops.Length - 1;
+        expertiseRushHourOptions = new List<string>(ops);
+        SetRHExpertiseDisplay();
+    }
+
+    public void SetPExpertiseOptions(string s)
+    {
+        string[] ops = s.Split('\n');
+        expertisePuzzle.maxValue = ops.Length - 1;
+        expertisePuzzleOptions = new List<string>(ops);
+        SetPExpertiseDisplay();
+    }
+
+    public void SetMExpertiseOptions(string s)
+    {
+        string[] ops = s.Split('\n');
+        expertiseMobile.maxValue = ops.Length - 1;
+        expertiseMobileOptions = new List<string>(ops);
+        SetMExpertiseDisplay();
     }
 }
 

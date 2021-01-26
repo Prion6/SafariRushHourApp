@@ -5,6 +5,7 @@ using UnityEngine;
 public class PHPManager : MonoBehaviour
 {
     PHPQuerySet querier;
+    [SerializeField]
     private List<QuerieCoroutine> queries;
     
     public  double fetchTimeOut;
@@ -61,11 +62,11 @@ public class PHPManager : MonoBehaviour
         }
     }
 
-    ///PUZZLES///
-    public void SetPuzzleScene(int id, int delta)
+    ///GetPuzzle///
+    public void GetPuzzle(int id, int delta)
     {
         QuerieCoroutine c = new QuerieCoroutine(fetchTimeOut, new System.Action(() => AbortSetPuzzleScene(delta)));
-        c.Coroutine = StartCoroutine(GetPuzzle(id, delta, (b) => c.Running = b));
+        c.Coroutine = StartCoroutine(GetPuzzleQuerie(id, delta, (b) => c.Running = b));
         queries.Add(c);
     }
 
@@ -75,7 +76,7 @@ public class PHPManager : MonoBehaviour
         GameManager.LoadScene("Puzzle");
     }
     
-    private IEnumerator GetPuzzle(int id, int delta, System.Action<bool> setRunning)
+    private IEnumerator GetPuzzleQuerie(int id, int delta, System.Action<bool> setRunning)
     {
         setRunning(true);
         string puzzle = null;
@@ -83,14 +84,14 @@ public class PHPManager : MonoBehaviour
         if (puzzle != null)
         {
             string[] data = puzzle.Split(';');
-            if (data.Length != 4 || !int.TryParse(data[0], out int pID) || !int.TryParse(data[2], out int rank))
+            if (data.Length != 4 || !int.TryParse(data[0], out int pID) || !int.TryParse(data[2], out int rank) || !int.TryParse(data[4], out int optimal))
             {
                 //Debug.Log("Format Error");
                 GameManager.SetBackUpPuzzle(delta);
             }
             else
             {
-                PuzzleData p = new PuzzleData(pID, data[1], rank, data[3]);
+                PuzzleData p = new PuzzleData(pID, data[1], rank, data[3], optimal);
                 GameManager.Puzzle = p;
             }
         }
@@ -108,7 +109,7 @@ public class PHPManager : MonoBehaviour
     {
         QuerieCoroutine c = new QuerieCoroutine(sendTimeOut, new System.Action(() => AbortRegisterUser()));
 
-        c.Coroutine = StartCoroutine(AddPlayer(playerData, (i) => playerData.ID = i, (b) => c.Running = b));
+        c.Coroutine = StartCoroutine(RegisterUserQuerie(playerData, (i) => playerData.ID = i, (b) => c.Running = b));
         queries.Add(c);
     }
 
@@ -117,7 +118,7 @@ public class PHPManager : MonoBehaviour
         Debug.Log("Couldn't Add Player to the DataBase");
     }
 
-    private IEnumerator AddPlayer(PlayerData playerData, System.Action<int> callback, System.Action<bool> setRunning)
+    private IEnumerator RegisterUserQuerie(PlayerData playerData, System.Action<int> callback, System.Action<bool> setRunning)
     {
         setRunning(true);
         int id = -1;
@@ -131,12 +132,12 @@ public class PHPManager : MonoBehaviour
     }
 
 
-
+    ///ADDGameData///
     public void RegisterGame(StatisticData data)
     {
         QuerieCoroutine c = new QuerieCoroutine(sendTimeOut, new System.Action(() => AbortRegisterGame()));
 
-        c.Coroutine = StartCoroutine(AddGame(data, (b) => c.Running = b));
+        c.Coroutine = StartCoroutine(RegisterGameQuerie(data, (b) => c.Running = b));
         queries.Add(c);
     }
 
@@ -145,24 +146,55 @@ public class PHPManager : MonoBehaviour
         Debug.Log("Couldn't Add Game Data");
     }
 
-    private IEnumerator AddGame(StatisticData data, System.Action<bool> setRunning)
+    private IEnumerator RegisterGameQuerie(StatisticData data, System.Action<bool> setRunning)
     {
         setRunning(true);
         bool succes = false;
-        yield return StartCoroutine(querier.RegisterGame("RegisterGame", data, (b) => succes = b));
+        int playerR = 0;
+        int puzzleR = 0;
+        yield return StartCoroutine(querier.RegisterGame("RegisterGame", data, (b) => succes = b,
+            (s) =>
+            {
+                string[] lines = (s as string).Split(';');
+                playerR = int.Parse(lines[0]);
+                puzzleR = int.Parse(lines[1]);
+            }));
         if(succes)
         {
             GameManager.FreeGameData(data);
+            GameManager.PlayerRanking = playerR;
+            GameManager.SetPuzzleRanking(puzzleR, data.PuzzleID);
         }
         else
         {
             GameManager.StoreGameData(data);
         }
-        Debug.Log("Registered");
+        setRunning(false);
+    }
+
+    ///GetHint///
+    public void GetHint(string puzzle)
+    {
+        QuerieCoroutine c = new QuerieCoroutine(60, new System.Action(() => AbortRegisterGame()));
+
+        c.Coroutine = StartCoroutine(GetHintQuerie(puzzle, (b) => c.Running = b));
+        queries.Add(c);
+    }
+
+    private void AbortGetHint()
+    {
+        Debug.Log("Couldn't get hint");
+    }
+
+    private IEnumerator GetHintQuerie(string puzzle, System.Action<bool> setRunning)
+    {
+        setRunning(true);
+        yield return StartCoroutine(querier.GetHint("GetHint", puzzle));
         setRunning(false);
     }
 }
 
+[System.Serializable]
 public class QuerieCoroutine
 {
     public bool Running { get; set; }

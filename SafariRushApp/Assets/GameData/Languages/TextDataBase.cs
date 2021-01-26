@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "DataBase/TextDatabase")]
 public class TextDataBase : ScriptableObject
 {
-    public Langauge langauge;
+    public Language langauge;
     public List<UIText> texts;
     private Dictionary<string, string> _Dictionary;
     public Dictionary<string, string> Dictionary
@@ -37,8 +37,8 @@ public struct UIText
     public string text;
 }
 
-public enum Langauge
+public enum Language
 {
     ENGLISH,
-    SPANISH
+    ESPAÑOL
 }

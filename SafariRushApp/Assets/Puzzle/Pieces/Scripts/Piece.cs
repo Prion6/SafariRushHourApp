@@ -130,9 +130,9 @@ public class Piece : MonoBehaviour
     IEnumerator Translate(Vector3 v)
     {
         float elapsedTime = 0;
-        while (elapsedTime < moveTime)
+        while (elapsedTime < moveTime/GameManager.Options.Speed)
         {
-            transform.position = Vector3.Lerp(transform.position, v, (elapsedTime / moveTime));
+            transform.position = Vector3.Lerp(transform.position, v, (elapsedTime / (moveTime/GameManager.Options.Speed)));
             elapsedTime += Time.deltaTime;
             yield return null;
         }

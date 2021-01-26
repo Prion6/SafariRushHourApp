@@ -50,7 +50,7 @@ MonoBehaviour:
   Coordenates: []
   stepables: 2e002100
   type: 0
-  moveTime: 0.5
+  moveTime: 2
 --- !u!65 &3169962727282151485
 BoxCollider:
   m_ObjectHideFlags: 0

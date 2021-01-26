@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 9cdcd74c245e367449621d449f37ab4e
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Power Up
+  fontNames:
+  - Power Up
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: d2e3df707ffdffc4899881b55b140bf6, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
