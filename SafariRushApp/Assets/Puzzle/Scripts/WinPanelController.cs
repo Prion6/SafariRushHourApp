@@ -68,7 +68,6 @@ public class WinPanelController : MonoBehaviour
 
     public double GetPlayerPreference()
     {
-        Debug.Log(nextPuzzleSldr.value - nextPuzzleOptions.Count / 2f);
         return nextPuzzleSldr.value + 1 - nextPuzzleOptions.Count/2f;
     }
 
