@@ -44,7 +44,6 @@ public class GameData
     {
         languages = new List<TextDataBase>();
         Object[] objects = Resources.FindObjectsOfTypeAll(typeof(TextDataBase));
-        Debug.LogError(objects.Length);
         foreach(Object o in objects)
         {
             languages.Add(o as TextDataBase);
@@ -74,7 +73,6 @@ public class GameData
     
     public PuzzleData GetPuzzle(int ranking)
     {
-        Debug.Log(ranking);
         //var ops = Puzzles.Where( p => p.Ranking >= ranking - selectionOffset || p.Ranking <= ranking - selectionOffset);
         var ops = Puzzles.OrderBy(p => Mathf.Abs(p.Ranking - ranking));
         var arr = ops.ToArray();
