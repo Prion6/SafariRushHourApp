@@ -8,13 +8,12 @@ public class PuzzleManager : SceneManager
     Puzzle Puzzle { get; set; }
     public HUDController hudController;
     public WinPanelController winPanel;
+    public DifficultyPanel difficultyPanel;
     Camera cam;
     Piece selectedPiece;
 
     Vector3 startPoint;
     Vector3 endPoint;
-
-    public Text matrixtext;
 
     public GameObject UI;
     public GameObject gameOverPanel;
@@ -33,6 +32,7 @@ public class PuzzleManager : SceneManager
 
     private int Moves { get; set; }
     private bool Win { get; set; }
+
 
     // Start is called before the first frame update
     void Awake()
@@ -54,12 +54,23 @@ public class PuzzleManager : SceneManager
         //hudController = FindObjectOfType<HUDController>();
         //winPanel = FindObjectOfType<WinPanelController>();
         Puzzle.Init(GameManager.Puzzle);
-        matrixtext.text = Puzzle.PrintMatrix();
+        //matrixtext.text = Puzzle.PrintMatrix();
         GameManager.OnLanguageChange.AddListener(LoadLanguage);
         LoadLanguage();
+        difficultyPanel.SetDifficulty(GameManager.Puzzle.Ranking);
+        GameManager.OnVolumeChange.Invoke();
     }
 
     public void Init()
+    {
+        SetInitialConditions();
+        Puzzle = FindObjectOfType<Puzzle>();
+        //hudController = FindObjectOfType<HUDController>();
+        //winPanel = FindObjectOfType<WinPanelController>();
+        Puzzle.Init(GameManager.Puzzle);
+    }
+
+    public void SetInitialConditions()
     {
         Timer = 0;
         Moves = 0;
@@ -75,11 +86,6 @@ public class PuzzleManager : SceneManager
             Debug.LogError("Format error, initial value: " + s[0] + " Puzzle: " + s);
 
         }
-        Puzzle = FindObjectOfType<Puzzle>();
-        //hudController = FindObjectOfType<HUDController>();
-        //winPanel = FindObjectOfType<WinPanelController>();
-        Puzzle.Init(GameManager.Puzzle);
-        matrixtext.text = Puzzle.PrintMatrix();
     }
 
     void Start()
@@ -98,6 +104,8 @@ public class PuzzleManager : SceneManager
     {
         if(running)
         {
+            Timer += Time.deltaTime;
+            hudController.SetTime(Timer);
             if (Input.GetMouseButtonDown(0))
             {
                 Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -120,15 +128,15 @@ public class PuzzleManager : SceneManager
                 {
                     Slab slab = hit.collider.gameObject.GetComponent<Slab>();
                     if (slab == null) return;
-                    if (slab.Equals(selectedPiece)) return;
-                    if (selectedSlab != null)
-                        selectedSlab.SetSelected(false);
+                    if (slab.Equals(selectedSlab)) return;
+                    if (selectedPiece == null) return;
                     selectedSlab = slab;
-                    selectedSlab.SetSelected(true);
+                    Puzzle.HighLightPath(selectedPiece, slab);
                 }
             }
             else if (Input.GetMouseButtonUp(0))
             {
+                Puzzle.TurnPathOff();
                 endPoint = Input.mousePosition + new Vector3(0, 0, cam.transform.position.y);
                 endPoint = cam.ScreenToWorldPoint(endPoint);
                 if (selectedPiece != null)
@@ -138,16 +146,13 @@ public class PuzzleManager : SceneManager
                     selectedPiece = null;
                 }
                 //Debug.Log("Movement: " + register[register.Count-1].identifier + register[register.Count - 1].direction + register[register.Count - 1].magnitude);
-                matrixtext.text = Puzzle.PrintMatrix();
+                //matrixtext.text = Puzzle.PrintMatrix();
                 if (selectedSlab != null)
                 {
                     selectedSlab.SetSelected(false);
                     selectedSlab = null;
                 }
             }
-            Timer += Time.deltaTime;
-            hudController.SetTime(Timer);
-            
         }
     }
 
@@ -173,8 +178,7 @@ public class PuzzleManager : SceneManager
     {
         if (register.Count == 0) return;
         MoveData md = register[register.Count - 1];
-        UndoUsed++;
-        register.Remove(md);
+        MoveData undo = new MoveData();
         foreach(Piece p in Puzzle.gamePieces)
         {
             if(p.Identifier.Equals(md.identifier))
@@ -182,28 +186,34 @@ public class PuzzleManager : SceneManager
                 switch(md.direction)
                 {
                     case Direction.r:
-                        p.TryMove(new Vector2(0, -md.magnitude));
+                        undo = p.TryMove(new Vector2(0, -md.magnitude));
                         break;
                     case Direction.l:
-                        p.TryMove(new Vector2(0, md.magnitude));
+                        undo = p.TryMove(new Vector2(0, md.magnitude));
                         break;
                     case Direction.u:
-                        p.TryMove(new Vector2(md.magnitude,0));
+                        undo = p.TryMove(new Vector2(md.magnitude,0));
                         break;
                     case Direction.d:
-                        p.TryMove(new Vector2(-md.magnitude,0));
+                        undo = p.TryMove(new Vector2(-md.magnitude,0));
                         break;
                 }
             }
         }
+        Debug.Log(md.identifier.ToString() + md.direction.ToString() + md.magnitude + " - " + undo.identifier + undo.direction + undo.magnitude);
+        if (undo.magnitude == 0) return;
+        UndoUsed++;
+        register.RemoveAt(register.Count-1);
         Moves--;
         hudController.SetMoves(Moves);
+        Debug.Log("Count: " + register.Count);
     }
 
     private void GetMovementRegister(out string rawMovements, out string effectiveMovements)
     {
         rawMovements = "";
         effectiveMovements = "";
+        if (register == null) return;
         if (register.Count <= 0) return;
         MoveData s = register[0];
         rawMovements += s.identifier + "" + s.direction + "" + s.magnitude.ToString() + " ";
@@ -302,7 +312,7 @@ public class PuzzleManager : SceneManager
         if (Win)
         {
             proficiency = 0.5f;
-            proficiency += 0.5 * ((float)Puzzle.data.OptimalMoves / (float)movements.Split(' ').Length);
+            proficiency += 0.5 * ((float)Puzzle.data.OptimalMoves / ((float)movements.Split(' ').Length-1));
             proficiency *= Mathf.Pow(0.8f, restarts.Count);
             foreach (RestartInfo r in restarts)
             {
@@ -336,13 +346,14 @@ public class PuzzleManager : SceneManager
 
     public void Restart()
     {
-        Puzzle.Clear();
+        //Puzzle.Clear();
         GetMovementRegister(out string raw, out string effective);
         string[] raws = raw.Split(' ');
         string[] effectives = effective.Split(' ');
         RestartInfo ri = new RestartInfo(raws.Length, effectives.Length, (int)Timer, UndoUsed, HintUsed);
         restarts.Add(ri);
-        Init();
+        SetInitialConditions();
+        Puzzle.Restart();
     }
 
     public void GetHint()

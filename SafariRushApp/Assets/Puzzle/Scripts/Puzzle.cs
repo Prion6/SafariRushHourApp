@@ -11,14 +11,16 @@ public class Puzzle : MonoBehaviour
     public PuzzleData data;
     
     public List<Piece> piecePrefs;
-    private Dictionary<PieceType,GameObject> pieces;
+    private Dictionary<PieceType,List<Piece>> pieces;
     public List<Piece> gamePieces;
     public List<GameObject> Board;
     public List<GameObject> Walls;
 
-    public GameObject slabPref;
+    public List<GameObject> slabPrefs;
 
     public int step;
+
+    public List<Slab> highlighted;
 
     // Start is called before the first frame update
     void Awake()
@@ -26,10 +28,13 @@ public class Puzzle : MonoBehaviour
         Board = new List<GameObject>();
         Walls = new List<GameObject>();
         gamePieces = new List<Piece>();
-        pieces = new Dictionary<PieceType, GameObject>();
+        highlighted = new List<Slab>();
+        pieces = new Dictionary<PieceType, List<Piece>>();
         foreach(Piece p in piecePrefs)
         {
-            pieces.Add(p.type, p.gameObject);
+            if (!pieces.ContainsKey(p.type))
+                pieces.Add(p.type, new List<Piece>());
+            pieces[p.type].Add(p);
         }
     }
 
@@ -70,17 +75,30 @@ public class Puzzle : MonoBehaviour
     {
         Vector3 start = new Vector3(-matrix.GetLength(0) * step / 2, 0, -matrix.GetLength(0) * step / 2);
         GameObject board = Instantiate(new GameObject("Board"));
+        GameObject walls = Instantiate(new GameObject("Walls"));
 
         for (int i = 0; i < matrix.GetLength(0); i++)
         {
             for (int j = 0; j < matrix.GetLength(0); j++)
             {
-                GameObject slab = Instantiate(slabPref);
+                GameObject slab = Instantiate(slabPrefs[Random.Range(0, slabPrefs.Count)]);
+
                 slab.transform.localScale = new Vector3(step, 1, step);
                 slab.transform.position = start + new Vector3(step * i, 0, step * j);
                 slab.name = "Slab" + (i * matrix.GetLength(0) + j);
                 slab.transform.SetParent(board.transform);
                 Board.Add(slab);
+
+                if (matrix[i, j].Equals('0'))
+                {
+                    GameObject w = Instantiate(pieces[PieceType.WALL][Random.Range(0, pieces[PieceType.WALL].Count)].gameObject);
+                    w.transform.position = start + new Vector3(step * i, 0, step * j);
+                    //w.transform.Rotate(new Vector3(Random.Range(0,4)*90, Random.Range(0, 4) * 90, Random.Range(0, 4) * 90));
+                    w.name = "Wall-Piece: " + (i * matrix.GetLength(0) + j);
+                    w.transform.SetParent(walls.transform);
+                    Walls.Add(w);
+                    continue;
+                }
             }
         }
     }
@@ -88,7 +106,6 @@ public class Puzzle : MonoBehaviour
     public void InitPieces()
     {
         Vector3 start = new Vector3(-matrix.GetLength(0) * step / 2, 0, -matrix.GetLength(0) * step / 2);
-        GameObject walls = Instantiate(new GameObject("Walls"));
 
         List<char> visited = new List<char>();
 
@@ -98,20 +115,12 @@ public class Puzzle : MonoBehaviour
             {
                 if (matrix[i, j].Equals('.')) continue;
                 if (visited.Contains(matrix[i, j])) continue;
-                if (matrix[i, j].Equals('0'))
-                {
-                    GameObject w = Instantiate(pieces[PieceType.WALL]);
-                    w.transform.position = start + new Vector3(step * i, 0, step * j);
-                    w.name = "Wall-Piece: " + (i * matrix.GetLength(0) + j);
-                    w.transform.SetParent(walls.transform);
-                    Walls.Add(w);
-                    continue;
-                }
+                
 
                 visited.Add(matrix[i, j]);
                 PieceType t = GetPieceType(matrix[i, j]);
                 if (t.Equals(PieceType.EMPTY)) continue;
-                GameObject g = pieces[t];
+                GameObject g = pieces[t][Random.Range(0, pieces[t].Count)].gameObject;
                 
                 if (g == null) continue;
 
@@ -134,6 +143,13 @@ public class Puzzle : MonoBehaviour
                 gamePieces.Add(p);
             }
         }
+    }
+
+    public void Restart()
+    {
+        Clear();
+        InitMatrix(data.Puzzle);
+        InitPieces();
     }
     
     public Vector2 RequestMovement(char identifier, List<Vector2> start, List<List<Vector2>> coords, Vector2 step, List<char> stepables, out List<Vector2> end)
@@ -253,24 +269,104 @@ public class Puzzle : MonoBehaviour
 
     public void Clear()
     {
+        /*
         for(int i = 0; i < Board.Count; i++)
         {
             GameObject go = Board[i];
             Destroy(go);
         }
-        Board.Clear();
+        Board.Clear();*/
         for (int i = 0; i < gamePieces.Count; i++)
         {
             Piece p = gamePieces[i];
             Destroy(p.gameObject);
         }
         gamePieces.Clear();
-        for (int i = 0; i < Walls.Count; i++)
+        /*for (int i = 0; i < Walls.Count; i++)
         {
             GameObject go = Walls[i];
             Destroy(go);
         }
-        Walls.Clear();
+        Walls.Clear();*/
+    }
+
+    public void TurnPathOff()
+    {
+        foreach(Slab s in highlighted)
+        {
+            s.SetSelected(false);
+        }
+        highlighted.Clear();
+    }
+
+    public Vector2 GetTranslation(Piece piece, Slab slab)
+    {
+        Vector2 pieceCords = GetPieceCorrdinates(piece.Identifier);
+        int slabIndex = Board.IndexOf(slab.gameObject);
+        Vector2 slabCords = new Vector2(slabIndex / matrix.GetLength(0), slabIndex % matrix.GetLength(0));
+        Vector2 translation = slabCords - pieceCords;
+        switch (piece.Orientation)
+        {
+            case Orientation.HORIZONTAL:
+                translation *= new Vector2(1, 0);
+                break;
+            case Orientation.VERTICAL:
+                translation *= new Vector2(0, 1);
+                break;
+            case Orientation.BOTH:
+                translation *= (Mathf.Abs(translation.x) > Mathf.Abs(translation.y)) ? new Vector2(1, 0) : new Vector2(0, 1);
+                break;
+        }
+        return translation;
+    }
+
+    public void AddHighlight(Slab s)
+    {
+        if (!highlighted.Contains(s))
+        {
+            highlighted.Add(s);
+            s.SetSelected(true);
+        }
+
+    }
+
+    public void HighLightPath(Piece piece, Slab slab)
+    {
+        TurnPathOff();
+        Vector2 pieceCords = GetPieceCorrdinates(piece.Identifier);
+        Vector2 translation = GetTranslation(piece, slab);
+        Vector2 step = translation.normalized;
+        SetPath(translation, pieceCords, step, piece.Identifier);
+        if(piece.Orientation.Equals(Orientation.BOTH))
+        {
+            if (step.y + step.x > 0)
+                pieceCords += new Vector2(step.y, step.x);
+            else
+                pieceCords -= new Vector2(step.y, step.x);
+            SetPath(translation, pieceCords, step, piece.Identifier);
+        }
+    }
+
+    private void SetPath(Vector2 translation, Vector2 pieceCords, Vector2 step, char identifier)
+    {
+        int limit = (int)translation.magnitude;
+        for (int i = 0; i <= limit; i++)
+        {
+            int y = (int)(pieceCords + step * i).y;
+            int x = (int)(pieceCords + step * i).x;
+
+            if (!(matrix[x, y].Equals('.') || matrix[x, y].Equals(identifier))) break;
+
+            Slab s = Board[y + x * matrix.GetLength(0)].GetComponent<Slab>();
+
+            if (s == null)
+            {
+                Debug.LogError("No Slab");
+                continue;
+            }
+
+            AddHighlight(s);
+        }
     }
 }
 
