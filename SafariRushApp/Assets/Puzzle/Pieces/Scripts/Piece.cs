@@ -12,13 +12,14 @@ public class Piece : MonoBehaviour
     public PieceType type;
     public Orientation Orientation { get; set; }
     public Puzzle Puzzle { get; set; }
+    public AudioEmitter audioEmitter;
 
     public float moveTime;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        audioEmitter = GetComponent<AudioEmitter>();
     }
 
     // Update is called once per frame
@@ -27,7 +28,7 @@ public class Piece : MonoBehaviour
         
     }
 
-    public void Init(Orientation orientation, int x, int y, char identifier, Puzzle puzzle, Vector3 pos)
+    public virtual void Init(Orientation orientation, int x, int y, char identifier, Puzzle puzzle, Vector3 pos)
     {
         transform.position = pos;
         Orientation = orientation;
@@ -52,6 +53,8 @@ public class Piece : MonoBehaviour
         }
         stepables.Add(identifier);
         Puzzle = puzzle;
+        if (audioEmitter != null)
+            Debug.Log(audioEmitter.volume);
     }
 
     public MoveData TryMove(Vector2 v)
@@ -108,7 +111,7 @@ public class Piece : MonoBehaviour
         int m = (int)(v.x + v.y);
         if (m == 0) return new MoveData(0, Direction.NONE, Identifier);
         StopAllCoroutines();
-        StartCoroutine(Translate(transform.position + new Vector3(v.x, 0, v.y)));
+        StartCoroutine(Translate(v));
 
         Direction d;
         if (Mathf.Abs(v.x) > Mathf.Abs(v.y))
@@ -127,16 +130,18 @@ public class Piece : MonoBehaviour
         return md;
     }
 
-    IEnumerator Translate(Vector3 v)
+    public virtual IEnumerator Translate(Vector2 move)
     {
+        Vector3 v = transform.position + new Vector3(move.x, 0, move.y);
+        audioEmitter.MakeSound(audioEmitter.audios[Random.Range(0,audioEmitter.audios.Count)].name);
         float elapsedTime = 0;
-        while (elapsedTime < moveTime/GameManager.Options.Speed)
+        while (elapsedTime < moveTime/GameManager.Speed)
         {
-            transform.position = Vector3.Lerp(transform.position, v, (elapsedTime / (moveTime/GameManager.Options.Speed)));
+            transform.position = Vector3.Lerp(transform.position, v, (elapsedTime / (moveTime/GameManager.Speed)));
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-
+        //audioEmitter.StopBackground();
         transform.position = v;
     }
 }
