@@ -9,10 +9,10 @@ public struct OptionsData
     {
         Volume = volume;
         Speed = speed;
-        Langauge = langauge;
+        Language = langauge;
     }
 
     public float Volume { get; set; }
     public int Speed { get; set; }
-    public Language Langauge { get; set; }
+    public Language Language { get; set; }
 }

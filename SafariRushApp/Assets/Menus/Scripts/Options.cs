@@ -19,8 +19,8 @@ public class Options : MultiLanguageUI
 
     private void OnEnable()
     {
-        volume.value = GameManager.Options.Volume;
-        speed.value = GameManager.Options.Speed;
+        volume.value = GameManager.Volume;
+        speed.value = GameManager.Speed;
 
         SetVolume();
         SetSpeed();
@@ -30,19 +30,19 @@ public class Options : MultiLanguageUI
     public void SetVolume()
     {
         volumeDisplay.text = ((int)(volume.value * 100)).ToString();
-        GameManager.SetVolume(volume.value);
+        GameManager.Volume = (volume.value);
     }
 
     public void SetSpeed()
     {
         speedDisplay.text = speed.value.ToString();
-        GameManager.SetSpeed((int)speed.value);
+        GameManager.Speed = ((int)speed.value);
     }
 
     public void SetLanguage(int i)
     {
         int length = Enum.GetValues(typeof(Language)).Length;
-        int id = (int)GameManager.Options.Langauge + i;
+        int id = (int)GameManager.Language + i;
         if (id < 0)
         {
             id += length; 

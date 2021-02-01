@@ -155,6 +155,7 @@ public class PHPManager : MonoBehaviour
         yield return StartCoroutine(querier.RegisterGame("RegisterGame", data, (b) => succes = b,
             (s) =>
             {
+                Debug.Log(s);
                 string[] lines = (s as string).Split(';');
                 playerR = int.Parse(lines[0]);
                 puzzleR = int.Parse(lines[1]);
@@ -211,7 +212,7 @@ public class QuerieCoroutine
     public void Abort()
     {
         Running = false;
-        Debug.Log("Coroutine Aborted: " + Coroutine.ToString());
+        //Debug.Log("Coroutine Aborted: " + Coroutine.ToString());
         AbortFunction.Invoke();
     }
 }

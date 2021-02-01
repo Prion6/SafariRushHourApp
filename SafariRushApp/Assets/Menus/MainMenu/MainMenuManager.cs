@@ -12,7 +12,6 @@ public class MainMenuManager : SceneManager
 
     public void Awake()
     {
-        disclaimer.SetActive(false);
     }
 
     private void Start()
@@ -20,6 +19,7 @@ public class MainMenuManager : SceneManager
         disclaimer.SetActive(!GameManager.IsRegistered);
         LoadLanguage();
         GameManager.OnLanguageChange.AddListener(LoadLanguage);
+        GameManager.OnVolumeChange.Invoke();
     }
 
     public void PlayLevel()
@@ -35,5 +35,10 @@ public class MainMenuManager : SceneManager
             disclaimerTxt.text = GameManager.GetText(disclaimerTxt.name);
         }
     }
-           
+
+    public void OnApplicationQuit()
+    {
+        GameManager.Quit();
+    }
+
 }

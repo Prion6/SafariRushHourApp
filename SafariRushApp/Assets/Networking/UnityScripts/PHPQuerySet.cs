@@ -109,6 +109,7 @@ public class PHPQuerySet : ScriptableObject
             {
                 callback(true);
                 action(www.downloadHandler.text);
+                Debug.Log(www.downloadHandler.text);
             }
         }
     }

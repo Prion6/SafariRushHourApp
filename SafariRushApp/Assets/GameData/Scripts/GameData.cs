@@ -63,7 +63,7 @@ public class GameData
     {
         foreach(TextDataBase tdb in languages)
         {
-            if(tdb.langauge.Equals(Options.Langauge))
+            if(tdb.langauge.Equals(Options.Language))
             {
                 return tdb.Dictionary[key];
             }
@@ -102,7 +102,7 @@ public class GameData
         }
     }
 
-    public void SetVolume(float i)
+    public void SetVolume(int i)
     {
         Options.Volume = i;
     }
@@ -119,7 +119,7 @@ public class GameData
 
     public void SetLanguage(Language l)
     {
-        Options.Langauge = l;
+        Options.Language = l;
     }
 
     public void LoadData()
@@ -133,7 +133,7 @@ public class GameData
         }
         else
         {
-            Options = new OptionsData(0.3f,5,Language.ENGLISH);
+            Options = new OptionsData(30,5,Language.ENGLISH);
         }
     }
 

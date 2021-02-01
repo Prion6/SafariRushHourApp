@@ -33,6 +33,7 @@ public class GameManager
     }
 
     public static UnityEvent OnLanguageChange = new UnityEvent();
+    public static UnityEvent OnVolumeChange = new UnityEvent();
 
     public static void SetLanguages(List<TextDataBase> l)
     {
@@ -41,19 +42,24 @@ public class GameManager
     
     public static PuzzleData Puzzle { get; set; }
 
-    public static OptionsData Options { get { return GameData.Options; } set {GameData.Options = value;} }
+    //public static OptionsData Options { get { return GameData.Options; } set {GameData.Options = value;} }
 
     public static int SelectionOffset { get { return GameData.selectionOffset; } set { GameData.selectionOffset = value; } }
+    
+    public static float Volume {
+        get { return GameData.Options.Volume; }
+        set {
+            GameData.Options.Volume = value;
+            OnVolumeChange.Invoke();
+        } }
 
-    public static void SetVolume(float i)
-    {
-        GameData.SetVolume(i);
-    }
+    public static int Speed { get { return GameData.Options.Speed; } set { GameData.Options.Speed = value; } }
 
-    public static void SetSpeed(int i)
-    {
-        GameData.SetSpeed(i);
-    }
+    public static Language Language { get {
+            return GameData.Options.Language; }
+        set {
+            GameData.Options.Language = value;
+            OnLanguageChange.Invoke(); } }
 
     public static void SetLanguage(Language l)
     {
@@ -117,6 +123,7 @@ public class GameManager
     {
         GameData.PlayerData = player;
         PHPManager.RegisterUser(player);
+        GameData.SaveData();
     }
 
     public static void RegisterGame(StatisticData data)

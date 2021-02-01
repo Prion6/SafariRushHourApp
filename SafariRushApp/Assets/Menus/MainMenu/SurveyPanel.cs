@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+    
 public class SurveyPanel : MultiLanguageUI
 {
     public InputField nickname;
@@ -27,6 +27,8 @@ public class SurveyPanel : MultiLanguageUI
 
     public GameObject nameError;
     public GameObject ageError;
+
+    public Image image;
 
     private void Start()
     {
@@ -86,6 +88,7 @@ public class SurveyPanel : MultiLanguageUI
     {
         GameManager.IsRegistered = true;
         GameManager.RegisterNewPlayer(GetPlayerData());
+        if (GameManager.IsRegistered) image.color = Color.blue;
     }
 
     public override void LoadLanguage()
