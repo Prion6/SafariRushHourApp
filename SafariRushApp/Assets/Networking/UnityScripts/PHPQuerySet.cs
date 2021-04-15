@@ -16,7 +16,7 @@ public class PHPQuerySet : ScriptableObject
 
         using (UnityWebRequest www = UnityWebRequest.Post(URL + URN + ".php", form))
         {
-            www.timeout = 5;
+            www.timeout = 3;
 
             yield return www.SendWebRequest();
             
@@ -27,7 +27,7 @@ public class PHPQuerySet : ScriptableObject
             else
             {
                 callback(www.downloadHandler.text);
-                //Debug.Log(www.downloadHandler.text);
+                //Debug.Log("Puzzle");
             }
         }
     }
@@ -52,7 +52,7 @@ public class PHPQuerySet : ScriptableObject
 
         using (UnityWebRequest www = UnityWebRequest.Post(URL + URN + ".php", form))
         {
-            www.timeout = 1;
+            www.timeout = 5;
 
             yield return www.SendWebRequest();
 
@@ -62,8 +62,8 @@ public class PHPQuerySet : ScriptableObject
             }
             else
             {
-                Debug.Log("Player registered");
                 callback(www.downloadHandler.text);
+                //Debug.Log("Player registered:" + www.downloadHandler.text);
             }
         }
     }
@@ -83,10 +83,9 @@ public class PHPQuerySet : ScriptableObject
         $undos = $_POST["undos"];
         $proficiency = $_POST["proficiency"];
         */
-
         form.AddField("playerID", gameData.PlayerID);
         form.AddField("puzzleID", gameData.PuzzleID);
-        form.AddField("date", gameData.Date.ToLongDateString());
+        form.AddField("date", gameData.Date.ToString("yyyy-MM-dd"));
         form.AddField("duration", gameData.Duration);
         form.AddField("rawMoves", gameData.RawMoves);
         form.AddField("playerDifficultyEvaluation", gameData.PlayerDifficultyEvaluation);
@@ -97,24 +96,25 @@ public class PHPQuerySet : ScriptableObject
 
         using (UnityWebRequest www = UnityWebRequest.Post(URL + URN + ".php", form))
         {
-            www.timeout = 5;
-
+            www.timeout = 30;
             yield return www.SendWebRequest();
 
             if (www.isNetworkError || www.isHttpError)
             {
+                Debug.LogError(www.error);
+                Debug.Log(www.downloadHandler.text);
                 callback(false);
             }
             else
             {
+                Debug.Log("Game Registered: " + www.downloadHandler.text);
                 callback(true);
                 action(www.downloadHandler.text);
-                Debug.Log(www.downloadHandler.text);
             }
         }
     }
 
-    public IEnumerator GetHint(string URN, string puzzle)
+    public IEnumerator GetHint(string URN, string puzzle, System.Action<string> getHint)
     {
         WWWForm form = new WWWForm();
         /*
@@ -135,7 +135,53 @@ public class PHPQuerySet : ScriptableObject
             }
             else
             {
-                Debug.Log(www.downloadHandler.text);
+                getHint(www.downloadHandler.text);
+                //Debug.Log("Hint: " + www.downloadHandler.text);
+            }
+        }
+    }
+
+    public IEnumerator GetPlayerInfo(string URN, System.Action<string> fetchPlayerInfo)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("id", GameManager.PlayerID);
+
+        using (UnityWebRequest www = UnityWebRequest.Post(URL + URN + ".php", form))
+        {
+            www.timeout = 5;
+
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                //Debug.Log("Player: " + www.downloadHandler.text);
+                fetchPlayerInfo(www.downloadHandler.text);
+            }
+        }
+    }
+
+    public IEnumerator GetLeaderBoard(string URN, System.Action<string> fetchLeaderBoard)
+    {
+        WWWForm form = new WWWForm();
+
+        using (UnityWebRequest www = UnityWebRequest.Post(URL + URN + ".php", form))
+        {
+            www.timeout = 5;
+
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                fetchLeaderBoard(www.downloadHandler.text);
+                //Debug.Log("leaderBoard: " + www.downloadHandler.text);
             }
         }
     }

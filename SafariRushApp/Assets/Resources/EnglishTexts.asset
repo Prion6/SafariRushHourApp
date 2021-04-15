@@ -15,7 +15,10 @@ MonoBehaviour:
   langauge: 0
   texts:
   - uiElement: DisclaimerTxt
-    text: This is a disclaimer, do you agree?
+    text: This game is part of a research project in automated difficulty assessment
+      and adjustment. We do not collect any personally identifiable information.
+      By continuing, you are agreeing to to let us collect all your interactions
+      with this game.
   - uiElement: NameQTxt
     text: 'Nickname:'
   - uiElement: AgeQTxt

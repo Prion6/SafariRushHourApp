@@ -15,7 +15,10 @@ MonoBehaviour:
   langauge: 1
   texts:
   - uiElement: DisclaimerTxt
-    text: Esto es un disclaimer
+    text: "Este juego es parte de un proyecto de investigaci\xF3n en an\xE1lisis
+      y ajuste autom\xE1tico de dificultad. No guardamos informaci\xF3n de identificaci\xF3n
+      personal. Al continuar, est\xE1 autoriz\xE1ndonos a recolectar todas sus interacciones
+      con este juego."
   - uiElement: NameQTxt
     text: 'Nombre:'
   - uiElement: AgeQTxt

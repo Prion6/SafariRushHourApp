@@ -67,6 +67,8 @@ public class GameManager
         OnLanguageChange?.Invoke();
     }
 
+    public static PlayerData PlayerData { get { return GameData.PlayerData; } }
+
     public static int LowerAge
     {
         get { return GameData.LowerAge; }
@@ -75,6 +77,7 @@ public class GameManager
     public static int PlayerID
     {
         get { return GameData.PlayerData.ID; }
+        set { GameData.PlayerData.ID = value; }
     }
 
     public static int PlayerRanking
@@ -119,6 +122,12 @@ public class GameManager
         set { GameData.Registered = value; }
     }
 
+    public static void SetPlayerData(int age, int educationalLevel)
+    {
+        GameData.PlayerData.Age = age;
+        GameData.PlayerData.EducationalLevel = educationalLevel;
+    }
+
     public static void RegisterNewPlayer(PlayerData player)
     {
         GameData.PlayerData = player;
@@ -131,6 +140,16 @@ public class GameManager
         PHPManager.RegisterGame(data);
     }
 
+    public static void GetPlayerInfo(System.Action<string> fetchPlayerInfo)
+    {
+        PHPManager.GetPlayerInfo(fetchPlayerInfo);
+    }
+
+    public static void GetLeaderBoard(System.Action<string> fetchLeaderBoard)
+    {
+        PHPManager.GetLeaderBoard(fetchLeaderBoard);
+    }
+
     public static void StoreGameData(StatisticData data)
     {
         GameData.AddGameData(data);
@@ -141,9 +160,9 @@ public class GameManager
         GameData.FreeGameData(data);
     }
 
-    public static void GetHint(string puzzle)
+    public static void GetHint(string puzzle, System.Action<bool> isPaused, System.Action<string> getHint)
     {
-        PHPManager.GetHint(puzzle);
+        PHPManager.GetHint(puzzle, isPaused, getHint);
     }
 
     public static void UpdateData()

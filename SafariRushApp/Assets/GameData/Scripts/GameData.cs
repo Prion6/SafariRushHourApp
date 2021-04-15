@@ -33,11 +33,14 @@ public class GameData
         Load();
     }
 
+
+
     public void Load()
     {
         LoadPuzzlePool();
         LoadLanguages();
         LoadData();
+        //PrintOptimal();
     }
 
     public void LoadLanguages()
@@ -69,6 +72,16 @@ public class GameData
             }
         }
         return "Text not found";
+    }
+
+    public void PrintOptimal()
+    {
+        var ops = Puzzles.OrderBy(p => p.OptimalMoves);
+        var arr = ops.ToArray();
+        for(int i = 0; i < arr.Length; i++)
+        {
+            Debug.Log(": " + arr[i].OptimalMoves + "\t-----\t" + arr[i].ID);
+        }
     }
     
     public PuzzleData GetPuzzle(int ranking)

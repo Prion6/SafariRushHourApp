@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28480543222da4a45b51a14af2e73466, type: 3}
   m_Name: PHP Query Set
   m_EditorClassIdentifier: 
-  URL: http://localhost/SafariRushHourServer/
+  URL: https://interactive.utalca.cl/nbarriga/TombScrambleDataBase/

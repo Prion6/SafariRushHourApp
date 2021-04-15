@@ -52,8 +52,12 @@ public class SurveyPanel : MultiLanguageUI
 
     public PlayerData GetPlayerData()
     {
-        return new PlayerData(nickname.text, ageTens.value * 10 + ageUnits.value, (int)(expertiseRushHour.value * 100),
-            (int)(expertisePuzzle.value * 100), (int)(expertiseMobile.value * 100), (int)educationalLevel.value);
+        int i = 0;
+        if (educationComplete.isOn)
+            i = 1;
+
+        return new PlayerData(nickname.text, ageTens.value * 10 + ageUnits.value, (int)(expertiseRushHour.value),
+            (int)(expertisePuzzle.value), (int)(expertiseMobile.value), (int)educationalLevel.value*2 + i);
     }
 
     public SurveyError CheckPlayerData()

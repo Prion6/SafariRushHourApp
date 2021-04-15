@@ -53,8 +53,6 @@ public class Piece : MonoBehaviour
         }
         stepables.Add(identifier);
         Puzzle = puzzle;
-        if (audioEmitter != null)
-            Debug.Log(audioEmitter.volume);
     }
 
     public MoveData TryMove(Vector2 v)

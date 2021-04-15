@@ -691,8 +691,8 @@ MonoBehaviour:
       vv..hb.
 
       vv..hb.'
-    Matches: 23
-    OptimalMoves: 0
+    Matches: 0
+    OptimalMoves: 23
   - ID: 35
     Label: A5
     Ranking: 1600

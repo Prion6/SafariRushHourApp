@@ -25,8 +25,8 @@ public static class DataManager
     /// <returns></returns>
     public static T NewData<T>(string name = "")
     {
-        string path = DirectoryPath + "/" + name + "Data.dat";
-        //string path = Application.persistentDataPath + "/" + name + "Data.dat";
+        //string path = DirectoryPath + "/" + name + "Data.dat";
+        string path = Application.persistentDataPath + "/" + name + "Data.dat";
         T newData;
 
         if (File.Exists(path))
@@ -53,8 +53,8 @@ public static class DataManager
     /// <param name="name"></param>
     public static T SaveData<T>(T data, string name = "")
     {
-        string path = DirectoryPath + "/" + name + "Data.dat";
-        //string path = Application.persistentDataPath + "/" + name + "Data.dat";
+        //string path = DirectoryPath + "/" + name + "Data.dat";
+        string path = Application.persistentDataPath + "/" + name + "Data.dat";
         
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Create);
@@ -73,8 +73,8 @@ public static class DataManager
     {
         T instance;
 
-        string path = DirectoryPath + "/" + name + "Data.dat";
-        //string path = Application.persistentDataPath + "/" + name + "Data.dat";
+        //string path = DirectoryPath + "/" + name + "Data.dat";
+        string path = Application.persistentDataPath + "/" + name + "Data.dat";
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();

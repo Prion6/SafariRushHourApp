@@ -21,6 +21,7 @@ public class Puzzle : MonoBehaviour
     public int step;
 
     public List<Slab> highlighted;
+    public List<Slab> hinted;
 
     // Start is called before the first frame update
     void Awake()
@@ -196,6 +197,7 @@ public class Puzzle : MonoBehaviour
         {
             matrix[(int)v.x, (int)v.y] = identifier;
         }
+        TurnHintOff();
     }
 
     public Vector2 GetPieceCorrdinates(char identifier)
@@ -205,10 +207,22 @@ public class Puzzle : MonoBehaviour
             for (int j = 0; j < matrix.GetLength(0); j++)
             {
                 if (matrix[i, j].Equals(identifier))
-                    return new Vector2(i, j);
+                    return new Vector2(j, i);
             }
         }
         return new Vector2(-1, -1);
+    }
+
+    public Piece GetPiece(char identifier)
+    {
+        foreach(Piece p in gamePieces)
+        {
+            if(p.Identifier.Equals(identifier))
+            {
+                return p;
+            }
+        }
+        return null;
     }
 
     private PieceType GetPieceType(char c)
@@ -302,29 +316,32 @@ public class Puzzle : MonoBehaviour
     public Vector2 GetTranslation(Piece piece, Slab slab)
     {
         Vector2 pieceCords = GetPieceCorrdinates(piece.Identifier);
+        //Debug.Log("PCoords: " + pieceCords);
         int slabIndex = Board.IndexOf(slab.gameObject);
-        Vector2 slabCords = new Vector2(slabIndex / matrix.GetLength(0), slabIndex % matrix.GetLength(0));
+        Vector2 slabCords = new Vector2(slabIndex % matrix.GetLength(0), slabIndex / matrix.GetLength(0));
+        //Debug.Log("SCoords: " + slabCords);
         Vector2 translation = slabCords - pieceCords;
         switch (piece.Orientation)
         {
             case Orientation.HORIZONTAL:
-                translation *= new Vector2(1, 0);
+                translation *= new Vector2(0, 1);
                 break;
             case Orientation.VERTICAL:
-                translation *= new Vector2(0, 1);
+                translation *= new Vector2(1, 0);
                 break;
             case Orientation.BOTH:
                 translation *= (Mathf.Abs(translation.x) > Mathf.Abs(translation.y)) ? new Vector2(1, 0) : new Vector2(0, 1);
+                //faltan condiciones
                 break;
         }
+        //Debug.Log(piece.Identifier + " Trans: " + translation);
         return translation;
     }
 
-    public void AddHighlight(Slab s)
+    public void Highlight()
     {
-        if (!highlighted.Contains(s))
+        foreach(Slab s in highlighted)
         {
-            highlighted.Add(s);
             s.SetSelected(true);
         }
 
@@ -336,37 +353,124 @@ public class Puzzle : MonoBehaviour
         Vector2 pieceCords = GetPieceCorrdinates(piece.Identifier);
         Vector2 translation = GetTranslation(piece, slab);
         Vector2 step = translation.normalized;
-        SetPath(translation, pieceCords, step, piece.Identifier);
-        if(piece.Orientation.Equals(Orientation.BOTH))
+        highlighted = SetPath(translation, pieceCords, step, piece.Identifier);
+        if (piece.Orientation.Equals(Orientation.BOTH))
         {
             if (step.y + step.x > 0)
+            {
                 pieceCords += new Vector2(step.y, step.x);
+            }
             else
+            {
+                translation += step;
+                if (step.x > step.y)
+                {
+                    pieceCords += new Vector2(0, 1);
+                }
+                else
+                {
+                    pieceCords += new Vector2(1, 0);
+                }
+                highlighted = SetPath(translation, pieceCords, step, piece.Identifier);
                 pieceCords -= new Vector2(step.y, step.x);
-            SetPath(translation, pieceCords, step, piece.Identifier);
+            }
+            highlighted.AddRange(SetPath(translation, pieceCords, step, piece.Identifier));
         }
+        Highlight();
     }
 
-    private void SetPath(Vector2 translation, Vector2 pieceCords, Vector2 step, char identifier)
+    private List<Slab> SetPath(Vector2 translation, Vector2 pieceCords, Vector2 step, char identifier)
     {
+        List<Slab> slabs = new List<Slab>();
         int limit = (int)translation.magnitude;
+        //Debug.Log(pieceCords + " move : " + limit);
         for (int i = 0; i <= limit; i++)
         {
             int y = (int)(pieceCords + step * i).y;
             int x = (int)(pieceCords + step * i).x;
 
-            if (!(matrix[x, y].Equals('.') || matrix[x, y].Equals(identifier))) break;
+            //if (!(matrix[x, y].Equals('.') || matrix[x, y].Equals(identifier))) break;
 
-            Slab s = Board[y + x * matrix.GetLength(0)].GetComponent<Slab>();
+            //Debug.Log("X: " + x + " - Y: " + y);
+
+            Slab s = Board[x + y * matrix.GetLength(0)].GetComponent<Slab>();
 
             if (s == null)
             {
                 Debug.LogError("No Slab");
                 continue;
             }
-
-            AddHighlight(s);
+            if (!slabs.Contains(s))
+                slabs.Add(s);
         }
+        return slabs;
+    }
+
+    public void Hint()
+    {
+        //Debug.Log(hinted.Count);
+        foreach (Slab s in hinted)
+        {
+            s.SetHint(true);
+            //Debug.Log(s.gameObject);
+        }
+
+    }
+
+    public void TurnHintOff()
+    {
+        foreach (Slab s in hinted)
+        {
+            s.SetHint(false);
+        }
+        highlighted.Clear();
+    }
+
+    public void ShowHint(MoveData move)
+    {
+        Vector2 coord = GetPieceCorrdinates(move.identifier);
+        Vector2 step = Vector2.zero;
+        Piece p = GetPiece(move.identifier);
+
+        switch(move.direction)
+        {
+            case Direction.d: step += new Vector2(0, 1);
+                move.magnitude += (int)p.dimension.x - 1;
+                break;
+            case Direction.u: step += new Vector2(0, -1);
+                break;
+            case Direction.l: step += new Vector2(-1, 0);
+                break;
+            case Direction.r: step += new Vector2(1, 0);
+                move.magnitude += (int)p.dimension.x - 1;
+                break;
+        }
+        Vector2 translation = step*move.magnitude;
+        hinted = SetPath(translation,coord,step,move.identifier);
+
+        if (p.Orientation.Equals(Orientation.BOTH))
+        {
+            if (step.y + step.x > 0)
+            {
+                coord += new Vector2(step.y, step.x);
+            }
+            else
+            {
+                translation += step;
+                if (step.x > step.y)
+                {
+                    coord += new Vector2(0, 1);
+                }
+                else
+                {
+                    coord += new Vector2(1, 0);
+                }
+                hinted = SetPath(translation, coord, step, p.Identifier);
+                coord -= new Vector2(step.y, step.x);
+            }
+            hinted.AddRange(SetPath(translation, coord, step, p.Identifier));
+        }
+        Hint();
     }
 }
 

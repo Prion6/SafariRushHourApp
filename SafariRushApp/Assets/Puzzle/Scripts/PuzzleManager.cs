@@ -200,13 +200,13 @@ public class PuzzleManager : SceneManager
                 }
             }
         }
-        Debug.Log(md.identifier.ToString() + md.direction.ToString() + md.magnitude + " - " + undo.identifier + undo.direction + undo.magnitude);
+        //Debug.Log(md.identifier.ToString() + md.direction.ToString() + md.magnitude + " - " + undo.identifier + undo.direction + undo.magnitude);
         if (undo.magnitude == 0) return;
         UndoUsed++;
         register.RemoveAt(register.Count-1);
         Moves--;
         hudController.SetMoves(Moves);
-        Debug.Log("Count: " + register.Count);
+        //Debug.Log("Count: " + register.Count);
     }
 
     private void GetMovementRegister(out string rawMovements, out string effectiveMovements)
@@ -330,11 +330,11 @@ public class PuzzleManager : SceneManager
     {
         int evaluation = (int)winPanel.GetPlayerEvaluation();
 
-        StatisticData data = new StatisticData(Puzzle.data.ID, GameManager.PlayerID, DateTime.Now, (int)Timer, movements,
+        StatisticData data = new StatisticData(Puzzle.data.ID, GameManager.PlayerID, DateTime.Now.Date, (int)Timer, movements,
                                             evaluation, HintUsed, restarts.Count, UndoUsed, (float)proficiency);
         GameManager.RegisterGame(data);
     }
-
+    
     public void Continue()
     {
         GetMovementRegister(out string raw, out string effective);
@@ -358,10 +358,36 @@ public class PuzzleManager : SceneManager
 
     public void GetHint()
     {
+        if (!running) return;
         string p = Puzzle.PrintMatrix().Replace("0", "");
         string s = string.Join(" ", "P", Puzzle.data.Label, "\n", p, "\n");
-        //Debug.Log(s);
-        GameManager.GetHint(s);
+        GameManager.GetHint(s, (b) => running = !b, 
+            (h) =>
+            {
+                string[] hint = h.Split(' ');
+                ShowHint(hint[1]);
+            }
+        );
+    }
+
+    public void ShowHint(string hint)
+    {
+        //if (hint.Length < 3) return;
+        char identifier = hint[0];
+        Direction dir = Direction.NONE;
+        switch(hint[1])
+        {
+            case 'd': dir = Direction.d; break;
+            case 'u': dir = Direction.u; break;
+            case 'l': dir = Direction.l; break;
+            case 'r': dir = Direction.r; break;
+            //default: return;
+        }
+        int magnitude = int.Parse(hint[2].ToString());
+        //if (magnitude <= 0) return;
+
+        MoveData move = new MoveData(magnitude,dir,identifier);
+        Puzzle.ShowHint(move);
     }
 
     private void OnApplicationQuit()

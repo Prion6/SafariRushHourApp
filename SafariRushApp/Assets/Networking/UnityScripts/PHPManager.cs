@@ -80,13 +80,13 @@ public class PHPManager : MonoBehaviour
     {
         setRunning(true);
         string puzzle = null;
-        yield return StartCoroutine(querier.GetPuzzle("GetPuzzle",id, delta, (s) => puzzle = s));
+        yield return StartCoroutine(querier.GetPuzzle("GetPuzzle", delta, id, (s) => puzzle = s));
         if (puzzle != null)
         {
             string[] data = puzzle.Split(';');
-            if (data.Length != 4 || !int.TryParse(data[0], out int pID) || !int.TryParse(data[2], out int rank) || !int.TryParse(data[4], out int optimal))
+            if (data.Length != 5 || !int.TryParse(data[0], out int pID) || !int.TryParse(data[2], out int rank) || !int.TryParse(data[4], out int optimal))
             {
-                //Debug.Log("Format Error");
+                Debug.Log("Format Error");
                 GameManager.SetBackUpPuzzle(delta);
             }
             else
@@ -109,7 +109,7 @@ public class PHPManager : MonoBehaviour
     {
         QuerieCoroutine c = new QuerieCoroutine(sendTimeOut, new System.Action(() => AbortRegisterUser()));
 
-        c.Coroutine = StartCoroutine(RegisterUserQuerie(playerData, (i) => playerData.ID = i, (b) => c.Running = b));
+        c.Coroutine = StartCoroutine(RegisterUserQuerie(playerData, (i) => GameManager.PlayerID = i, (b) => c.Running = b));
         queries.Add(c);
     }
 
@@ -124,10 +124,7 @@ public class PHPManager : MonoBehaviour
         int id = -1;
         bool succes = false;
         yield return StartCoroutine(querier.RegisterPlayer("RegisterPlayer",playerData,(s) => succes = int.TryParse(s, out id)));
-        if (succes)
-        {
-            callback(id);
-        }
+        callback(id);
         setRunning(false);
     }
 
@@ -157,6 +154,7 @@ public class PHPManager : MonoBehaviour
             {
                 Debug.Log(s);
                 string[] lines = (s as string).Split(';');
+                Debug.Log(lines[0] + " - " + lines[1]);
                 playerR = int.Parse(lines[0]);
                 puzzleR = int.Parse(lines[1]);
             }));
@@ -174,23 +172,68 @@ public class PHPManager : MonoBehaviour
     }
 
     ///GetHint///
-    public void GetHint(string puzzle)
+    public void GetHint(string puzzle, System.Action<bool> isPaused, System.Action<string> getHint)
     {
-        QuerieCoroutine c = new QuerieCoroutine(60, new System.Action(() => AbortRegisterGame()));
+        QuerieCoroutine c = new QuerieCoroutine(60, new System.Action(() => AbortGetHint(isPaused)));
 
-        c.Coroutine = StartCoroutine(GetHintQuerie(puzzle, (b) => c.Running = b));
+        c.Coroutine = StartCoroutine(GetHintQuerie(puzzle, (b) => c.Running = b, isPaused, getHint));
         queries.Add(c);
     }
 
-    private void AbortGetHint()
+    private void AbortGetHint(System.Action<bool> isPaused)
     {
+        isPaused(false);
         Debug.Log("Couldn't get hint");
     }
 
-    private IEnumerator GetHintQuerie(string puzzle, System.Action<bool> setRunning)
+    private IEnumerator GetHintQuerie(string puzzle, System.Action<bool> setRunning, System.Action<bool> isPaused, System.Action<string> getHint)
     {
         setRunning(true);
-        yield return StartCoroutine(querier.GetHint("GetHint", puzzle));
+        isPaused(true);
+        yield return StartCoroutine(querier.GetHint("GetHint", puzzle, getHint));
+        isPaused(false);
+        setRunning(false);
+    }
+
+    ///GetPlayerInfo///
+    public void GetPlayerInfo(System.Action<string> fetchPlayerInfo)
+    {
+        QuerieCoroutine c = new QuerieCoroutine(fetchTimeOut, new System.Action(() => AbortGetPlayerInfo()));
+
+        c.Coroutine = StartCoroutine(GetPlayerInfoQuerie((b) => c.Running = b, fetchPlayerInfo));
+        queries.Add(c);
+    }
+
+    public void AbortGetPlayerInfo()
+    {
+        Debug.Log("Couldn't get player");
+    }
+
+    public IEnumerator GetPlayerInfoQuerie(System.Action<bool> setRunning, System.Action<string> fetchPlayerInfo)
+    {
+        setRunning(true);
+        yield return StartCoroutine(querier.GetPlayerInfo("GetPlayerInfo", fetchPlayerInfo));
+        setRunning(false);
+    }
+
+    ///GetPlayerInfo///
+    public void GetLeaderBoard(System.Action<string> fetchLeaderBoard)
+    {
+        QuerieCoroutine c = new QuerieCoroutine(fetchTimeOut, new System.Action(() => AbortGetLeaderBoard()));
+
+        c.Coroutine = StartCoroutine(GetLeaderBoardQuerie((b) => c.Running = b, fetchLeaderBoard));
+        queries.Add(c);
+    }
+
+    public void AbortGetLeaderBoard()
+    {
+        Debug.Log("Couldn't get LeaderBoard");
+    }
+
+    public IEnumerator GetLeaderBoardQuerie(System.Action<bool> setRunning, System.Action<string> fetchLeaderBoard)
+    {
+        setRunning(true);
+        yield return StartCoroutine(querier.GetLeaderBoard("GetLeaderBoard", fetchLeaderBoard));
         setRunning(false);
     }
 }
