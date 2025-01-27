@@ -10,10 +10,6 @@ public class MainMenuManager : SceneManager
     public SurveyPanel surveyPanel;
     public List<TextDataBase> languages;
 
-    public void Awake()
-    {
-    }
-
     private void Start()
     {
         disclaimer.SetActive(!GameManager.IsRegistered);

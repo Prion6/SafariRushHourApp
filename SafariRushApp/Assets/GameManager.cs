@@ -103,9 +103,18 @@ public class GameManager
 
     public static void LoadPuzzleScene(int ranking)
     {
-        PHPManager.GetPuzzle(GameData.PlayerData.ID, ranking);
+        //PHPManager.GetPuzzle(GameData.PlayerData.ID, ranking);
+        LevelData levelData = LevelService.GetALevelByDifficulty((LevelDifficulties)ranking);
+        PuzzleData p = new PuzzleData();
+
+        p.Puzzle = levelData.Level;
+        p.Label = levelData.Difficulty.ToString();
+
+        Debug.Log("Level to play: \n" + p.Puzzle);
+        GameManager.Puzzle = p;
+        GameManager.LoadScene("Puzzle");
     }
-    
+
     public static void SetBackUpPuzzle(int ranking)
     {
         Puzzle = GameData.GetPuzzle(ranking);

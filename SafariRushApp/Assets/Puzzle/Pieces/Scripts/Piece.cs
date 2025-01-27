@@ -7,7 +7,7 @@ public class Piece : MonoBehaviour
     public Vector2 dimension;
     public char Identifier { get; set; }
     [SerializeField]
-    private List<Vector2> Coordenates;// { get; set; }
+    public List<Vector2> Coordenates;// { get; set; }
     public List<char> stepables;
     public PieceType type;
     public Orientation Orientation { get; set; }

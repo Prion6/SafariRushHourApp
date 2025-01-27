@@ -47,7 +47,7 @@ public class PuzzleManager : SceneManager
         if (!s[0].Equals('P'))
         {
             //Obtener del pool interno
-            Debug.LogError("Format error, initial value: " + s[0] + " Puzzle: " + s);
+            //Debug.LogError("Format error, initial value: " + s[0] + " Puzzle: " + s);
 
         }
         Puzzle = FindObjectOfType<Puzzle>();
@@ -59,6 +59,8 @@ public class PuzzleManager : SceneManager
         LoadLanguage();
         difficultyPanel.SetDifficulty(GameManager.Puzzle.Ranking);
         GameManager.OnVolumeChange.Invoke();
+
+        Debug.Log("Entropía del nivel: " + Puzzle.CalculateEntropy());
     }
 
     public void Init()
@@ -341,7 +343,7 @@ public class PuzzleManager : SceneManager
         double proficiency = CalculatePerformance(raw);
         RegisterGameData(raw, proficiency);
         int delta = (int)winPanel.GetPlayerPreference();
-        GameManager.LoadPuzzleScene(Puzzle.data.Ranking + delta*GameManager.SelectionOffset);
+        GameManager.LoadPuzzleScene(UnityEngine.Random.Range(0, (int)LevelDifficulties.E));
     }
 
     public void Restart()

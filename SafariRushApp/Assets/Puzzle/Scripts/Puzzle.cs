@@ -50,26 +50,27 @@ public class Puzzle : MonoBehaviour
     public void InitMatrix(string s)
     {
         string[] lines = s.Split('\n');
-        data.Label = lines[0].Trim('P',' ','\n','\t');
+        //data.Label = lines[0].Trim('P',' ','\n','\t');
         //Difficulty = GetDifficulty(label[0]);
-        matrix = new char[(lines.Length) + 1, (lines.Length) + 1]; // -1 debido al header, +2 para agregar murallas y puertas
+        matrix = new char[(lines.Length), (lines.Length)]; // -1 debido al header, +2 para agregar murallas y puertas
         
-
+        Debug.Log(matrix.GetLength(0));
         for (int i = 0; i < matrix.GetLength(0); i++)
         {
             if(i < lines.Length)
                 lines[i] = Regex.Replace(lines[i], @"[^\w\!.@-]", "");
             for (int j = 0; j < matrix.GetLength(0); j++)
             {
-                if(i == 0 || i >= matrix.GetLength(0) - 1 || j == 0 || (j >= matrix.GetLength(0) - 1 && j > lines[i].Length))
-                {
-                    matrix[i, j] = '0';
-                    continue;
-                }
-                matrix[i, j] = lines[i][j-1];
+                //if(i == 0 || i >= matrix.GetLength(0) - 1 || j == 0 || (j >= matrix.GetLength(0) - 1 && j > lines[i].Length))
+                //{
+                //    matrix[i, j] = '0';
+                //    continue;
+                //}
+                matrix[i, j] = lines[i][j];
             }
         }
-        //PrintMatrix();
+        Debug.Log(PrintMatrix());
+        
     }
 
     public void InitBoard()
@@ -268,7 +269,7 @@ public class Puzzle : MonoBehaviour
     public string PrintMatrix()
     {
         string m = "";
-        for (int i = 1; i < matrix.GetLength(0)-1; i++)
+        for (int i = 0; i < matrix.GetLength(0); i++)
         {
             string s = "";
             for (int j = 0; j < matrix.GetLength(0); j++)
@@ -471,6 +472,57 @@ public class Puzzle : MonoBehaviour
             hinted.AddRange(SetPath(translation, coord, step, p.Identifier));
         }
         Hint();
+    }
+
+    public float CalculateEntropy()
+    {
+
+        //obtener los movimientos legales en una posición
+        //calcular la probabilidad de cada uno (todos lo movimientos tienen la misma probabilidad)
+        //calcular la entropía
+
+
+
+        return 0;
+    }
+    
+    public int CountPieceLeagalMoves(int pieceIndex)
+    {
+        if(pieceIndex < 0 || pieceIndex > gamePieces.Count)
+        {
+            return 0;
+        }
+        switch (gamePieces[pieceIndex].Orientation)
+        {
+            case Orientation.BOTH:
+                break;
+            case Orientation.HORIZONTAL:
+                break;
+            case Orientation.VERTICAL:
+                break;
+        }
+
+        return 5;
+    }
+    public bool isLegalPosition()
+    {
+        List<Vector2> coordinates = new List<Vector2>();
+
+        foreach(var piece in gamePieces)
+        {
+            foreach (var coordinate in piece.Coordenates)
+            {
+                if (!coordinates.Contains(coordinate))
+                {
+                    coordinates.Add(coordinate);
+                }
+                else
+                {
+                    return false;// the square check already contain a piece
+                }
+            }
+        }
+        return true;
     }
 }
 

@@ -1,0 +1,127 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 469c24fdb3bd6431b92cc1465bd9166b, type: 3}
+  m_Name: RemoteConfigDataStoreAsset
+  m_EditorClassIdentifier: 
+  _rsKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"07480512-00ae-49e8-91e2-fcd7f4677dff\"\r\n   
+    },\r\n    \"rs\": {\r\n      \"key\": \"Levels\",\r\n      \"type\": \"json\",\r\n     
+    \"schemaId\": null,\r\n      \"value\": {\r\n        \"P J1\": \".......\\n.rrrf..\\nhh..fq.!\\no.xx.q.!\\no.xx.q.\\nob..ee.\\n.bppp..\",\r\n       
+    \"P J2\": \".......\\n....qqq\\npppor..!\\n...orcc!\\n.eeor..\\n...xx..\\n...xx..\",\r\n       
+    \"P J3\": \"..ii...\\n.ffaa..\\n..kk...!\\n.eedd..!\\ncc..bb.\\n.hxxj..\\n.hxxj..\",\r\n       
+    \"P J4\": \"o....d.\\no..aad.\\no...hbb!\\nii..h..!\\n.xx....\\n.xxc...\\n...cqqq\",\r\n       
+    \"P J5\": \"......o\\nxx....o\\nxx....o!\\n.dee...!\\n.dhpc..\\n..hpc..\\n.jjpqqq\",\r\n       
+    \"P J6\": \"xx.h...\\nxx.h...\\n..qqqaa!\\njjrrr..!\\n..ppp..\\n..f....\\n..f....\",\r\n       
+    \"P J7\": \"....h..\\n..iiha.\\n.bbxxa.!\\n..dxxff!\\n..decc.\\n...e...\\n.......\",\r\n       
+    \"P J8\": \".rrrpff\\n....p..\\nd...p..!\\ndxxqqq.!\\n.xxe..c\\n...ebbc\\naa.ooo.\",\r\n       
+    \"P J9\": \".......\\n...pr..\\n...pr..!\\n..oprq.!\\n..oxxq.\\n.boxxqc\\n.b.ee.c\",\r\n       
+    \"P J10\": \".......\\n..ooor.\\n..xx.r.!\\n..xx.r.!\\n...peed\\n...p..d\\n...pqqq\",\r\n       
+    \"P B1\": \"...r.ii\\n.aar...\\n.h.r..c!\\n.hjjffc!\\n...kkee\\n..xx.vv\\n..xx.vv\",\r\n       
+    \"P B2\": \".......\\nuu.pppo\\nuu.qxxo!\\nsiiqxxo!\\nshbqrrr\\nshb.kk.\\n.......\",\r\n       
+    \"P B3\": \"...r...\\n...ruu.\\nc..ruu.!\\nc..a...!\\nxx.a.gg\\nxxeeff.\\n.hhjj..\",\r\n       
+    \"P B4\": \".cqqqp.\\n.c.j.p.\\nvv.j.p.!\\nvveexx.!\\nr.h.xx.\\nr.h.b..\\nrooob..\",\r\n       
+    \"P B5\": \".......\\n...f...\\nbb.f.jj!\\n.xxuuh.!\\n.xxuuh.\\nii.a.gg\\n...a...\",\r\n       
+    \"P B6\": \".......\\n.......\\n.peaao.!\\n.peffo.!\\n.prrro.\\n.xxqqq.\\n.xx....\",\r\n       
+    \"P B7\": \".uu.jj.\\niuuh..a\\ni..h..a!\\n.bb.ff.!\\nxx.e..c\\nxx.evvc\\n.dd.vv.\",\r\n       
+    \"P B8\": \"xx.ppp.\\nxx.uu..\\n.aauucc!\\n...qr..!\\n...qr..\\n...qr..\\n..hhjj.\",\r\n       
+    \"P B9\": \"...f...\\n..afp..\\n.ha.pe.!\\n.hxxpe.!\\njjxxdcc\\n..i.d..\\n..ibb..\",\r\n       
+    \"P B10\": \".......\\n...aff.\\n..ra.eq!\\n..rcceq!\\n..rgvvq\\nxx.gvv.\\nxx.....\",\r\n       
+    \"P I11\": \"vvc....\\nvvc....\\nqqquui.!\\n...uui.!\\nxxdooo.\\nxxd....\\nppp....\",\r\n       
+    \"P I12\": \"...uu..\\n...uui.\\n..xx.i.!\\nvvxxooo!\\nvv.q.bb\\n.ccqe..\\n...qe..\",\r\n       
+    \"P I13\": \"ppp.ee.\\n.xx.r.c\\n.xx.r.c!\\n.qqqr.a!\\n...jvva\\nh..jvv.\\nh.ffooo\",\r\n       
+    \"P I14\": \"hh.dd..\\n.....i.\\nqooo.i.!\\nqxxp...!\\nqxxp.b.\\nrrrp.b.\\n.......\",\r\n       
+    \"P I15\": \"jjhh...\\n.uu...g\\nauu.r.g!\\naiiprcq!\\nf..prcq\\nfxxpvvq\\n.xx.vv.\",\r\n       
+    \"P I16\": \".hhjj..\\n..ff...\\n.aavv..!\\niiovvq.!\\nxxoeeq.\\nxxodcq.\\n.bbdc..\",\r\n       
+    \"P I17\": \".......\\noooa...\\npvva...!\\npvvcc..!\\npeeqqq.\\nxxrrrkj\\nxx.ffkj\",\r\n       
+    \"P I18\": \"j..d.uu\\njhhd.uu\\n.xx....!\\n.xxpppc!\\n...rrrc\\nvv.f..a\\nvv.f..a\",\r\n       
+    \"P I19\": \"i......\\niooo...\\npppee..!\\n.......!\\n.aarrr.\\nhxxcvvf\\nhxxcvvf\",\r\n       
+    \"P I20\": \".....uu\\n.bdd.uu\\n.b.p...!\\nooop..r!\\n...pxxr\\n...exxr\\ncc.eqqq\",\r\n       
+    \"P A21\": \"..uu...\\n..uu.cc\\nbihhvvq!\\nbiajvvq!\\nddajffq\\n..xx.ee\\n..xx...\",\r\n       
+    \"P A22\": \".......\\n.pppc..\\n.euuc..!\\nqeuuff.!\\nqaahjjg\\nqxxhvvg\\n.xx.vv.\",\r\n       
+    \"P A23\": \".cvveep\\n.cvv.qp\\n....rqp!\\n...srq.!\\n..osr..\\n.ios.xx\\n.iobbxx\",\r\n       
+    \"P A24\": \"....aii\\nroooa.c\\nrxxqddc!\\nrxxquu.!\\npppquu.\\nvv..hb.\\nvv..hb.\",\r\n       
+    \"P A25\": \".kf..a.\\n.kfcca.\\nuuxx.vv!\\nuuxx.vv!\\n.jgeeh.\\n.jg..h.\\n.......\",\r\n       
+    \"P A26\": \"xx...uu\\nxxooouu\\n.q..bii!\\n.q..b..!\\n.qee.ff\\nvvc.a..\\nvvc.a..\",\r\n       
+    \"P A27\": \"..orrr.\\n.ioaavv\\n.iouuvv!\\n.xxuuqc!\\n.xxddqc\\n..pppq.\\n.......\",\r\n       
+    \"P A28\": \"xxrrr..\\nxxuusss\\np.uuvv.!\\npdo.vv.!\\npdoiq..\\neeoiqc.\\n..bbqc.\",\r\n       
+    \"P A29\": \"uuddp..\\nuuiip..\\nbbxxp..!\\naaxxee.!\\nrrrcvv.\\n...cvvj\\nkk....j\",\r\n       
+    \"P A30\": \".......\\n..ddh..\\nxxi.hvv!\\nxxiaavv!\\n.oppps.\\n.oqqqs.\\n.orrrs.\",\r\n       
+    \"P E31\": \"ppp.c..\\ne.q.c..\\ne.q..ii!\\nvvq....!\\nvv.rrro\\nxxuu..o\\nxxuubbo\",\r\n       
+    \"P E32\": \"...pooo\\nxx.puur\\nxx.puur!\\nee.qqqr!\\n.sss...\\n..b....\\n..b....\",\r\n       
+    \"P E33\": \"r.bi.p.\\nr.bi.p.\\nr.xx.p.!\\naaxxdd.!\\nffvvee.\\n..vv...\\n..cc...\",\r\n       
+    \"P E34\": \"hffvv..\\nh.jvvr.\\nkkjaarq!\\nxxbuurq!\\nxxbuu.q\\n.ooo...\\n..ppp..\",\r\n       
+    \"P E35\": \"cevvfk.\\ncevvfk.\\njj..uu.!\\nhh..uu.!\\nxxbdii.\\nxxbdaa.\\n.......\",\r\n       
+    \"P E36\": \"...crrr\\n...c.vv\\n..ffkvv!\\ndde.kaa!\\nxxejj.o\\nxx.buuo\\npppbuuo\",\r\n       
+    \"P E37\": \"ii...cc\\nuu.p...\\nuu.pooo!\\n...p.r.!\\na.qqqr.\\na..xxr.\\nkk.xx..\",\r\n       
+    \"P E38\": \"bxx.jhh\\nbxxoj.f\\n..doggf!\\n.qdoii.!\\naqpppvv\\naqcc.vv\\nrrr..ee\",\r\n       
+    \"P E39\": \".hhjkfe\\ndxxjkfe\\ndxx..r.!\\nbb...r.!\\nii...r.\\nuuooovv\\nuu...vv\",\r\n       
+    \"P E40\": \"...bp..\\n..obpc.\\n.iodpce!\\naiodxxe!\\na.uuxxq\\nh.uuvvq\\nh.jjvvq\"\r\n     
+    }\r\n    }\r\n  }\r\n]"
+  _rsLastCachedKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"07480512-00ae-49e8-91e2-fcd7f4677dff\"\r\n   
+    },\r\n    \"rs\": {\r\n      \"key\": \"Levels\",\r\n      \"type\": \"json\",\r\n     
+    \"schemaId\": null,\r\n      \"value\": {\r\n        \"P J1\": \".......\\n.rrrf..\\nhh..fq.!\\no.xx.q.!\\no.xx.q.\\nob..ee.\\n.bppp..\",\r\n       
+    \"P J2\": \".......\\n....qqq\\npppor..!\\n...orcc!\\n.eeor..\\n...xx..\\n...xx..\",\r\n       
+    \"P J3\": \"..ii...\\n.ffaa..\\n..kk...!\\n.eedd..!\\ncc..bb.\\n.hxxj..\\n.hxxj..\",\r\n       
+    \"P J4\": \"o....d.\\no..aad.\\no...hbb!\\nii..h..!\\n.xx....\\n.xxc...\\n...cqqq\",\r\n       
+    \"P J5\": \"......o\\nxx....o\\nxx....o!\\n.dee...!\\n.dhpc..\\n..hpc..\\n.jjpqqq\",\r\n       
+    \"P J6\": \"xx.h...\\nxx.h...\\n..qqqaa!\\njjrrr..!\\n..ppp..\\n..f....\\n..f....\",\r\n       
+    \"P J7\": \"....h..\\n..iiha.\\n.bbxxa.!\\n..dxxff!\\n..decc.\\n...e...\\n.......\",\r\n       
+    \"P J8\": \".rrrpff\\n....p..\\nd...p..!\\ndxxqqq.!\\n.xxe..c\\n...ebbc\\naa.ooo.\",\r\n       
+    \"P J9\": \".......\\n...pr..\\n...pr..!\\n..oprq.!\\n..oxxq.\\n.boxxqc\\n.b.ee.c\",\r\n       
+    \"P J10\": \".......\\n..ooor.\\n..xx.r.!\\n..xx.r.!\\n...peed\\n...p..d\\n...pqqq\",\r\n       
+    \"P B1\": \"...r.ii\\n.aar...\\n.h.r..c!\\n.hjjffc!\\n...kkee\\n..xx.vv\\n..xx.vv\",\r\n       
+    \"P B2\": \".......\\nuu.pppo\\nuu.qxxo!\\nsiiqxxo!\\nshbqrrr\\nshb.kk.\\n.......\",\r\n       
+    \"P B3\": \"...r...\\n...ruu.\\nc..ruu.!\\nc..a...!\\nxx.a.gg\\nxxeeff.\\n.hhjj..\",\r\n       
+    \"P B4\": \".cqqqp.\\n.c.j.p.\\nvv.j.p.!\\nvveexx.!\\nr.h.xx.\\nr.h.b..\\nrooob..\",\r\n       
+    \"P B5\": \".......\\n...f...\\nbb.f.jj!\\n.xxuuh.!\\n.xxuuh.\\nii.a.gg\\n...a...\",\r\n       
+    \"P B6\": \".......\\n.......\\n.peaao.!\\n.peffo.!\\n.prrro.\\n.xxqqq.\\n.xx....\",\r\n       
+    \"P B7\": \".uu.jj.\\niuuh..a\\ni..h..a!\\n.bb.ff.!\\nxx.e..c\\nxx.evvc\\n.dd.vv.\",\r\n       
+    \"P B8\": \"xx.ppp.\\nxx.uu..\\n.aauucc!\\n...qr..!\\n...qr..\\n...qr..\\n..hhjj.\",\r\n       
+    \"P B9\": \"...f...\\n..afp..\\n.ha.pe.!\\n.hxxpe.!\\njjxxdcc\\n..i.d..\\n..ibb..\",\r\n       
+    \"P B10\": \".......\\n...aff.\\n..ra.eq!\\n..rcceq!\\n..rgvvq\\nxx.gvv.\\nxx.....\",\r\n       
+    \"P I11\": \"vvc....\\nvvc....\\nqqquui.!\\n...uui.!\\nxxdooo.\\nxxd....\\nppp....\",\r\n       
+    \"P I12\": \"...uu..\\n...uui.\\n..xx.i.!\\nvvxxooo!\\nvv.q.bb\\n.ccqe..\\n...qe..\",\r\n       
+    \"P I13\": \"ppp.ee.\\n.xx.r.c\\n.xx.r.c!\\n.qqqr.a!\\n...jvva\\nh..jvv.\\nh.ffooo\",\r\n       
+    \"P I14\": \"hh.dd..\\n.....i.\\nqooo.i.!\\nqxxp...!\\nqxxp.b.\\nrrrp.b.\\n.......\",\r\n       
+    \"P I15\": \"jjhh...\\n.uu...g\\nauu.r.g!\\naiiprcq!\\nf..prcq\\nfxxpvvq\\n.xx.vv.\",\r\n       
+    \"P I16\": \".hhjj..\\n..ff...\\n.aavv..!\\niiovvq.!\\nxxoeeq.\\nxxodcq.\\n.bbdc..\",\r\n       
+    \"P I17\": \".......\\noooa...\\npvva...!\\npvvcc..!\\npeeqqq.\\nxxrrrkj\\nxx.ffkj\",\r\n       
+    \"P I18\": \"j..d.uu\\njhhd.uu\\n.xx....!\\n.xxpppc!\\n...rrrc\\nvv.f..a\\nvv.f..a\",\r\n       
+    \"P I19\": \"i......\\niooo...\\npppee..!\\n.......!\\n.aarrr.\\nhxxcvvf\\nhxxcvvf\",\r\n       
+    \"P I20\": \".....uu\\n.bdd.uu\\n.b.p...!\\nooop..r!\\n...pxxr\\n...exxr\\ncc.eqqq\",\r\n       
+    \"P A21\": \"..uu...\\n..uu.cc\\nbihhvvq!\\nbiajvvq!\\nddajffq\\n..xx.ee\\n..xx...\",\r\n       
+    \"P A22\": \".......\\n.pppc..\\n.euuc..!\\nqeuuff.!\\nqaahjjg\\nqxxhvvg\\n.xx.vv.\",\r\n       
+    \"P A23\": \".cvveep\\n.cvv.qp\\n....rqp!\\n...srq.!\\n..osr..\\n.ios.xx\\n.iobbxx\",\r\n       
+    \"P A24\": \"....aii\\nroooa.c\\nrxxqddc!\\nrxxquu.!\\npppquu.\\nvv..hb.\\nvv..hb.\",\r\n       
+    \"P A25\": \".kf..a.\\n.kfcca.\\nuuxx.vv!\\nuuxx.vv!\\n.jgeeh.\\n.jg..h.\\n.......\",\r\n       
+    \"P A26\": \"xx...uu\\nxxooouu\\n.q..bii!\\n.q..b..!\\n.qee.ff\\nvvc.a..\\nvvc.a..\",\r\n       
+    \"P A27\": \"..orrr.\\n.ioaavv\\n.iouuvv!\\n.xxuuqc!\\n.xxddqc\\n..pppq.\\n.......\",\r\n       
+    \"P A28\": \"xxrrr..\\nxxuusss\\np.uuvv.!\\npdo.vv.!\\npdoiq..\\neeoiqc.\\n..bbqc.\",\r\n       
+    \"P A29\": \"uuddp..\\nuuiip..\\nbbxxp..!\\naaxxee.!\\nrrrcvv.\\n...cvvj\\nkk....j\",\r\n       
+    \"P A30\": \".......\\n..ddh..\\nxxi.hvv!\\nxxiaavv!\\n.oppps.\\n.oqqqs.\\n.orrrs.\",\r\n       
+    \"P E31\": \"ppp.c..\\ne.q.c..\\ne.q..ii!\\nvvq....!\\nvv.rrro\\nxxuu..o\\nxxuubbo\",\r\n       
+    \"P E32\": \"...pooo\\nxx.puur\\nxx.puur!\\nee.qqqr!\\n.sss...\\n..b....\\n..b....\",\r\n       
+    \"P E33\": \"r.bi.p.\\nr.bi.p.\\nr.xx.p.!\\naaxxdd.!\\nffvvee.\\n..vv...\\n..cc...\",\r\n       
+    \"P E34\": \"hffvv..\\nh.jvvr.\\nkkjaarq!\\nxxbuurq!\\nxxbuu.q\\n.ooo...\\n..ppp..\",\r\n       
+    \"P E35\": \"cevvfk.\\ncevvfk.\\njj..uu.!\\nhh..uu.!\\nxxbdii.\\nxxbdaa.\\n.......\",\r\n       
+    \"P E36\": \"...crrr\\n...c.vv\\n..ffkvv!\\ndde.kaa!\\nxxejj.o\\nxx.buuo\\npppbuuo\",\r\n       
+    \"P E37\": \"ii...cc\\nuu.p...\\nuu.pooo!\\n...p.r.!\\na.qqqr.\\na..xxr.\\nkk.xx..\",\r\n       
+    \"P E38\": \"bxx.jhh\\nbxxoj.f\\n..doggf!\\n.qdoii.!\\naqpppvv\\naqcc.vv\\nrrr..ee\",\r\n       
+    \"P E39\": \".hhjkfe\\ndxxjkfe\\ndxx..r.!\\nbb...r.!\\nii...r.\\nuuooovv\\nuu...vv\",\r\n       
+    \"P E40\": \"...bp..\\n..obpc.\\n.iodpce!\\naiodxxe!\\na.uuxxq\\nh.uuvvq\\nh.jjvvq\"\r\n     
+    }\r\n    }\r\n  }\r\n]"
+  _environments: "[\r\n  {\r\n    \"projectId\": \"34cfa0b4-e2ea-47ed-8baa-891ca4221c9e\",\r\n   
+    \"name\": \"production\",\r\n    \"id\": \"41b2a961-2cf2-43a4-80b4-1411cf794d17\",\r\n   
+    \"isDefault\": true,\r\n    \"createdAt\": \"2025-01-18T15:31:13Z\",\r\n    \"updatedAt\":
+    \"2025-01-18T15:31:13Z\"\r\n  },\r\n  {\r\n    \"projectId\": \"34cfa0b4-e2ea-47ed-8baa-891ca4221c9e\",\r\n   
+    \"name\": \"collectinginfo\",\r\n    \"id\": \"7929a4d1-4fc1-49c4-af55-193a46e61ebb\",\r\n   
+    \"isDefault\": false,\r\n    \"createdAt\": \"2025-01-26T21:32:28Z\",\r\n   
+    \"updatedAt\": \"2025-01-26T21:32:28Z\"\r\n  }\r\n]"
