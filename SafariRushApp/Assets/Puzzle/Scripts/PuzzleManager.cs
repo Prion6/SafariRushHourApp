@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class PuzzleManager : SceneManager
 {
-    Puzzle Puzzle { get; set; }
-    public HUDController hudController;
+    Puzzle puzzle { get; set; }
+    //public HUDController hudController;
     public WinPanelController winPanel;
     public DifficultyPanel difficultyPanel;
     Camera cam;
@@ -33,72 +33,64 @@ public class PuzzleManager : SceneManager
     private int Moves { get; set; }
     private bool Win { get; set; }
 
-
+    public static Action OnLevelComplete;
     // Start is called before the first frame update
     void Awake()
     {
-        Timer = 0;
-        Moves = 0;
-        hudController.SetMoves(0);
-        hudController.SetTime(0);
+        cam = Camera.main;
+        //Timer = 0;
+        //Moves = 0;
+        //hudController.SetMoves(0);
+        //hudController.SetTime(0);
         register = new List<MoveData>();
         restarts = new List<RestartInfo>();
-        string s = GameManager.Puzzle.Puzzle.Trim(' ');
-        if (!s[0].Equals('P'))
-        {
-            //Obtener del pool interno
-            //Debug.LogError("Format error, initial value: " + s[0] + " Puzzle: " + s);
+        //string s = GameManager.puzzle.Puzzle.Trim(' ');
+        //if (!s[0].Equals('P'))
+        //{
+        //    //Obtener del pool interno
+        //    //Debug.LogError("Format error, initial value: " + s[0] + " Puzzle: " + s);
 
-        }
-        Puzzle = FindObjectOfType<Puzzle>();
+        //}
+        puzzle = FindFirstObjectByType<Puzzle>();
         //hudController = FindObjectOfType<HUDController>();
         //winPanel = FindObjectOfType<WinPanelController>();
-        Puzzle.Init(GameManager.Puzzle);
+        puzzle.Init(GameManager.puzzle);
         //matrixtext.text = Puzzle.PrintMatrix();
         GameManager.OnLanguageChange.AddListener(LoadLanguage);
         LoadLanguage();
-        difficultyPanel.SetDifficulty(GameManager.Puzzle.Ranking);
+        difficultyPanel.SetDifficulty(GameManager.puzzle.Ranking);
         GameManager.OnVolumeChange.Invoke();
 
-        Debug.Log("Entropía del nivel: " + Puzzle.CalculateEntropy());
+        Debug.Log("Entropía del nivel: " + puzzle.CalculateEntropy());
     }
 
     public void Init()
     {
         SetInitialConditions();
-        Puzzle = FindObjectOfType<Puzzle>();
+        puzzle = FindFirstObjectByType<Puzzle>();
         //hudController = FindObjectOfType<HUDController>();
         //winPanel = FindObjectOfType<WinPanelController>();
-        Puzzle.Init(GameManager.Puzzle);
+        puzzle.Init(GameManager.puzzle);
     }
 
     public void SetInitialConditions()
     {
-        Timer = 0;
-        Moves = 0;
-        UndoUsed = 0;
-        HintUsed = 0;
-        hudController.SetMoves(0);
-        hudController.SetTime(0);
+        LoadLanguage();
+        //Timer = 0;
+        //Moves = 0;
+        //UndoUsed = 0;
+        //HintUsed = 0;
+        //hudController.SetMoves(0);
+        //hudController.SetTime(0);
+        StartTime = Time.time;
+        running = true;
         register = new List<MoveData>();
-        string s = GameManager.Puzzle.Puzzle.Trim(' ');
-        if (!s[0].Equals('P'))
-        {
-            //Obtener del pool interno
-            Debug.LogError("Format error, initial value: " + s[0] + " Puzzle: " + s);
-
-        }
+        
     }
 
     void Start()
     {
-        LoadLanguage();
-        cam = Camera.main;
-        register = new List<MoveData>();
-        Timer = 0;
-        Moves = 0;
-        StartTime = Time.time;
-        running = true;
+        SetInitialConditions();
     }
   
     // Update is called once per frame
@@ -107,7 +99,7 @@ public class PuzzleManager : SceneManager
         if(running)
         {
             Timer += Time.deltaTime;
-            hudController.SetTime(Timer);
+            //hudController.SetTime(Timer);
             if (Input.GetMouseButtonDown(0))
             {
                 Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -133,18 +125,18 @@ public class PuzzleManager : SceneManager
                     if (slab.Equals(selectedSlab)) return;
                     if (selectedPiece == null) return;
                     selectedSlab = slab;
-                    Puzzle.HighLightPath(selectedPiece, slab);
+                    puzzle.HighLightPath(selectedPiece, slab);
                 }
             }
             else if (Input.GetMouseButtonUp(0))
             {
-                Puzzle.TurnPathOff();
+                puzzle.TurnPathOff();
                 endPoint = Input.mousePosition + new Vector3(0, 0, cam.transform.position.y);
                 endPoint = cam.ScreenToWorldPoint(endPoint);
                 if (selectedPiece != null)
                 {
                     AddRegister(selectedPiece.TryMove(new Vector2(endPoint.x - startPoint.x, endPoint.z - startPoint.z)));
-                    hudController.SetMoves(Moves);
+                    //hudController.SetMoves(Moves);
                     selectedPiece = null;
                 }
                 //Debug.Log("Movement: " + register[register.Count-1].identifier + register[register.Count - 1].direction + register[register.Count - 1].magnitude);
@@ -165,7 +157,7 @@ public class PuzzleManager : SceneManager
 
     public void LoadLanguage()
     {
-        hudController.LoadLanguage();
+        //hudController.LoadLanguage();
         winPanel.LoadLanguage();
     }
 
@@ -181,7 +173,7 @@ public class PuzzleManager : SceneManager
         if (register.Count == 0) return;
         MoveData md = register[register.Count - 1];
         MoveData undo = new MoveData();
-        foreach(Piece p in Puzzle.gamePieces)
+        foreach(Piece p in puzzle.gamePieces)
         {
             if(p.Identifier.Equals(md.identifier))
             {
@@ -207,7 +199,7 @@ public class PuzzleManager : SceneManager
         UndoUsed++;
         register.RemoveAt(register.Count-1);
         Moves--;
-        hudController.SetMoves(Moves);
+        //hudController.SetMoves(Moves);
         //Debug.Log("Count: " + register.Count);
     }
 
@@ -289,15 +281,16 @@ public class PuzzleManager : SceneManager
 
     public void GameOver(bool won)
     {
-        Win = won;
-        running = false;
-        UI.SetActive(false);
-        GetMovementRegister(out string raw, out string effective);
-        double proficiency = CalculatePerformance(raw);
-        gameOverPanel.SetActive(true);
-        winPanel.DisplayPerformance(proficiency);
-        EndTime = Time.time;
-        double totalTime = EndTime - StartTime;
+        OnLevelComplete?.Invoke();
+        //Win = won;
+        //running = false;
+        //UI.SetActive(false);
+        //GetMovementRegister(out string raw, out string effective);
+        //double proficiency = CalculatePerformance(raw);
+        //gameOverPanel.SetActive(true);
+        //winPanel.DisplayPerformance(proficiency);
+        //EndTime = Time.time;
+        //double totalTime = EndTime - StartTime;
     }
 
     public void GoToMainMenu()
@@ -307,14 +300,17 @@ public class PuzzleManager : SceneManager
         RegisterGameData(raw, proficiency);
         LoadScene("MainMenu");
     }
-
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
     public double CalculatePerformance(string movements)
     {
         double proficiency = 0;
         if (Win)
         {
             proficiency = 0.5f;
-            proficiency += 0.5 * ((float)Puzzle.data.OptimalMoves / ((float)movements.Split(' ').Length-1));
+            proficiency += 0.5 * ((float)puzzle.data.OptimalMoves / ((float)movements.Split(' ').Length-1));
             proficiency *= Mathf.Pow(0.8f, restarts.Count);
             foreach (RestartInfo r in restarts)
             {
@@ -330,39 +326,40 @@ public class PuzzleManager : SceneManager
 
     public void RegisterGameData(string movements, double proficiency)
     {
-        int evaluation = (int)winPanel.GetPlayerEvaluation();
+        //int evaluation = (int)winPanel.GetPlayerEvaluation();
 
-        StatisticData data = new StatisticData(Puzzle.data.ID, GameManager.PlayerID, DateTime.Now.Date, (int)Timer, movements,
-                                            evaluation, HintUsed, restarts.Count, UndoUsed, (float)proficiency);
-        GameManager.RegisterGame(data);
+        //StatisticData data = new StatisticData(puzzle.data.ID, GameManager.PlayerID, DateTime.Now.Date, (int)Timer, movements,
+        //                                    evaluation, HintUsed, restarts.Count, UndoUsed, (float)proficiency);
+        //GameManager.RegisterGame(data);
     }
     
     public void Continue()
     {
-        GetMovementRegister(out string raw, out string effective);
-        double proficiency = CalculatePerformance(raw);
-        RegisterGameData(raw, proficiency);
-        int delta = (int)winPanel.GetPlayerPreference();
-        GameManager.LoadPuzzleScene(UnityEngine.Random.Range(0, (int)LevelDifficulties.E));
+        //GetMovementRegister(out string raw, out string effective);
+        //double proficiency = CalculatePerformance(raw);
+        //RegisterGameData(raw, proficiency);
+        //int delta = (int)winPanel.GetPlayerPreference();
+        //GameManager.LoadPuzzleScene(UnityEngine.Random.Range(0, (int)LevelDifficulties.E));
     }
 
     public void Restart()
     {
         //Puzzle.Clear();
-        GetMovementRegister(out string raw, out string effective);
-        string[] raws = raw.Split(' ');
-        string[] effectives = effective.Split(' ');
-        RestartInfo ri = new RestartInfo(raws.Length, effectives.Length, (int)Timer, UndoUsed, HintUsed);
-        restarts.Add(ri);
-        SetInitialConditions();
-        Puzzle.Restart();
+        //GetMovementRegister(out string raw, out string effective);
+        //string[] raws = raw.Split(' ');
+        //string[] effectives = effective.Split(' ');
+        //RestartInfo ri = new RestartInfo(raws.Length, effectives.Length, (int)Timer, UndoUsed, HintUsed);
+        //restarts.Add(ri);
+        //SetInitialConditions();
+        //puzzle.Restart();
+        Puzzle.instance.Init(GameManager.puzzle, isRestart:true);
     }
 
     public void GetHint()
     {
         if (!running) return;
-        string p = Puzzle.PrintMatrix().Replace("0", "");
-        string s = string.Join(" ", "P", Puzzle.data.Label, "\n", p, "\n");
+        string p = puzzle.PrintMatrix().Replace("0", "");
+        string s = string.Join(" ", "P", puzzle.data.Label, "\n", p, "\n");
         GameManager.GetHint(s, (b) => running = !b, 
             (h) =>
             {
@@ -389,7 +386,7 @@ public class PuzzleManager : SceneManager
         //if (magnitude <= 0) return;
 
         MoveData move = new MoveData(magnitude,dir,identifier);
-        Puzzle.ShowHint(move);
+        puzzle.ShowHint(move);
     }
 
     private void OnApplicationQuit()

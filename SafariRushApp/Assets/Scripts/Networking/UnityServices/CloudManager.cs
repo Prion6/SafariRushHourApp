@@ -20,7 +20,8 @@ public class CloudManager : MonoBehaviour
         try
         {
             string sanitizedPlayerName = RemoveSpecialCharacters(playerName);
-            await AuthenticationService.Instance.SignUpWithUsernamePasswordAsync(sanitizedPlayerName + "S", "Paassw0rd!");
+            //await AuthenticationService.Instance.SignUpWithUsernamePasswordAsync(sanitizedPlayerName + "S", "Paassw0rd!");
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
             playerAuthenticated?.Invoke();
             callbackOnSuccess?.Invoke();
         }
@@ -33,6 +34,9 @@ public class CloudManager : MonoBehaviour
 
         var data = new Dictionary<string, object> { { "playerName", playerName }, { "playerRut", playerRut }, { "playerLocation", playerLocation } };
         await CloudSaveService.Instance.Data.Player.SaveAsync(data);
+        //var data = new Dictionary<string, object> { { "playerName", playerName }, { "playerRut", playerRut }, { "playerLocation", playerLocation } };
+        //await CloudSaveService.Instance.Data.Player.SaveAsync(data);
+        //await CloudSaveService.Instance.Data.ForceSaveAsync(data);
     }
 
     public static async void AuthenticateDedveloper(Action callbackOnSuccess = null, Action callbackOnFailure = null)

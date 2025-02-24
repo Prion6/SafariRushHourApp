@@ -20,15 +20,15 @@ public class PHPQuerySet : ScriptableObject
 
             yield return www.SendWebRequest();
             
-            if (www.isNetworkError || www.isHttpError)
-            {
-                Debug.LogError(www.error);
-            }
-            else
-            {
-                callback(www.downloadHandler.text);
-                //Debug.Log("Puzzle");
-            }
+            //if (www.isNetworkError || www.isHttpError)
+            //{
+            //    Debug.LogError(www.error);
+            //}
+            //else
+            //{
+            //    callback(www.downloadHandler.text);
+            //    //Debug.Log("Puzzle");
+            //}
         }
     }
 
@@ -56,15 +56,15 @@ public class PHPQuerySet : ScriptableObject
 
             yield return www.SendWebRequest();
 
-            if (www.isNetworkError || www.isHttpError)
-            {
-                Debug.LogError(www.error);
-            }
-            else
-            {
-                callback(www.downloadHandler.text);
-                //Debug.Log("Player registered:" + www.downloadHandler.text);
-            }
+            //if (www.isNetworkError || www.isHttpError)
+            //{
+            //    Debug.LogError(www.error);
+            //}
+            //else
+            //{
+            //    callback(www.downloadHandler.text);
+            //    //Debug.Log("Player registered:" + www.downloadHandler.text);
+            //}
         }
     }
 
@@ -99,18 +99,18 @@ public class PHPQuerySet : ScriptableObject
             www.timeout = 30;
             yield return www.SendWebRequest();
 
-            if (www.isNetworkError || www.isHttpError)
-            {
-                Debug.LogError(www.error);
-                Debug.Log(www.downloadHandler.text);
-                callback(false);
-            }
-            else
-            {
-                Debug.Log("Game Registered: " + www.downloadHandler.text);
-                callback(true);
-                action(www.downloadHandler.text);
-            }
+            //if (www.isNetworkError || www.isHttpError)
+            //{
+            //    Debug.LogError(www.error);
+            //    Debug.Log(www.downloadHandler.text);
+            //    callback(false);
+            //}
+            //else
+            //{
+            //    Debug.Log("Game Registered: " + www.downloadHandler.text);
+            //    callback(true);
+            //    action(www.downloadHandler.text);
+            //}
         }
     }
 
@@ -129,15 +129,15 @@ public class PHPQuerySet : ScriptableObject
 
             yield return www.SendWebRequest();
 
-            if (www.isNetworkError || www.isHttpError)
-            {
-                Debug.Log(www.error);
-            }
-            else
-            {
-                getHint(www.downloadHandler.text);
-                //Debug.Log("Hint: " + www.downloadHandler.text);
-            }
+            //if (www.isNetworkError || www.isHttpError)
+            //{
+            //    Debug.Log(www.error);
+            //}
+            //else
+            //{
+            //    getHint(www.downloadHandler.text);
+            //    //Debug.Log("Hint: " + www.downloadHandler.text);
+            //}
         }
     }
 
@@ -152,15 +152,15 @@ public class PHPQuerySet : ScriptableObject
 
             yield return www.SendWebRequest();
 
-            if (www.isNetworkError || www.isHttpError)
-            {
-                Debug.Log(www.error);
-            }
-            else
-            {
-                //Debug.Log("Player: " + www.downloadHandler.text);
-                fetchPlayerInfo(www.downloadHandler.text);
-            }
+            //if (www.isNetworkError || www.isHttpError)
+            //{
+            //    Debug.Log(www.error);
+            //}
+            //else
+            //{
+            //    //Debug.Log("Player: " + www.downloadHandler.text);
+            //    fetchPlayerInfo(www.downloadHandler.text);
+            //}
         }
     }
 
@@ -174,15 +174,15 @@ public class PHPQuerySet : ScriptableObject
 
             yield return www.SendWebRequest();
 
-            if (www.isNetworkError || www.isHttpError)
-            {
-                Debug.Log(www.error);
-            }
-            else
-            {
-                fetchLeaderBoard(www.downloadHandler.text);
-                //Debug.Log("leaderBoard: " + www.downloadHandler.text);
-            }
+            //if (www.isNetworkError || www.isHttpError)
+            //{
+            //    Debug.Log(www.error);
+            //}
+            //else
+            //{
+            //    fetchLeaderBoard(www.downloadHandler.text);
+            //    //Debug.Log("leaderBoard: " + www.downloadHandler.text);
+            //}
         }
     }
 }

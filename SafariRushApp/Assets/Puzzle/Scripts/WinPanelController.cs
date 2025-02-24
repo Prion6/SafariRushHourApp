@@ -27,38 +27,38 @@ public class WinPanelController : MonoBehaviour
 
     public void LoadLanguage()
     {
-        foreach(Text t in texts)
-        {
-            t.text = GameManager.GetText(t.name);
-        }
-        SetEvaluationOptions(GameManager.GetText(evaluationTxt.name));
-        SetDifficultyOptions(GameManager.GetText(nextPuzzleTxt.name));
-        SetEvaluationOptionText();
-        SetDifficultyOptionText();
+        //foreach(Text t in texts)
+        //{
+        //    t.text = GameManager.GetText(t.name);
+        //}
+        //SetEvaluationOptions(GameManager.GetText(evaluationTxt.name));
+        //SetDifficultyOptions(GameManager.GetText(nextPuzzleTxt.name));
+        //SetEvaluationOptionText();
+        //SetDifficultyOptionText();
     }
 
     public void SetEvaluationOptions(string s)
     {
-        string[] ops = s.Split('\n');
-        evaluationSldr.maxValue = ops.Length - 1;
-        evaluationOptions = new List<string>(ops);
+        //string[] ops = s.Split('\n');
+        //evaluationSldr.maxValue = ops.Length - 1;
+        //evaluationOptions = new List<string>(ops);
     }
 
     public void SetDifficultyOptions(string s)
     {
-        string[] ops = s.Split('\n');
-        nextPuzzleSldr.maxValue = ops.Length - 1;
-        nextPuzzleOptions = new List<string>(ops);
+        //string[] ops = s.Split('\n');
+        //nextPuzzleSldr.maxValue = ops.Length - 1;
+        //nextPuzzleOptions = new List<string>(ops);
     }
 
     public void SetEvaluationOptionText()
     {
-        evaluationTxt.text = evaluationOptions[(int)evaluationSldr.value];
+        //evaluationTxt.text = evaluationOptions[(int)evaluationSldr.value];
     }
 
     public void SetDifficultyOptionText()
     {
-        nextPuzzleTxt.text = nextPuzzleOptions[(int)nextPuzzleSldr.value];
+        //nextPuzzleTxt.text = nextPuzzleOptions[(int)nextPuzzleSldr.value];
     }
 
     public double GetPlayerEvaluation()

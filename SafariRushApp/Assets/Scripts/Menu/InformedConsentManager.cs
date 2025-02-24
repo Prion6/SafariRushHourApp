@@ -19,6 +19,7 @@ public class InformedConsentManager : MonoBehaviour
     [SerializeField] private Button finalAcceptButton;
     [SerializeField] private Button finalNotAcceptButton;
     [SerializeField] private Button finalPrevButton;
+    [SerializeField] private Button finalJustPlayButton;
 
     [SerializeField] TMP_InputField player_name;
     [SerializeField] TMP_InputField player_rut;
@@ -51,6 +52,24 @@ public class InformedConsentManager : MonoBehaviour
         finalAcceptButton.onClick.AddListener(Accept);
         finalNotAcceptButton.onClick.AddListener(NotAccept);
         finalPrevButton.onClick.AddListener(GoToDeclarationPanel);
+        finalJustPlayButton.onClick.AddListener(JustPlay);
+
+        player_name.onValueChanged.AddListener(UpdateButtonState);
+        player_rut.onValueChanged.AddListener(UpdateButtonState);
+        player_location.onValueChanged.AddListener(UpdateButtonState);
+    }
+    private void OnDestroy()
+    {
+        next1Button.onClick.RemoveListener(GoToDeclarationPanel);
+        next2Button.onClick.RemoveListener(GoToAgreementPanel);
+        prev2Button.onClick.RemoveListener(GoToInformationPanel);
+        finalAcceptButton.onClick.RemoveListener(Accept);
+        finalNotAcceptButton.onClick.RemoveListener(NotAccept);
+        finalPrevButton.onClick.RemoveListener(GoToDeclarationPanel);
+
+        player_name.onValueChanged.RemoveListener(UpdateButtonState);
+        player_rut.onValueChanged.RemoveListener(UpdateButtonState);
+        player_location.onValueChanged.RemoveListener(UpdateButtonState);
     }
     public void GoToInformationPanel()
     {
@@ -75,7 +94,6 @@ public class InformedConsentManager : MonoBehaviour
     }
     public void Accept()
     {
-        Debug.Log("Data saved");
         CloudManager.AuthenticatePlayer(player_name.text, player_rut.text, player_location.text, callbackOnSuccess: () =>
         {
             gameObject.SetActive(false);
@@ -95,7 +113,7 @@ public class InformedConsentManager : MonoBehaviour
         Debug.Log("Data not saved");
         Application.Quit();
     }
-    public void UpdateButtonState()
+    public void UpdateButtonState(string _)
     {
         if(player_name.text != string.Empty && player_rut.text != string.Empty && player_location.text != string.Empty)
         {
@@ -105,5 +123,20 @@ public class InformedConsentManager : MonoBehaviour
         {
             finalAcceptButton.interactable = false;
         }
+    }
+    public void JustPlay()
+    {
+        CloudManager.AuthenticateDedveloper(callbackOnSuccess: () =>
+        {
+            gameObject.SetActive(false);
+            mainMenu.SetActive(true);
+            informationPanel.SetActive(false);
+            declarationPanel.SetActive(false);
+            agreementPanel.SetActive(false);
+        });
+    }
+    public void PlayLevel()
+    {
+        GameManager.LoadPuzzleScene(0);
     }
 }

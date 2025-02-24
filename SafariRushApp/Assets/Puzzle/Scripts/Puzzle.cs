@@ -6,10 +6,16 @@ using UnityEngine;
 [System.Serializable]
 public class Puzzle : MonoBehaviour
 {
+    public static Puzzle instance;
     private char[,] matrix;
 
+    public int movements;
+    public int restarts;
+    public float timeToComplete;
+    public bool wasCompleted = false;
     public PuzzleData data;
-    
+    public HUDController hudController;
+
     public List<Piece> piecePrefs;
     private Dictionary<PieceType,List<Piece>> pieces;
     public List<Piece> gamePieces;
@@ -23,9 +29,18 @@ public class Puzzle : MonoBehaviour
     public List<Slab> highlighted;
     public List<Slab> hinted;
 
+    private GameObject board;
+    private GameObject walls;
+
     // Start is called before the first frame update
     void Awake()
     {
+        if(instance == null) instance = this;
+        timeToComplete = 0;
+        restarts = 0;
+        movements = 0;
+        hudController.SetTime(timeToComplete);
+        hudController.SetMoves(movements);
         Board = new List<GameObject>();
         Walls = new List<GameObject>();
         gamePieces = new List<Piece>();
@@ -38,11 +53,49 @@ public class Puzzle : MonoBehaviour
             pieces[p.type].Add(p);
         }
     }
-
-    public void Init(PuzzleData p)
+    private void Update()
     {
+        timeToComplete += Time.deltaTime;
+        hudController.SetTime(timeToComplete);
+    }
+    private void OnApplicationQuit()
+    {
+        
+    }
+    public void ResetValues()
+    {
+        movements = 0;
+        timeToComplete = 0;
+        restarts = 0;
+        hudController.SetTime(timeToComplete);
+        hudController.SetMoves(movements);
+        wasCompleted = false;
+    }
+    public void Init(PuzzleData p, bool isRestart = false)
+    {
+        Board = new List<GameObject>();
+        Walls = new List<GameObject>();
+        gamePieces = new List<Piece>();
+        highlighted = new List<Slab>();
+
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+        movements = 0;
+        timeToComplete = 0;
+        if (!isRestart) 
+        { 
+            restarts = 0;
+        }
+        else
+        {
+            restarts++;
+        }
+        hudController.SetTime(timeToComplete);
+        hudController.SetMoves(movements);
         data = p;
-        InitMatrix(p.Puzzle);
+        InitMatrix("P " + p.Label + p.ID.ToString()+"\n" + p.Puzzle);
         InitBoard();
         InitPieces();
     }
@@ -50,25 +103,26 @@ public class Puzzle : MonoBehaviour
     public void InitMatrix(string s)
     {
         string[] lines = s.Split('\n');
-        //data.Label = lines[0].Trim('P',' ','\n','\t');
+        data.Label = lines[0].Trim('P', ' ', '\n', '\t');
         //Difficulty = GetDifficulty(label[0]);
-        matrix = new char[(lines.Length), (lines.Length)]; // -1 debido al header, +2 para agregar murallas y puertas
-        
-        Debug.Log(matrix.GetLength(0));
+        matrix = new char[(lines.Length) + 1, (lines.Length) + 1]; // -1 debido al header, +2 para agregar murallas y puertas
+
+
         for (int i = 0; i < matrix.GetLength(0); i++)
         {
-            if(i < lines.Length)
+            if (i < lines.Length)
                 lines[i] = Regex.Replace(lines[i], @"[^\w\!.@-]", "");
             for (int j = 0; j < matrix.GetLength(0); j++)
             {
-                //if(i == 0 || i >= matrix.GetLength(0) - 1 || j == 0 || (j >= matrix.GetLength(0) - 1 && j > lines[i].Length))
-                //{
-                //    matrix[i, j] = '0';
-                //    continue;
-                //}
-                matrix[i, j] = lines[i][j];
+                if (i == 0 || i >= matrix.GetLength(0) - 1 || j == 0 || (j >= matrix.GetLength(0) - 1 && j > lines[i].Length))
+                {
+                    matrix[i, j] = '0';
+                    continue;
+                }
+                matrix[i, j] = lines[i][j - 1];
             }
         }
+        //PrintMatrix();
         Debug.Log(PrintMatrix());
         
     }
@@ -76,8 +130,10 @@ public class Puzzle : MonoBehaviour
     public void InitBoard()
     {
         Vector3 start = new Vector3(-matrix.GetLength(0) * step / 2, 0, -matrix.GetLength(0) * step / 2);
-        GameObject board = Instantiate(new GameObject("Board"));
-        GameObject walls = Instantiate(new GameObject("Walls"));
+        if(board != null) Destroy(board);
+        if(walls != null) Destroy(walls);
+        board = new GameObject("Board");
+        walls = new GameObject("Walls");
 
         for (int i = 0; i < matrix.GetLength(0); i++)
         {
@@ -190,7 +246,8 @@ public class Puzzle : MonoBehaviour
     
     public void MovePiece(char identifier, List<Vector2> start, List<Vector2> end)
     {
-        foreach(Vector2 v in start)
+        movements++;
+        foreach (Vector2 v in start)
         {
             matrix[(int)v.x, (int)v.y] = '.';
         }
@@ -199,6 +256,7 @@ public class Puzzle : MonoBehaviour
             matrix[(int)v.x, (int)v.y] = identifier;
         }
         TurnHintOff();
+        hudController.SetMoves(movements);
     }
 
     public Vector2 GetPieceCorrdinates(char identifier)

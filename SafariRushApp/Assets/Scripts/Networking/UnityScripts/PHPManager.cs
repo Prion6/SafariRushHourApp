@@ -92,7 +92,7 @@ public class PHPManager : MonoBehaviour
             else
             {
                 PuzzleData p = new PuzzleData(pID, data[1], rank, data[3], optimal);
-                GameManager.Puzzle = p;
+                GameManager.puzzle = p;
             }
         }
         else

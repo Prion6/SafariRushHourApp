@@ -12,8 +12,8 @@ public class GameManager
         {
             if(_PHPManager == null)
             {
-                GameObject go = Resources.Load("PHPManager") as GameObject;
-                _PHPManager = GameObject.Instantiate(go).GetComponent<PHPManager>();
+                //GameObject go = Resources.Load("PHPManager") as GameObject;
+                //_PHPManager = GameObject.Instantiate(go).GetComponent<PHPManager>();
             }
             return _PHPManager;
         }
@@ -39,8 +39,8 @@ public class GameManager
     {
         GameData.languages = l;
     }
-    
-    public static PuzzleData Puzzle { get; set; }
+    private static List<LevelDifficulties> levelsShown = new List<LevelDifficulties>();
+    public static PuzzleData puzzle { get; set; }
 
     //public static OptionsData Options { get { return GameData.Options; } set {GameData.Options = value;} }
 
@@ -103,23 +103,66 @@ public class GameManager
 
     public static void LoadPuzzleScene(int ranking)
     {
+        levelsShown.Add((LevelDifficulties)ranking);
         //PHPManager.GetPuzzle(GameData.PlayerData.ID, ranking);
         LevelData levelData = LevelService.GetALevelByDifficulty((LevelDifficulties)ranking);
         PuzzleData p = new PuzzleData();
 
         p.Puzzle = levelData.Level;
         p.Label = levelData.Difficulty.ToString();
+        p.ID = levelData.Index;
 
         Debug.Log("Level to play: \n" + p.Puzzle);
-        GameManager.Puzzle = p;
+        GameManager.puzzle = p;
         GameManager.LoadScene("Puzzle");
     }
+    public static void LoadPuzzle(int ranking)
+    {
+        levelsShown.Add((LevelDifficulties)ranking);
+        //PHPManager.GetPuzzle(GameData.PlayerData.ID, ranking);
+        LevelData levelData = LevelService.GetALevelByDifficulty((LevelDifficulties)ranking);
+        PuzzleData p = new PuzzleData();
 
+        p.Puzzle = levelData.Level;
+        p.Label = levelData.Difficulty.ToString();
+        p.ID = levelData.Index;
+
+        Debug.Log("Level to play: \n" + p.Puzzle);
+        GameManager.puzzle = p;
+        Puzzle.instance.Init(GameManager.puzzle);
+
+        //GameManager.LoadScene("Puzzle");
+    }
+    public static void LoadARandomLevel()
+    {
+        
+        //Not use _NA
+        for (int i = 1; i < (int)LevelDifficulties.E; i++)
+        {
+            if (!levelsShown.Contains((LevelDifficulties)i))
+            {
+                LoadPuzzle(i);
+                return;
+            }
+        }
+        LoadPuzzle(UnityEngine.Random.Range(0, (int)LevelDifficulties.E));
+    }
+    public static bool AreAllLevelsComplete()
+    {
+        for (int i = 1; i < (int)LevelDifficulties.E; i++)
+        {
+            if (!levelsShown.Contains((LevelDifficulties)i))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
     public static void SetBackUpPuzzle(int ranking)
     {
-        Puzzle = GameData.GetPuzzle(ranking);
+        puzzle = GameData.GetPuzzle(ranking);
     }
-
+     
     public static string GetText(string key)
     {
         return GameData.GetText(key);
@@ -146,7 +189,7 @@ public class GameManager
 
     public static void RegisterGame(StatisticData data)
     {
-        PHPManager.RegisterGame(data);
+        //PHPManager.RegisterGame(data);
     }
 
     public static void GetPlayerInfo(System.Action<string> fetchPlayerInfo)
